@@ -1,0 +1,101 @@
+{
+"Home":{
+    "frase": "About Us",
+    "About-us": "At Idealy.ly, we blend technology and creativity to develop software that turns challenges into opportunities. We are a team passionate about innovation, committed to simplifying processes, optimizing experiences, and building tools that make a difference. ",
+    "About-us2": "We believe in the power of technology to improve lives and empower businesses. That’s why we design tailor-made solutions—from intuitive apps to scalable platforms—always with a human-centric approach and a clear purpose: to make the complex simple and the innovative accessible.",
+    "About-us3": "Ready to bring your ideas to life? Together, we can create change.  ",
+    "title-services": "Services",
+    "text-services": "We craft software that grows with you, websites that captivate, and digital campaigns that connect. We're passionate about turning challenges into opportunities through technology, creativity, and innovation.",
+    "subtitle-services": "Transform your idea into an extraordinary digital experience",
+    "title-development":" We build solutions that think like your customers.",
+    "subtitle-development":"Tailor-made solutions adapted to your business",
+    "text-development": "We don’t just develop systems—we design experiences. Our custom development service is driven by UX methodologies that ensure intuitive interfaces, seamless functionality, and alignment with your business goals.",
+    "bullet1":"Fully tailored development, adapted to your operation",
+    "bullet2":"User-centered design (UX) to boost conversions",
+    "bullet3":"Integration with your existing processes and technologies",
+    "text2-development":"More than just a provider, we're your strategic ally in digital transformation.Request your free quote today and let’s build the perfect solution for your business.",
+    "button-development":"More info",
+    "title-MD":"What Is Digital Marketing—and Why Your Business Needs It",
+    "subtitle-MD": "Digital Marketing Services",
+    "text-MD":"Digital marketing is the art and science of promoting your brand online through strategic channels like search engines, social media, email campaigns, and content creation. It’s not just advertising—it’s connecting with the right audience at the right time with the right message.",
+    "text-MD2":"From attracting new customers to turning clicks into conversions, digital marketing transforms visibility into opportunity and builds loyalty that lasts.",
+    "text-MD3": "Let us help you craft bold strategies that elevate your brand, drive sales, and keep your business ahead of the curve. Ready to make your digital presence work smarter?",
+    "frase-MD":"Let's start building your growth today.",
+    "title-consulting": "Hi, I’m Leo—Your Digital Innovation Consultant",
+    "subtitle-consulting": "Digital Transformation Consulting",
+    "text-consulting":"I turn tech challenges into growth opportunities. Let’s unlock your business’s potential with custom strategies, smart tools, and future-ready thinking. If you’d like Leo to sound more playful, visionary, or authoritative, I can shape his voice further. Want a few variations to give him more personality? ",
+    "text-consulting2":"Innovation doesn’t have to be complicated—it’s all about strategy. At idea.ly, we use cutting-edge technologies like artificial intelligence to tackle real challenges, streamline processes, and unlock new opportunities. With a practical vision and smart tools, we turn your business hurdles into competitive advantages that fuel growth.",
+    "button-consulting":"More info"
+},
+"HeaderHero":{
+    "title": "We turn great ideas into exceptional software.",
+    "autor": "At Idealy, we merge a fresh, innovative approach with robust and secure software development. We are the technology partner your project needs to succeed."
+    
+
+},
+"NavbarLinks": {
+    "home":"Home",
+    "about":"About",
+    "services":"Services",
+    "portfolio":"Portfolio",
+    "contact":"Contact"
+},
+"Projects":{
+    "titlep":"Projects"
+},
+"ProjectsList":{
+    "alt1": "Mar Holidays Travel Network",
+    "tp1": "Mar Holidays Travel Network En",
+    "descpro1":"Brought to life a dynamic web platform that simplifies booking hotels, arranging transfers, and discovering unforgettable travel experiences.",
+    "alt2": "Padelpals",
+    "tp2": "Padelpals",
+    "descpro2":"Designed a mobile app dedicated to enhancing the padel match experience through intuitive control and score tracking. This project focused on creating a clean and functional interface for players to effortlessly manage their games.",
+     "alt3": "Web Designe",
+    "tp3": "Web Designe",
+    "descpro3":"",
+     "alt4": "ANDANAC Project Management",
+    "tp4": "ANDANAC Project Management",
+    "descpro4":"",
+    "alt5": "Information Designe",
+    "tp5": "Information Designe",
+    "descpro5":"",
+    "alt6": "Tailored Software Design ",
+    "tp6": "Tailored Software Design ",
+    "descpro6":"Experienced software developer "
+},
+"Skills":{
+     "buttonText":"Learn more",
+    "titleS1":"Ux/UI Design",
+    "descS1":"I design intuitive user experiences and aesthetic user interfaces. My focus is on usability, accessibility, and effective problem-solving through a user-centered design approach.",
+     "titleS2":"Digital Marketing",
+    "descS2":"We accelerate your online growth. Our digital marketing service is designed to help you attract more clients, enhance your brand's visibility, and convert website visitors into sales, leveraging proven strategies across SEO, SEM, social media, and content.",
+    "titleS3":"Digital Transformation Consulting",
+    "descS3":"Accelerate your digital transformation. We offer strategic consulting to help businesses modernize operations, enhance customer engagement, and unlock new value through technology."
+},
+"Contact":{
+    "title":"Contact us",
+    "descCont":"If you have any questions about my experience or services, please get in touch and I'll be happy to help you.",
+    "telCont":"Telephone",
+    "emailCont":"E-mail",
+    "locationCont":"Location",
+    "titleForm":"Send a Message"
+},
+"ContactForm":{
+    "name":"Name",
+    "nameholder":"Jhon Doe",
+    "subject":"Subject",
+    "email":"E-mail",
+    "emailholder":"youremail@domain.com",
+    "message":"Message",
+    "subjectholder":"Message Subject",
+    "submit":"Send",
+    "submitting": "Sending...",
+    "successMessage": "Message succesfully send"
+},
+"Footer":{
+    "foot-title1":"Follow us",
+    "foot-title2":"Links"
+}
+
+}
+

@@ -1,0 +1,97 @@
+{
+"Home":{
+    "frase": "Sobre Nosotros",
+    "About-us": "En Idealy.ly, fusionamos tecnología y creatividad para desarrollar software que convierte desafíos en oportunidades. Somos un equipo apasionado por la innovación, comprometido con simplificar procesos, optimizar experiencias y construir herramientas que marcan la diferencia.",
+    "About-us2": "Creemos en el poder de la tecnología para mejorar vidas y potenciar negocios. Por eso, diseñamos soluciones a medida, desde aplicaciones intuitivas hasta plataformas escalables, siempre con un enfoque centrado en el ser humano y un propósito claro: hacer lo complejo simple y lo innovador accesible.",
+    "About-us3": "¿Listo para dar vida a tus ideas? Juntos, podemos crear el cambio.",
+    "title-services": "Servicios",
+    "text-services": "Creamos software que crece contigo, sitios web que cautivan y campañas digitales que conectan. Nos apasiona convertir los desafíos en oportunidades a través de la tecnología, la creatividad y la innovación.",
+    "subtitle-services": "Transforma tu idea en una experiencia digital extraordinaria",
+    "title-development":"Construimos soluciones que piensan como tus clientes.",
+    "subtitle-development":"Soluciones a medida adaptadas a tu negocio",
+    "text-development": "No solo desarrollamos sistemas, diseñamos experiencias. Nuestro servicio de desarrollo a medida está impulsado por metodologías de UX que garantizan interfaces intuitivas, una funcionalidad perfecta y la alineación con tus objetivos de negocio.",
+    "bullet1":"Desarrollo totalmente a medida, adaptado a tu operación",
+    "bullet2":"Diseño centrado en el usuario (UX) para potenciar las conversiones",
+    "bullet3":"Integración con tus procesos y tecnologías existentes",
+    "text2-development":"Más que un proveedor, somos tu aliado estratégico en la transformación digital. Solicita tu cotización gratuita hoy y construyamos la solución perfecta para tu negocio.",
+    "button-development":"Más información",
+    "title-MD":"¿Qué es el Marketing Digital y por qué tu negocio lo necesita?",
+    "subtitle-MD": "Servicios de Marketing Digital",
+    "text-MD":"El marketing digital es el arte y la ciencia de promocionar tu marca en línea a través de canales estratégicos como motores de búsqueda, redes sociales, campañas de correo electrónico y creación de contenido. No es solo publicidad, es conectar con la audiencia correcta en el momento adecuado con el mensaje adecuado.",
+    "text-MD2":"Desde atraer nuevos clientes hasta convertir clics in conversiones, el marketing digital transforma la visibilidad en oportunidad y construye una lealtad que perdura.",
+    "text-MD3": "Permítenos ayudarte a crear estrategias audaces que eleven tu marca, impulsen las ventas y mantengan tu negocio a la vanguardia. ¿Listo para hacer que tu presencia digital trabaje de manera más inteligente?",
+    "frase-MD":"Empecemos a construir tu crecimiento hoy.",
+    "title-consulting": "Hola, soy Leo, tu consultor de innovación digital",
+    "subtitle-consulting": "Consultoría de Transformación Digital",
+    "text-consulting":"Convierto los desafíos tecnológicos en oportunidades de crecimiento. Desbloqueemos el potencial de tu negocio con estrategias personalizadas, herramientas inteligentes y un pensamiento preparado para el futuro. Si deseas que Leo suene más juguetón, visionario o autoritario, puedo dar forma a su voz aún más. ¿Quieres algunas variaciones para darle más personalidad?",
+    "text-consulting2":"La innovación no tiene por qué ser complicada, todo se trata de estrategia. En idea.ly, utilizamos tecnologías de vanguardia como la inteligencia artificial para enfrentar desafíos reales, optimizar procesos y desbloquear nuevas oportunidades. Con una visión práctica y herramientas inteligentes, convertimos los obstáculos de tu negocio en ventajas competitivas que impulsan el crecimiento.",
+    "button-consulting":"Más información"
+},
+"HeaderHero":{
+    "title": "Convertimos grandes ideas en software excepcional.",
+    "autor": "En Idealy, fusionamos un enfoque fresco e innovador con un desarrollo de software robusto y seguro. Somos el socio tecnológico que tu proyecto necesita para tener éxito."
+},
+"NavbarLinks": {
+    "home":"Inicio",
+    "about":"Nosotros",
+    "services":"Servicios",
+    "portfolio":"Portafolio",
+    "contact":"Contacto"
+},
+"Projects":{
+    "titlep":"Proyectos"
+},
+"ProjectsList":{
+    "alt1": "Mar Holidays Travel Network",
+    "tp1": "Mar Holidays Travel Network En",
+    "descpro1":"Dimos vida a una plataforma web dinámica que simplifica la reserva de hoteles, la organización de traslados y el descubrimiento de experiencias de viaje inolvidables.",
+    "alt2": "Padelpals",
+    "tp2": "Padelpals",
+    "descpro2":"Diseñé una aplicación móvil dedicada a mejorar la experiencia de los partidos de pádel a través de un control intuitivo y seguimiento de la puntuación. Este proyecto se centró en la creación de una interfaz limpia y funcional para que los jugadores gestionaran sus partidos sin esfuerzo.",
+    "alt3": "Diseño Web",
+    "tp3": "Diseño Web",
+    "descpro3":"",
+    "alt4": "Gestión de Proyectos ANDANAC",
+    "tp4": "Gestión de Proyectos ANDANAC",
+    "descpro4":"",
+    "alt5": "Diseño de Información",
+    "tp5": "Diseño de Información",
+    "descpro5":"",
+    "alt6": "Diseño de Software a Medida",
+    "tp6": "Diseño de Software a Medida",
+    "descpro6":"Desarrollador de software experimentado"
+},
+"Skills":{
+    "buttonText":"Saber más",
+    "titleS1":"Diseño Ux/UI",
+    "descS1":"Diseño experiencias de usuario intuitivas e interfaces de usuario estéticas. Mi enfoque está en la usabilidad, la accesibilidad y la resolución efectiva de problemas a través de un enfoque de diseño centrado en el usuario.",
+    "titleS2":"Marketing Digital",
+    "descS2":"Aceleramos tu crecimiento en línea. Nuestro servicio de marketing digital está diseñado para ayudarte a atraer más clientes, mejorar la visibilidad de tu marca y convertir a los visitantes del sitio web en ventas, aprovechando estrategias probadas en SEO, SEM, redes sociales y contenido.",
+    "titleS3":"Consultoría de Transformación Digital",
+    "descS3":"Acelera tu transformación digital. Ofrecemos consultoría estratégica para ayudar a las empresas a modernizar sus operaciones, mejorar el compromiso del cliente y desbloquear nuevo valor a través de la tecnología."
+},
+"Contact":{
+    "title":"Contáctanos",
+    "descCont":"Si tienes alguna pregunta sobre mi experiencia o servicios, por favor ponte en contacto y estaré encantado de ayudarte.",
+    "telCont":"Teléfono",
+    "emailCont":"Correo electrónico",
+    "locationCont":"Ubicación",
+    "titleForm":"Enviar un Mensaje"
+},
+"ContactForm":{
+    "name":"Nombre",
+    "nameholder":"Jhon Doe",
+    "subject":"Asunto",
+    "email":"Correo electrónico",
+    "emailholder":"tucorreo@dominio.com",
+    "message":"Mensaje",
+    "subjectholder":"Asunto del Mensaje",
+    "submit":"Enviar",
+    "submitting": "Enviando...",
+    "successMessage": "Mensaje enviado con éxito"
+},
+"Footer":{
+    "foot-title1":"Síguenos",
+    "foot-title2":"Enlaces"
+}
+}
