@@ -8,8 +8,8 @@ const t = useTranslations("Footer");
 
 return(
   <div className='w-full bg-gray-800'>
-    <div className='w-3/4 m-auto flex'>
-      <div className='w-1/3 flex p-5'>
+    <div className='w-3/4 m-auto flex flex-wrap'>
+      <div className='lg:w-1/3 sm:w-full grow p-5'>
         <div className="p-3 w-full flex justify-center items-center "  >
             <Image 
               src="/img/Logo-Idealy.png"
@@ -20,11 +20,11 @@ return(
             />
         </div>
       </div>
-      <div className='w-1/3 flex p-5'>
+      <div className='lg:w-1/3 sm:w-full grow p-5'>
         <div className='flex w-full justify-center items-center'>
           <h1 className='font-bold text-2xl justify-center text-center text-white'>{t("foot-title1")}</h1>
         </div>
-        <div className='flex w-full justify-center items-center'>
+        <div className='lg:w-full sm:w-full grow justify-center items-center'>
           
           <ul className='list text-white'>
             <li><Link href="https://www.facebook.com/">Facebook</Link></li>

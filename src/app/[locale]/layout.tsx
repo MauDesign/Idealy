@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type {Viewport} from 'next';
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages, setRequestLocale,} from 'next-intl/server';
 import "@/app/globals.css";
@@ -82,6 +83,9 @@ export const metadata: Metadata = {
     type: 'website',
   },
 };
+export const viewport: Viewport = {
+  themeColor: 'black',
+}
 
 type Props = {
   children: React.ReactNode,

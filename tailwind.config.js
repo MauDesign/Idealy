@@ -10,12 +10,12 @@ module.exports = {
       // ... tus extensiones de tema
     },
   },
-  // ¡Asegúrate de que esta línea esté presente!
+
   plugins: [
-    daisyui,
+
+    require('daisyui')
   ],
   daisyui: {
     themes: ["corporate"],
   },
 };
-export default config
