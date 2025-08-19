@@ -1,6 +1,6 @@
 'use client';
 import { useTranslations } from 'next-intl';
-import { Link, usePathname, useRouter } from '../../../i18n/navigation';
+import { Link } from '../../../i18n/navigation';
 import Image from 'next/image';
 
 export default function Footer() {
@@ -21,10 +21,19 @@ return(
         </div>
       </div>
       <div className='w-1/3 flex p-5'>
-        <h1 className='font-bold text-2xl text-center text-white'>{t("foot-title1")}</h1>
-      </div>
-      <div className='w-1/3 flex p-5'>
-        <h1 className='font-bold text-2xl text-center text-white'>{t("foot-title2")}</h1>
+        <div className='flex w-full justify-center items-center'>
+          <h1 className='font-bold text-2xl justify-center text-center text-white'>{t("foot-title1")}</h1>
+        </div>
+        <div className='flex w-full justify-center items-center'>
+          
+          <ul className='list text-white'>
+            <li><Link href="https://www.facebook.com/">Facebook</Link></li>
+            <li><Link href="https://www.instagram.com/">Instagram</Link> </li>
+            <li><Link href="https://www.x.com/">X</Link>  </li>
+            <li><Link href="https://www.linkedin.com/">Linkedin</Link>  </li>
+            <li><Link href="https://www.tiktok.com/">Tik Tok</Link> </li>
+          </ul>
+        </div> 
       </div>
     </div>
   </div>
