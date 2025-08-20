@@ -17,7 +17,7 @@ export default async function Home({params}: Props) {
     <div className="w-full">
       <main className="flex flex-wrap sm:w-full sm:flex-row">
         <Header/>
-        <div className="bg-[#334B5F] lg:mt-45 sm:mt-5 ">
+        <div className="bg-[#334B5F] lg:mt-45 lg:pb-5 sm:mt-5 ">
           <div className='flex flex-wrap w-3/4 m-auto '>
             <div className='lg:w-1/4 sm:w-full grow justify-center items-center'>
               <Image
@@ -28,8 +28,8 @@ export default async function Home({params}: Props) {
               className='shadow-sm rounded-lg grow  sm:w-48' 
               />
             </div>
-            <div id="about" className="lg:w-3/4 sm:w-full grow py-5 p-10 sm:p-3 ">
-              <div className='w-full  '>
+            <div id="about" className="lg:w-3/4 sm:w-full  grow py-5 p-10 sm:p-3 ">
+              <div className='w-full lg:mt-10 '>
                 <h1 className=" font-bold text-4xl text-center mb-5 text-[#00B5A7]">{t("frase")}</h1>
                 <p className=" text-justify text-lg text-[#ffffff]">{t("About-us")}</p>
                 <p className=" text-center text-lg text-[#ffffff]">{t("About-us2")}</p>
