@@ -49,7 +49,7 @@ export default async function Home({params}: Props) {
           <div className='w-3/4 m-auto flex flex-wrap'>
             <div className='lg:w-1/2 sm:w-full grow sm:p-1.5 '>
               <Image
-              src= "/img/Desarrollo_idealy.jpg"
+              src= "/img/desarrollo_idealy.jpg"
               alt='Desarrollo a la medida'
               width={600}
               height={300}
