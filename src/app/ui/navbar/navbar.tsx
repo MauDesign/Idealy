@@ -1,22 +1,14 @@
 'use client'
 import { useTranslations } from 'next-intl';
-import { Link, usePathname, useRouter } from '../../../i18n/navigation';
-import React, { ChangeEvent } from 'react';
+import { Link } from '@/i18n/navigation';
+import React from 'react';
 import Image from 'next/image';
-import "@/app/globals.css"
+import '@/app/globals.css';
+import LanguageSwitcher from './LanguageSwitcher';
 
 
 const Navbar = ({ locale }: {locale: string}) => {
     const t = useTranslations("NavbarLinks");
-    const pathname = usePathname();
-    const router = useRouter();
-
-
-    const handleLanguageChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const newLocale = e.target.value;
-        router.push(pathname, { locale: newLocale });
-    }
-
 
     return (
     <div className=' w-full backdrop-blur-xs glass z-50 shadow-sm fixed'>
@@ -26,19 +18,13 @@ const Navbar = ({ locale }: {locale: string}) => {
                 <div tabIndex={0} role="button" className="btn btn-ghost lg:hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"> <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /> </svg>
                     </div>
-                        <ul  tabIndex={0} className='flex menu menu-sm menu-horizontal dropdown-content rounded-sm bg-white px-1 gap-2'>
-                            <li><Link href="/">{t("home")}</Link></li>
-                            <li><Link href="/#about">{t("about")}</Link></li>
-                            <li><Link href="/#services">{t("services")}</Link></li>
-                            <li><Link href="/#contact">{t("contact")}</Link></li>
-                            <li>
-                                <select 
-                                    value={locale} 
-                                    onChange={handleLanguageChange}
-                                    className='select select-primary'>
-                                    <option value={"en"}>En</option>
-                                    <option value={"es"}>Es</option>
-                                </select>
+                        <ul  tabIndex={0} className='flex menu menu-sm menu-horizontal dropdown-content rounded-sm bg-white px-1 gap-2 w-45'>
+                            <li className='min-w-40'><Link href="/">{t("home")}</Link></li>
+                            <li className='min-w-40'><Link href="/#about">{t("about")}</Link></li>
+                            <li className='min-w-40'><Link href="/#services">{t("services")}</Link></li>
+                            <li className='min-w-40'><Link href="/#contact">{t("contact")}</Link></li>
+                            <li className='min-w-40'>
+                              <LanguageSwitcher locale={locale} />
                             </li>
                         </ul> 
                     </div>
@@ -57,13 +43,8 @@ const Navbar = ({ locale }: {locale: string}) => {
                         <li><Link href="/#about" scroll={true}>{t("about")}</Link></li>
                         <li><Link href="/#services">{t("services")}</Link></li>
                         <li><Link href="/#contact" scroll={true}>{t("contact") } </Link></li>
-                        <li><select 
-                                value={locale} 
-                                onChange={handleLanguageChange}
-                                className='rounded-md hover:outline-none focus:outline-none bg-[#53f6c7] text-black dropdown' >
-                                <option value={"en"}>En</option>
-                                <option value={"es"}>Es</option>
-                            </select>
+                        <li>
+                            <LanguageSwitcher locale={locale} />
                         </li>
                     </ul>  
             </div>
