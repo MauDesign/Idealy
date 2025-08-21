@@ -4,7 +4,7 @@ import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
-import { ChangeEvent } from 'react';
+
 
 export default function LanguageSwitcher({ locale }: { locale: string }) {
     const Pathname = usePathname();
