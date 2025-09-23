@@ -70,19 +70,24 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Idea.ly - Soluciones Tecnológicas a Medida',
     description: 'Fusionamos tecnología y creatividad para desarrollar software que transforma desafíos en oportunidades.',
-    url: 'https://www.idealy.com.mx', // Reemplaza con tu dominio final
+    url: 'https://www.idealy.com.mx',
     siteName: 'Idea.ly',
     images: [
       {
-        url: '/img/Consulting-leo-idealy.jpg', // URL absoluta de tu imagen
+        url: 'https://www.idealy.com.mx/img/Consulting-leo-idealy.jpg',
         width: 600,
         height: 300,
         alt: 'Desarrollo de software a la medida por Idea.ly',
       },
     ],
-    
     locale: 'es_ES',
     type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Idea.ly - Soluciones Tecnológicas a Medida',
+    description: 'Fusionamos tecnología y creatividad para desarrollar software que transforma desafíos en oportunidades.',
+    images: ['https://www.idealy.com.mx/img/Consulting-leo-idealy.jpg'],
   },
 };
 export const viewport: Viewport = {
