@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import type {Viewport} from 'next';
 import {NextIntlClientProvider} from 'next-intl';
 import {getMessages, setRequestLocale,} from 'next-intl/server';
@@ -63,7 +64,8 @@ export const metadata: Metadata = {
     'diseño Web puebla',
     'desarrollo Nearshoring',
     'innovacion tecnologica',
-    'Idea.ly'
+    'Idea.ly',
+    'idealy'
   ],
   openGraph: {
     title: 'Idea.ly - Soluciones Tecnológicas a Medida',
@@ -100,6 +102,8 @@ export default async function LocaleLayout({children, params}: Props) {
   return (
     <html lang={locale}>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID as string} />
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID as string}/>
         <NextIntlClientProvider locale={locale} messages={messages}>
           <Navbar locale={locale}/>
           {children}
