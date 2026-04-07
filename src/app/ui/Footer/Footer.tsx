@@ -35,6 +35,16 @@ return(
           </ul>
         </div> 
       </div>
+      <div className='lg:w-1/3 sm:w-full grow p-5'>
+        <div className='flex w-full justify-center items-center'>
+          <h1 className='font-bold text-2xl justify-center text-center text-white'>{t("foot-title2")}</h1>
+        </div>
+        <div className='lg:w-full sm:w-full grow justify-center items-center'>
+          <ul className='list text-white text-center'>
+            <li><Link href="/privacy-policy" className="hover:text-[#00B5A7] transition-colors">{t("privacy-policy")}</Link></li>
+          </ul>
+        </div> 
+      </div>
     </div>
   </div>
 )
