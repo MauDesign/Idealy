@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
-import type {Viewport} from 'next';
-import {NextIntlClientProvider} from 'next-intl';
-import {getMessages, setRequestLocale,} from 'next-intl/server';
+import type { Viewport } from 'next';
+import { NextIntlClientProvider } from 'next-intl';
+import { getMessages, setRequestLocale, } from 'next-intl/server';
 import "@/app/globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -22,15 +22,16 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.idealy.com.mx'),
-  title: "Idea.ly - Soluciones Tecnológicas a Medida",
-  description: "Convertimos grandes ideas en soluciones excepcionales, Desarrollo de software, aplicaciones web y móviles, y marketing digital.",
+  title: "Idea.ly | High-Performance Software, AI Automation & UX Design",
+  description: "Top-tier Nearshore Strategic Studio. We build scalable software with Next.js & Go, implement custom AI agents, and design intuitive UX. Driving exponential growth for US & MX markets. Let's make it real.",
   keywords: [
-    'desarrollo de software', 
-    'soluciones tecnológicas', 
-    'software a la medida', 
-    'aplicaciones web', 
-    'aplicaciones móviles', 
-    'transformación digital', 
+    // --- Original & Base Keywords ---
+    'desarrollo de software',
+    'soluciones tecnológicas',
+    'software a la medida',
+    'aplicaciones web',
+    'aplicaciones móviles',
+    'transformación digital',
     'marketing digital',
     'Ideas y soluciones',
     'Diseño web',
@@ -66,11 +67,41 @@ export const metadata: Metadata = {
     'desarrollo Nearshoring',
     'innovacion tecnologica',
     'Idea.ly',
-    'idealy'
+    'idealy',
+
+    // --- New Strategic AI & Automation Keywords (ES) ---
+    'automatización de procesos con IA',
+    'agentes de inteligencia artificial para empresas',
+    'consultoría de IA aplicada',
+    'integración de modelos de lenguaje LLM',
+    'eficiencia operativa con IA',
+    'expertos en automatización inteligente',
+    'desarrollo de software con inteligencia artificial',
+
+    // --- New High-Performance & Growth Keywords (ES) ---
+    'estrategia de crecimiento digital exponencial',
+    'embudos de venta de alta conversión',
+    'consultoría de negocios digitales',
+    'desarrollo web con Next.js y Go',
+    'arquitectura de software escalable',
+    'diseño de productos digitales premium',
+    'marketing basado en resultados ROI',
+
+    // --- New International & Nearshore Keywords (EN) ---
+    'nearshore software development Mexico',
+    'custom AI agents for business',
+    'AI-driven workflow automation',
+    'premium UX/UI design agency',
+    'full-stack development Next.js Go',
+    'strategic digital growth funnels',
+    'bilingual tech partner Mexico USA',
+    'high-performance web engineering',
+    'scalable cloud solutions',
+    'digital transformation consultancy North America'
   ],
   openGraph: {
-    title: 'Idea.ly - Soluciones Tecnológicas a Medida',
-    description: 'Fusionamos tecnología y creatividad para desarrollar software que transforma desafíos en oportunidades.',
+    title: 'Idea.ly | Turning Vision into Reality through Software & IA',
+    description: 'Custom software engineering and AI-driven workflows for forward-thinking companies. Explore the Idea.ly method.',
     url: 'https://www.idealy.com.mx',
     siteName: 'Idea.ly',
     images: [
@@ -97,27 +128,26 @@ export const viewport: Viewport = {
 
 type Props = {
   children: React.ReactNode,
-  params: Promise<{locale: string}>;
+  params: Promise<{ locale: string }>;
 };
 
-export default async function LocaleLayout({children, params}: Props) {
-  const {locale} = await params;
+export default async function LocaleLayout({ children, params }: Props) {
+  const { locale } = await params;
   setRequestLocale(locale);
   const messages = await getMessages();
 
   return (
     <html lang={locale} suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground transition-colors duration-300`}>
-       <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID as string} />
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID as string}/>
+        <GoogleAnalytics gaId="G-GJBZY50Y93" />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider
             attribute="data-theme"
             defaultTheme="dark"
-            enableSystem
+            enableSystem={false}
             disableTransitionOnChange
           >
-            <Navbar locale={locale}/>
+            <Navbar locale={locale} />
             {children}
           </ThemeProvider>
         </NextIntlClientProvider>

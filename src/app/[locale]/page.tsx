@@ -21,7 +21,7 @@ export default async function Home({ params }: Props) {
       <div className="w-full">
         <main className="flex flex-wrap sm:w-full sm:flex-row">
           <Header />
-          <div className="bg-[#334B5F]  lg:pb-5 sm:mt-5 ">
+          <div className="bg-[#334B5F] w0full  lg:pb-5 sm:mt-5 ">
             <div className='flex flex-wrap w-3/4 m-auto '>
               <div id="about" className="lg:w-full sm:w-full  grow py-5 p-10 sm:p-3 ">
                 <div className='w-full lg:mt-10 '>
@@ -57,8 +57,8 @@ export default async function Home({ params }: Props) {
                 />
               </div>
               <div className='lg:w-1/2 pl-5 grow sm:w-full'>
-                <h2 className='w-full font-bold text-3xl  text-[#00B5A7]'>{t("title-development")}</h2>
-                <p className='w-full mb-5 text-md text-[#0069a9]'>{t("subtitle-development")}</p>
+                <h2 className='w-full font-bold text-3xl  text-primary'>{t("title-development")}</h2>
+                <p className='w-full mb-5 text-md text-secondary'>{t("subtitle-development")}</p>
                 <p className='w-full text-md'>{t("text-development")}</p>
                 <ul className='list list-disc ml-10'>
                   <li className='list-row'>{t("bullet1")}</li>
@@ -66,7 +66,7 @@ export default async function Home({ params }: Props) {
                   <li className='list-row'>{t("bullet3")}</li>
                 </ul>
                 <p className='w-full text-md'>{t("text2-development")}</p>
-                <p className='w-full  text-md text-[#00B5A7]'>{t("frase-dev")}</p>
+                <p className='w-full  text-md text-secondary'>{t("frase-dev")}</p>
                 <a role="button" href="#" className="mt-5 btn btn-soft btn-primary"> {t("button-development")} </a>
               </div>
             </div>
@@ -74,15 +74,15 @@ export default async function Home({ params }: Props) {
           <div className='w-full mb-15'>
             <div className='w-3/4 m-auto flex flex-wrap-reverse '>
               <div className='lg:w-1/2 pr-5 sm:w-full grow sm:pl-1'>
-                <h2 className='w-full font-bold text-3xl  mb-5 text-[#00B5A7]'>{t("title-MD")}</h2>
-                <p className='w-full  text-md text-[#ababab]'>{t("subtitle-MD")}</p>
+                <h2 className='w-full font-bold text-3xl  mb-5 text-primary'>{t("title-MD")}</h2>
+                <p className='w-full  text-md text-secondary'>{t("subtitle-MD")}</p>
                 <p className='w-full text-md text-justify'>{t("text-MD")}</p>
                 <ul className='list list-disc ml-10'>
                   <li className='list-row'>{t("bullet4")}</li>
                   <li className='list-row'>{t("bullet5")}</li>
                   <li className='list-row'>{t("bullet6")}</li>
                 </ul>
-                <p className='w-full  text-md text-[#00B5A7]'>{t("frase-MD")}</p>
+                <p className='w-full  text-md text-secondary'>{t("frase-MD")}</p>
 
               </div>
               <div className='lg:w-1/2 sm:w-full grow hover-3d center'>
@@ -113,15 +113,15 @@ export default async function Home({ params }: Props) {
 
               </div>
               <div className='lg:w-1/2 pl-5 grow sm:w-full'>
-                <h2 className='w-full font-bold text-3xl  text-[#00B5A7]'>{t("title-ux")}</h2>
-                <p className='w-full mb-5 text-md text-[#0069a9]'>{t("subtitle-ux")}</p>
+                <h2 className='w-full font-bold text-3xl  text-primary'>{t("title-ux")}</h2>
+                <p className='w-full mb-5 text-md text-secondary'>{t("subtitle-ux")}</p>
                 <p className='w-full text-md'>{t("text-ux")}</p>
                 <ul className='list list-disc ml-10'>
                   <li className='list-row'>{t("bullet7")}</li>
                   <li className='list-row'>{t("bullet8")}</li>
                   <li className='list-row'>{t("bullet9")}</li>
                 </ul>
-                <p className='w-full  text-md text-[#00B5A7]'>{t("frase-ux")}</p>
+                <p className='w-full  text-md text-secondary'>{t("frase-ux")}</p>
                 <a role="button" href="#" className="mt-5 btn btn-soft btn-primary"> {t("button-ux")} </a>
               </div>
             </div>
@@ -129,15 +129,15 @@ export default async function Home({ params }: Props) {
           <div className='w-full mb-15'>
             <div className='w-3/4 m-auto flex flex-wrap-reverse '>
               <div className='lg:w-1/2 pr-5 sm:w-full grow sm:pl-1'>
-                <h2 className='w-full font-bold text-3xl  mb-5 text-[#00B5A7]'>{t("title-grow")}</h2>
-                <p className='w-full  text-md text-[#ababab]'>{t("subtitle-grow")}</p>
+                <h2 className='w-full font-bold text-3xl  mb-5 text-primary'>{t("title-grow")}</h2>
+                <p className='w-full  text-md text-secondary'>{t("subtitle-grow")}</p>
                 <p className='w-full text-md text-justify'>{t("text-grow")}</p>
                 <ul className='list list-disc ml-10'>
                   <li className='list-row'>{t("bullet10")}</li>
                   <li className='list-row'>{t("bullet11")}</li>
                   <li className='list-row'>{t("bullet12")}</li>
                 </ul>
-                <p className='w-full  text-md text-[#00B5A7]'>{t("frase-grow")}</p>
+                <p className='w-full  text-md text-secondary'>{t("frase-grow")}</p>
                 <a role="button" href="#" className="mt-5 btn btn-soft btn-primary"> {t("button-grow")} </a>
               </div>
               <div className='lg:w-1/2 sm:w-full grow hover-3d'>
@@ -162,7 +162,7 @@ export default async function Home({ params }: Props) {
                 alt='Desarrollo a la medida'
                 width={600}
                 height={300}
-                className='w-[22rem] h-[22rem] m-auto  mask mask-squircle shadow-xl center align-center'
+                className='w-[22rem] h-[22rem] ml-10 m-auto  mask mask-squircle shadow-xl'
               />
 
             </div>
@@ -176,7 +176,7 @@ export default async function Home({ params }: Props) {
               </div>
             </div>
             <div className="lg:w-1/3 sm:w-full center p-5">
-              <h1 className="text-3xl font-bold text-white item-center">{t("title-stack")}</h1>
+              <h1 className="text-3xl font-bold text-white center">{t("title-stack")}</h1>
 
               <CardStack />
 
