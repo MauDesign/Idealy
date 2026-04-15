@@ -5,7 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import Script from 'next/script';
 import Footer from '@/app/ui/Footer/Footer';
-import { Calendar, Clock, ArrowLeft, Tag, FolderOpen } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, Tag, FolderOpen, Languages } from 'lucide-react';
 import type { Metadata } from 'next';
 import ShareButton from '@/app/ui/components/ShareButton';
 
@@ -18,6 +18,18 @@ export async function generateMetadata({
   const post = await prisma.post.findUnique({ where: { slug }, include: { category: true } });
   if (!post) return {};
 
+  const otherLocale = locale === 'es' ? 'en' : 'es';
+  let translatedUrl = undefined;
+  if (post.translationGroupId) {
+    const translatedPost = await prisma.post.findFirst({
+      where: { translationGroupId: post.translationGroupId, locale: otherLocale },
+      select: { slug: true }
+    });
+    if (translatedPost) {
+      translatedUrl = `https://www.idealy.com.mx/${otherLocale}/blog/${translatedPost.slug}`;
+    }
+  }
+
   const canonicalUrl =
     post.canonicalUrl || `https://www.idealy.com.mx/${locale}/blog/${slug}`;
 
@@ -25,7 +37,10 @@ export async function generateMetadata({
     title: `${post.seoTitle || post.title} | Idea.ly`,
     description: post.seoDescription || post.summary || '',
     keywords: post.tags.join(', '),
-    alternates: { canonical: canonicalUrl },
+    alternates: { 
+      canonical: canonicalUrl,
+      ...(translatedUrl ? { languages: { [otherLocale]: translatedUrl } } : {})
+    },
     openGraph: {
       title: post.seoTitle || post.title,
       description: post.seoDescription || post.summary || '',
@@ -68,6 +83,16 @@ export default async function PostDetailPage({
 
   if (!post || !post.published) {
     notFound();
+  }
+
+  // Find translation
+  let translatedPost = null;
+  const otherLocale = locale === 'es' ? 'en' : 'es';
+  if (post.translationGroupId) {
+    translatedPost = await prisma.post.findFirst({
+      where: { translationGroupId: post.translationGroupId, locale: otherLocale },
+      select: { slug: true }
+    });
   }
 
   const readTime = estimateReadTime(post.content);
@@ -151,9 +176,22 @@ export default async function PostDetailPage({
                 className="inline-flex items-center gap-2 text-sm font-semibold text-base-content/50 hover:text-primary transition-colors group"
               >
                 <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                Volver al Blog
+                {locale === 'es' ? 'Volver al Blog' : 'Back to Blog'}
               </Link>
             </div>
+
+            {/* Translation Link */}
+            {translatedPost && (
+              <div className="flex justify-center mb-6">
+                <Link 
+                  href={`/${otherLocale}/blog/${translatedPost.slug}`} 
+                  className="inline-flex items-center gap-2 text-sm font-semibold text-primary bg-primary/10 hover:bg-primary/20 px-4 py-2 rounded-full transition-colors border border-primary/20"
+                >
+                  <Languages className="w-4 h-4" />
+                  {locale === 'es' ? 'Read article in English' : 'Leer artículo en Español'}
+                </Link>
+              </div>
+            )}
 
             {/* Category + meta bar */}
             <div className="flex items-center justify-center flex-wrap gap-3 mb-8">

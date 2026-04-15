@@ -113,7 +113,7 @@ export default async function LocaleLayout({children, params}: Props) {
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider
             attribute="data-theme"
-            defaultTheme="corporate"
+            defaultTheme="dark"
             enableSystem
             disableTransitionOnChange
           >

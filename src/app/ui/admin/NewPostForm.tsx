@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronLeft, Save, Loader2, Globe, Eye, EyeOff, Sparkles, Link2 } from 'lucide-react';
+import { ChevronLeft, Save, Loader2, Globe, Eye, EyeOff, Sparkles, Link2, Languages } from 'lucide-react';
 import Editor from '@/app/ui/admin/Editor';
 import TagsInput from '@/app/ui/admin/TagsInput';
 import CategorySelect from '@/app/ui/admin/CategorySelect';
@@ -19,16 +19,23 @@ interface Category {
 
 interface NewPostFormProps {
   categories: Category[];
+  translateFromPost?: {
+    translationGroupId: string | null;
+    categoryId: string | null;
+    featuredImage: string | null;
+  } | null;
 }
 
-export default function NewPostForm({ categories }: NewPostFormProps) {
+export default function NewPostForm({ categories, translateFromPost }: NewPostFormProps) {
   const { locale } = useParams() as { locale: string };
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [showSeo, setShowSeo] = useState(false);
   const [published, setPublished] = useState(false);
-  const [featuredImageUrl, setFeaturedImageUrl] = useState('');
+  const [featuredImageUrl, setFeaturedImageUrl] = useState(translateFromPost?.featuredImage || '');
+
+  const translationGroupId = translateFromPost?.translationGroupId;
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -65,7 +72,14 @@ export default function NewPostForm({ categories }: NewPostFormProps) {
         </Link>
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Nueva publicación</h1>
-          <p className="text-sm text-base-content/50">Crea contenido optimizado para tu audiencia.</p>
+          {translateFromPost ? (
+            <p className="text-sm font-semibold text-primary flex items-center gap-1.5 mt-0.5">
+              <Languages className="w-4 h-4" />
+              Escribiendo traducción al {locale.toUpperCase()}
+            </p>
+          ) : (
+            <p className="text-sm text-base-content/50 mt-0.5">Crea contenido optimizado para tu audiencia.</p>
+          )}
         </div>
       </div>
 
@@ -228,7 +242,7 @@ export default function NewPostForm({ categories }: NewPostFormProps) {
               <label className="label pb-1">
                 <span className="label-text font-medium text-sm">Categoría</span>
               </label>
-              <CategorySelect categories={categories} name="categoryId" />
+              <CategorySelect categories={categories} initialCategoryId={translateFromPost?.categoryId || null} name="categoryId" />
             </div>
 
             {/* Tags */}
@@ -274,6 +288,11 @@ export default function NewPostForm({ categories }: NewPostFormProps) {
                 className="textarea textarea-bordered rounded-xl text-sm h-20 resize-none"
               />
             </div>
+
+            {/* Hidden Translation Group Id */}
+            {translationGroupId && (
+               <input type="hidden" name="translationGroupId" value={translationGroupId} />
+            )}
 
             {/* Save */}
             <button type="submit" disabled={loading} className="btn btn-primary w-full rounded-xl gap-2">

@@ -23,6 +23,14 @@ export async function createPost(formData: any, content: string, locale: string)
   const categoryId = formData.get('categoryId') as string;
   const tagsRaw = formData.get('tags') as string;
   const published = formData.get('published') === 'true';
+  let translationGroupId = formData.get('translationGroupId') as string;
+
+  // We auto-generate a unique group ID if this is a brand new independent post
+  // This allows easy linking later on
+  if (!translationGroupId) {
+    translationGroupId = require('crypto').randomUUID();
+  }
+
 
   try {
     await prisma.post.create({
@@ -39,6 +47,7 @@ export async function createPost(formData: any, content: string, locale: string)
         canonicalUrl: canonicalUrl || null,
         categoryId: categoryId || null,
         tags: parseTags(tagsRaw),
+        translationGroupId,
       },
     });
   } catch (error: any) {
@@ -65,6 +74,7 @@ export async function updatePost(id: string, formData: any, content: string, loc
   const categoryId = formData.get('categoryId') as string;
   const tagsRaw = formData.get('tags') as string;
   const published = formData.get('published') === 'true';
+  const translationGroupId = formData.get('translationGroupId') as string;
 
   const oldPost = await prisma.post.findUnique({ where: { id }, select: { slug: true } });
 
@@ -83,6 +93,7 @@ export async function updatePost(id: string, formData: any, content: string, loc
         canonicalUrl: canonicalUrl || null,
         categoryId: categoryId || null,
         tags: parseTags(tagsRaw),
+        ...(translationGroupId ? { translationGroupId } : {}), // Update only if provided
       },
     });
   } catch (error: any) {

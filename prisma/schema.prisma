@@ -40,9 +40,13 @@ model Post {
   seoTitle       String?
   seoDescription String?
   canonicalUrl   String?  // Optional canonical URL override
+  
+  // Translation Linkage
+  translationGroupId String? // Relaciona el mismo articulo en distintos idiomas
 
   @@index([slug])
   @@index([locale])
   @@index([categoryId])
   @@index([published, locale])
+  @@index([translationGroupId])
 }

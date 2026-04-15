@@ -1,7 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
-import { Plus, Edit, Globe, FileText } from 'lucide-react';
+import { Plus, Edit, Globe, FileText, Languages, Link as LinkIcon } from 'lucide-react';
 import Image from 'next/image';
 import DeletePostButton from '@/app/ui/admin/DeletePostButton';
 
@@ -14,9 +14,20 @@ export default async function AdminPostsPage({ params }: { params: Promise<{ loc
     orderBy: { createdAt: 'desc' },
   });
 
+  const otherLocale = locale === 'es' ? 'en' : 'es';
+  
+  // Find translations
+  const translatedGroups = posts.map(p => p.translationGroupId).filter(Boolean) as string[];
+  const translations = await prisma.post.findMany({
+    where: { locale: otherLocale, translationGroupId: { in: translatedGroups } },
+    select: { translationGroupId: true, id: true, slug: true },
+  });
+
+  const translationMap = new Map(translations.map(t => [t.translationGroupId, t]));
+
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Publicaciones</h1>
           <p className="text-base-content/60 text-sm mt-1">
@@ -24,10 +35,26 @@ export default async function AdminPostsPage({ params }: { params: Promise<{ loc
             <span className="font-semibold uppercase">{locale}</span>
           </p>
         </div>
-        <Link href={`/${locale}/admin/posts/new`} className="btn btn-primary gap-2 rounded-xl">
-          <Plus className="w-5 h-5" />
-          Nueva Publicación
-        </Link>
+        <div className="flex items-center gap-4">
+          <div className="join bg-base-200/50 p-1 rounded-xl">
+            <Link 
+              href="/es/admin/posts" 
+              className={`join-item btn btn-sm rounded-lg ${locale === 'es' ? 'btn-primary' : 'btn-ghost'}`}
+            >
+              Español
+            </Link>
+            <Link 
+              href="/en/admin/posts" 
+              className={`join-item btn btn-sm rounded-lg ${locale === 'en' ? 'btn-primary' : 'btn-ghost'}`}
+            >
+              English
+            </Link>
+          </div>
+          <Link href={`/${locale}/admin/posts/new`} className="btn btn-primary gap-2 rounded-xl">
+            <Plus className="w-5 h-5" />
+            Nueva Publicación
+          </Link>
+        </div>
       </div>
 
       <div className="card bg-base-100 shadow-sm border border-base-300 rounded-2xl overflow-hidden">
@@ -35,8 +62,9 @@ export default async function AdminPostsPage({ params }: { params: Promise<{ loc
           <table className="table table-zebra">
             <thead>
               <tr className="bg-base-200/50">
-                <th>Imagen</th>
+                <th className="w-16">Imagen</th>
                 <th>Título / Slug</th>
+                <th>Traducción</th>
                 <th>Estado</th>
                 <th>Fecha</th>
                 <th className="text-right">Acciones</th>
@@ -44,7 +72,10 @@ export default async function AdminPostsPage({ params }: { params: Promise<{ loc
             </thead>
             <tbody>
               {posts.length > 0 ? (
-                posts.map((post) => (
+                posts.map((post) => {
+                  const hasTranslation = post.translationGroupId ? translationMap.get(post.translationGroupId) : null;
+                  
+                  return (
                   <tr key={post.id} className="hover:bg-base-200/30 transition-colors">
                     <td>
                       <div className="w-14 h-14 rounded-xl bg-base-200 overflow-hidden relative shrink-0">
@@ -63,6 +94,27 @@ export default async function AdminPostsPage({ params }: { params: Promise<{ loc
                         <Globe className="w-3 h-3" />
                         /blog/{post.slug}
                       </div>
+                    </td>
+                    <td>
+                      {hasTranslation ? (
+                        <div className="flex flex-col gap-0.5">
+                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-primary">
+                            <LinkIcon className="w-3 h-3" />
+                            Vinculada ({otherLocale.toUpperCase()})
+                          </span>
+                          <span className="text-[10px] text-base-content/40 font-mono">
+                            /{hasTranslation.slug}
+                          </span>
+                        </div>
+                      ) : (
+                        <Link 
+                          href={`/${otherLocale}/admin/posts/new?translateFromId=${post.id}`}
+                          className="btn btn-xs btn-outline btn-secondary gap-1 rounded-lg"
+                        >
+                          <Languages className="w-3 h-3" />
+                          Traducir a {otherLocale.toUpperCase()}
+                        </Link>
+                      )}
                     </td>
                     <td>
                       {post.published ? (
@@ -99,7 +151,7 @@ export default async function AdminPostsPage({ params }: { params: Promise<{ loc
                       </div>
                     </td>
                   </tr>
-                ))
+                )})
               ) : (
                 <tr>
                   <td colSpan={5} className="text-center py-24 text-base-content/40">
