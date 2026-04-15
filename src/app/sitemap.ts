@@ -2,6 +2,8 @@ import { MetadataRoute } from 'next';
 import { locales } from '../i18n/routing';
 import { prisma } from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.idealy.com.mx';
 

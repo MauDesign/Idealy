@@ -1,5 +1,7 @@
 import { setRequestLocale } from 'next-intl/server';
 import { prisma } from '@/lib/prisma';
+
+export const dynamic = 'force-dynamic';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -15,16 +17,16 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { slug, locale } = await params;
-  const post = (await prisma.post.findUnique({ where: { slug }, include: { category: true } as any })) as any;
+  const post = (await prisma.post.findUnique({ where: { slug }, include: { category: true } } as any)) as any;
   if (!post) return {};
 
   const otherLocale = locale === 'es' ? 'en' : 'es';
   let translatedUrl = undefined;
   if (post.translationGroupId) {
-    const translatedPost = await prisma.post.findFirst({
+    const translatedPost = (await prisma.post.findFirst({
       where: { translationGroupId: post.translationGroupId, locale: otherLocale },
       select: { slug: true }
-    });
+    } as any)) as any;
     if (translatedPost) {
       translatedUrl = `https://www.idealy.com.mx/${otherLocale}/blog/${translatedPost.slug}`;
     }
@@ -78,8 +80,8 @@ export default async function PostDetailPage({
 
   const post = (await prisma.post.findUnique({
     where: { slug },
-    include: { category: true } as any,
-  })) as any;
+    include: { category: true },
+  } as any)) as any;
 
   if (!post || !post.published) {
     notFound();
@@ -89,10 +91,10 @@ export default async function PostDetailPage({
   let translatedPost = null;
   const otherLocale = locale === 'es' ? 'en' : 'es';
   if (post.translationGroupId) {
-    translatedPost = await prisma.post.findFirst({
+    translatedPost = (await prisma.post.findFirst({
       where: { translationGroupId: post.translationGroupId, locale: otherLocale },
       select: { slug: true }
-    });
+    } as any)) as any;
   }
 
   const readTime = estimateReadTime(post.content);
