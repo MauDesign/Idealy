@@ -23,7 +23,7 @@ export default async function AdminPostsPage({ params }: { params: Promise<{ loc
     select: { translationGroupId: true, id: true, slug: true },
   });
 
-  const translationMap = new Map(translations.map(t => [t.translationGroupId, t]));
+  const translationMap = new Map(translations.map((t: any) => [t.translationGroupId, t]));
 
   return (
     <div className="space-y-6">

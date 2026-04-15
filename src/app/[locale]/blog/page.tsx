@@ -21,11 +21,11 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   const { locale } = await params;
   setRequestLocale(locale);
 
-  const posts = await prisma.post.findMany({
+  const posts = (await prisma.post.findMany({
     where: { locale, published: true },
     orderBy: { createdAt: 'desc' },
-    include: { category: true },
-  });
+    include: { category: true } as any,
+  })) as any[];
 
   const [featuredPost, ...restPosts] = posts;
 
@@ -141,7 +141,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
                   Más artículos
                 </p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {restPosts.map((post: Post) => (
+                  {restPosts.map((post: any) => (
                     <Link
                       key={post.id}
                       href={`/${locale}/blog/${post.slug}`}
