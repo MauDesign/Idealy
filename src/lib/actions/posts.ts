@@ -48,7 +48,7 @@ export async function createPost(formData: any, content: string, locale: string)
         categoryId: categoryId || null,
         tags: parseTags(tagsRaw),
         translationGroupId,
-      },
+      } as any,
     });
   } catch (error: any) {
     console.error('Error creating post:', error);
@@ -94,7 +94,7 @@ export async function updatePost(id: string, formData: any, content: string, loc
         categoryId: categoryId || null,
         tags: parseTags(tagsRaw),
         ...(translationGroupId ? { translationGroupId } : {}), // Update only if provided
-      },
+      } as any,
     });
   } catch (error: any) {
     console.error('Error updating post:', error);
