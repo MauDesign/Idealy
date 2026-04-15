@@ -7,7 +7,7 @@ export default function Footer() {
 const t = useTranslations("Footer");
 
 return(
-  <div className='w-full bg-gray-800'>
+  <div className='w-full bg-neutral'>
     <div className='w-3/4 m-auto flex flex-wrap'>
       <div className='lg:w-1/3 sm:w-full grow p-5'>
         <div className="p-3 w-full flex justify-center items-center "  >
@@ -22,11 +22,11 @@ return(
       </div>
       <div className='lg:w-1/3 sm:w-full grow p-5'>
         <div className='flex w-full justify-center items-center'>
-          <h1 className='font-bold text-2xl justify-center text-center text-white'>{t("foot-title1")}</h1>
+          <h1 className='font-bold text-2xl justify-center text-center text-neutral-content'>{t("foot-title1")}</h1>
         </div>
         <div className='lg:w-full sm:w-full grow justify-center items-center'>
           
-          <ul className='list text-white'>
+          <ul className='list text-neutral-content'>
             <li><Link href="https://www.facebook.com/">Facebook</Link></li>
             <li><Link href="https://www.instagram.com/">Instagram</Link> </li>
             <li><Link href="https://www.x.com/">X</Link>  </li>
@@ -37,10 +37,10 @@ return(
       </div>
       <div className='lg:w-1/3 sm:w-full grow p-5'>
         <div className='flex w-full justify-center items-center'>
-          <h1 className='font-bold text-2xl justify-center text-center text-white'>{t("foot-title2")}</h1>
+          <h1 className='font-bold text-2xl justify-center text-center text-neutral-content'>{t("foot-title2")}</h1>
         </div>
         <div className='lg:w-full sm:w-full grow justify-center items-center'>
-          <ul className='list text-white text-center'>
+          <ul className='list text-neutral-content text-center'>
             <li><Link href="/privacy-policy" className="hover:text-[#00B5A7] transition-colors">{t("privacy-policy")}</Link></li>
           </ul>
         </div> 

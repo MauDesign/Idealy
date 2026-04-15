@@ -7,6 +7,7 @@ import "@/app/globals.css";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import Navbar from "../ui/navbar/navbar";
+import { ThemeProvider } from "../ui/ThemeProvider";
 
 
 const geistSans = Geist({
@@ -105,13 +106,20 @@ export default async function LocaleLayout({children, params}: Props) {
   const messages = await getMessages();
 
   return (
-    <html lang={locale}>
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang={locale} suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground transition-colors duration-300`}>
        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID as string} />
         <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID as string}/>
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <Navbar locale={locale}/>
-          {children}
+          <ThemeProvider
+            attribute="data-theme"
+            defaultTheme="corporate"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Navbar locale={locale}/>
+            {children}
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>

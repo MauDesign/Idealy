@@ -1,15 +1,15 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 @plugin "daisyui" {
-  themes: corporate --default;
+  themes: corporate, dark;
   default: true;
-  prefersdark: false;
-  color-scheme: "light";
+  prefersdark: true;
   --color-base-100: oklch(100% 0 0);
   --color-base-200: oklch(93% 0 0);
   --color-base-300: oklch(86% 0 0);
   --color-base-content: oklch(22.389% 0.031 278.072);
-  --color-primary: oklch(58% 0.158 241.966);
+  /* Primary colors are handled in theme blocks below */
   --color-primary-content: oklch(100% 0 0);
   --color-secondary: oklch(55% 0.046 257.417);
   --color-secondary-content: oklch(100% 0 0);
@@ -35,11 +35,20 @@
   --noise: 0;
 }
 
-
+:root,
+[data-theme='corporate'],
+[data-theme='dark'] {
+  --color-primary: #00b4a6;
+}
 
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #011A26;
+}
+
+[data-theme='dark'] {
+  --background: #01131b;
+  --foreground: #ededed;
 }
 
 @theme inline {
@@ -49,15 +58,6 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 html {
   scroll-behavior: smooth;
 }
-
-
