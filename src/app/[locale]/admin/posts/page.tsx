@@ -72,7 +72,7 @@ export default async function AdminPostsPage({ params }: { params: Promise<{ loc
             </thead>
             <tbody>
               {posts.length > 0 ? (
-                posts.map((post) => {
+                posts.map((post: any) => {
                   const hasTranslation = post.translationGroupId ? translationMap.get(post.translationGroupId) : null;
                   
                   return (
