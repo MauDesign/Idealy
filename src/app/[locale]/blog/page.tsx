@@ -1,6 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
 import { prisma } from '@/lib/prisma';
-import { Post } from '@prisma/client';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, Clock, ArrowRight, Rss, FolderOpen } from 'lucide-react';
