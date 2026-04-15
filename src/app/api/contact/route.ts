@@ -18,16 +18,17 @@ export async function POST(request: Request) {
     });
 
     const mailOptions = {
-      from: `"Tu Portafolio" <${process.env.SMTP_USER}>`, // Es mejor enviar desde un correo verificado
-      replyTo: email, // Para que al responder, le llegue al usuario
-      to: process.env.SMTP_RECIPIENT_EMAIL, // El email que recibirá el mensaje
+      from: `"Idealy Contacto" <${process.env.SMTP_USER}>`, 
+      replyTo: email,
+      to: 'admin@idealy.com.mx', // <--- Destino solicitado
       subject: `Nuevo mensaje de contacto de ${name}: ${subject}`,
       text: message,
-      html: `<p>Has recibido un nuevo mensaje de tu portafolio:</p>
+      html: `<h2>Has recibido un nuevo mensaje desde idea.ly:</h2>
              <p><strong>Nombre:</strong> ${name}</p>
              <p><strong>Email:</strong> ${email}</p>
+             <hr />
              <p><strong>Mensaje:</strong></p>
-             <p>${message}</p>`,
+             <p>${message.replace(/\n/g, '<br>')}</p>`,
     };
 
     await transporter.sendMail(mailOptions);
