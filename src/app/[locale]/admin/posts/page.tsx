@@ -19,9 +19,9 @@ export default async function AdminPostsPage({ params }: { params: Promise<{ loc
   // Find translations
   const translatedGroups = posts.map((p: any) => p.translationGroupId).filter(Boolean) as string[];
   const translations = (await prisma.post.findMany({
-    where: { locale: otherLocale, translationGroupId: { in: translatedGroups } } as any,
-    select: { translationGroupId: true, id: true, slug: true } as any,
-  })) as any[];
+    where: { locale: otherLocale, translationGroupId: { in: translatedGroups } },
+    select: { translationGroupId: true, id: true, slug: true },
+  } as any)) as any[];
 
   const translationMap = new Map(translations.map((t: any) => [t.translationGroupId, t]));
 

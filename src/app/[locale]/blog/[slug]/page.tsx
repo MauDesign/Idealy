@@ -15,7 +15,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { slug, locale } = await params;
-  const post = await prisma.post.findUnique({ where: { slug }, include: { category: true } });
+  const post = (await prisma.post.findUnique({ where: { slug }, include: { category: true } as any })) as any;
   if (!post) return {};
 
   const otherLocale = locale === 'es' ? 'en' : 'es';
@@ -76,10 +76,10 @@ export default async function PostDetailPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
 
-  const post = await prisma.post.findUnique({
+  const post = (await prisma.post.findUnique({
     where: { slug },
-    include: { category: true },
-  });
+    include: { category: true } as any,
+  })) as any;
 
   if (!post || !post.published) {
     notFound();
@@ -106,7 +106,7 @@ export default async function PostDetailPage({
   });
 
   // Related posts — same category first, then same locale
-  const relatedPosts = await prisma.post.findMany({
+  const relatedPosts = (await prisma.post.findMany({
     where: {
       locale,
       published: true,
@@ -116,7 +116,7 @@ export default async function PostDetailPage({
     orderBy: { createdAt: 'desc' },
     take: 3,
     include: { category: true },
-  });
+  } as any)) as any[];
 
   // JSON-LD: Article structured data
   const jsonLd = {
@@ -295,7 +295,7 @@ export default async function PostDetailPage({
                   <div className="mt-12 pt-8 border-t border-base-200">
                     <div className="flex items-center gap-2 flex-wrap">
                       <Tag className="w-4 h-4 text-base-content/30 shrink-0" />
-                      {post.tags.map((tag) => (
+                      {post.tags.map((tag: string) => (
                         <span
                           key={tag}
                           className="text-xs bg-base-200 text-base-content/60 font-medium px-3 py-1 rounded-full hover:bg-primary/10 hover:text-primary transition-colors cursor-default"
@@ -358,7 +358,7 @@ export default async function PostDetailPage({
                 </h2>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {relatedPosts.map((related) => (
+                {relatedPosts.map((related: any) => (
                   <Link
                     key={related.id}
                     href={`/${locale}/blog/${related.slug}`}

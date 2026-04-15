@@ -24,8 +24,8 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
   const posts = (await prisma.post.findMany({
     where: { locale, published: true },
     orderBy: { createdAt: 'desc' },
-    include: { category: true } as any,
-  })) as any[];
+    include: { category: true },
+  } as any)) as any[];
 
   const [featuredPost, ...restPosts] = posts;
 
