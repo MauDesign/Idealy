@@ -32,13 +32,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }));
 
   // Fetch all published posts
-  const posts = await prisma.post.findMany({
+  const posts = (await prisma.post.findMany({
     where: { published: true },
     select: { slug: true, locale: true, updatedAt: true }
-  });
+  })) as any[];
 
   // Dynamic blog post entries
-  const postEntries: MetadataRoute.Sitemap = posts.map((post) => ({
+  const postEntries: MetadataRoute.Sitemap = posts.map((post: any) => ({
     url: `${baseUrl}/${post.locale}/blog/${post.slug}`,
     lastModified: post.updatedAt,
     changeFrequency: 'weekly',
