@@ -31,7 +31,7 @@ const Navbar = ({ locale }: { locale: string }) => {
                             <li className='min-w-40'><Link href="/">{t("home")}</Link></li>
                             <li className='min-w-40'><Link href="/#about">{t("about")}</Link></li>
                             <li className='min-w-40'><Link href="/#services">{t("services")}</Link></li>
-                            {/* <li className='min-w-40'><Link href="/blog">Blog</Link></li> */}
+                            <li className='min-w-40'><Link href="/blog">{t("blog")}</Link></li>
                             <li className='min-w-40'><Link href="/#contact">{t("contact")}</Link></li>
                             <li className='min-w-40 flex-row items-center justify-between gap-2 px-4 py-2 border-t mt-2'>
                               <LanguageSwitcher locale={locale} />
@@ -53,7 +53,7 @@ const Navbar = ({ locale }: { locale: string }) => {
                         <li><Link href="/">{t("home")}</Link></li>
                         <li><Link href="/#about" scroll={true}>{t("about")}</Link></li>
                         <li><Link href="/#services">{t("services")}</Link></li>
-                        {/* <li><Link href="/blog">Blog</Link></li> */}
+                        <li><Link href="/blog">{t("blog")}</Link></li>
                         <li><Link href="/#contact" scroll={true}>{t("contact") } </Link></li>
                         <li>
                             <LanguageSwitcher locale={locale} />

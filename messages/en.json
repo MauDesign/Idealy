@@ -57,7 +57,8 @@
         "about": "About",
         "services": "Services",
         "portfolio": "Portfolio",
-        "contact": "Contact"
+        "contact": "Contact",
+        "blog": "Blog"
     },
     "Projects": {
         "titlep": "Projects"

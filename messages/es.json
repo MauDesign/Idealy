@@ -57,7 +57,8 @@
         "about": "Nosotros",
         "services": "Servicios",
         "portfolio": "Portafolio",
-        "contact": "Contacto"
+        "contact": "Contacto",
+        "blog": "Blog"
     },
     "Projects": {
         "titlep": "Proyectos"
