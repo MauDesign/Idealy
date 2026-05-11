@@ -2,7 +2,7 @@
 @plugin "@tailwindcss/typography";
 
 @plugin "daisyui" {
-  themes: corporate, dark;
+  themes: dark, corporate;
   default: true;
   prefersdark: true;
   --color-base-100: oklch(100% 0 0);
@@ -36,19 +36,20 @@
 }
 
 :root,
-[data-theme='corporate'],
-[data-theme='dark'] {
+[data-theme='dark'],
+[data-theme='corporate'] {
   --color-primary: #00b4a6;
 }
 
-:root {
-  --background: #ffffff;
-  --foreground: #011A26;
-}
-
+:root,
 [data-theme='dark'] {
   --background: #01131b;
   --foreground: #ededed;
+}
+
+[data-theme='corporate'] {
+  --background: #ffffff;
+  --foreground: #011A26;
 }
 
 @theme inline {

@@ -35,7 +35,7 @@ export default async function Home({ params }: Props) {
           </div>
           <div id="services" className='w-full flex py-5 p-10 justify-center items-center bg-base-200/50'>
             <div className='lg:w-3/4 m-auto items-center'>
-              <h1 className='item-center font-bold text-4xl text-center mb-5 text-primary'>{t("title-services")}</h1>
+              <h2 className='item-center font-bold text-4xl text-center mb-5 text-primary'>{t("title-services")}</h2>
               <h3 className='item-center font-bold text-2xl text-center mb-5 text-secondary'>{t("subtitle-services")}</h3>
             </div>
           </div>
@@ -43,7 +43,7 @@ export default async function Home({ params }: Props) {
             <Carousel />
           </div>
           <div className='w-full flex justify-center items-center mb-10'>
-            <h1 className='text-primary center font-bold text-4xl'>{t("title-method")}</h1>
+            <h2 className='text-primary center font-bold text-4xl'>{t("title-method")}</h2>
           </div>
           <div id="services" className='w-full mb-15 '>
             <div className='w-3/4 m-auto flex flex-wrap'>
@@ -176,7 +176,7 @@ export default async function Home({ params }: Props) {
               </div>
             </div>
             <div className="lg:w-1/3 sm:w-full center p-5">
-              <h1 className="text-3xl font-bold text-white center">{t("title-stack")}</h1>
+              <h2 className="text-3xl font-bold text-white center">{t("title-stack")}</h2>
 
               <CardStack />
 

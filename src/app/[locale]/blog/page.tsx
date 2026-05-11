@@ -110,7 +110,10 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
                           <span className="bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full">Blog</span>
                         )}
                         <span className="flex items-center gap-1.5 text-xs text-base-content/40 font-medium">
-                          <Calendar className="w-3.5 h-3.5" />
+                          <span className="px-1.5 py-0.5 rounded bg-base-200 text-[10px] font-black uppercase border border-base-300">
+                            {locale}
+                          </span>
+                          <Calendar className="w-3.5 h-3.5 ml-1" />
                           {new Date(featuredPost.createdAt).toLocaleDateString(locale, { day: 'numeric', month: 'long', year: 'numeric' })}
                         </span>
                         <span className="flex items-center gap-1.5 text-xs text-base-content/40 font-medium">
@@ -182,7 +185,10 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
                             <span className="bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded-full">Blog</span>
                           )}
                           <span className="flex items-center gap-1 text-[11px] text-base-content/40 font-medium">
-                            <Calendar className="w-3 h-3" />
+                            <span className="px-1 py-0.5 rounded bg-base-200 text-[8px] font-black uppercase border border-base-300">
+                              {locale}
+                            </span>
+                            <Calendar className="w-3 h-3 ml-0.5" />
                             {new Date(post.createdAt).toLocaleDateString(locale, { day: 'numeric', month: 'short', year: 'numeric' })}
                           </span>
                         </div>

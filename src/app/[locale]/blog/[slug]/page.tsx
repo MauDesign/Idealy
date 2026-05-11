@@ -39,6 +39,21 @@ export async function generateMetadata({
     title: `${post.seoTitle || post.title} | Idea.ly`,
     description: post.seoDescription || post.summary || '',
     keywords: post.tags.join(', '),
+    authors: [{ name: 'Leo — Idea.ly', url: 'https://www.idealy.com.mx' }],
+    creator: 'Idea.ly',
+    publisher: 'Idea.ly',
+    robots: {
+      index: true,
+      follow: true,
+      nocache: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
     alternates: { 
       canonical: canonicalUrl,
       ...(translatedUrl ? { languages: { [otherLocale]: translatedUrl } } : {})
@@ -52,6 +67,8 @@ export async function generateMetadata({
       type: 'article',
       publishedTime: post.createdAt.toISOString(),
       modifiedTime: post.updatedAt.toISOString(),
+      section: post.category?.name || 'Technology',
+      authors: ['Leo — Idea.ly'],
       tags: post.tags,
       url: canonicalUrl,
       siteName: 'Idea.ly',
@@ -61,6 +78,7 @@ export async function generateMetadata({
       title: post.seoTitle || post.title,
       description: post.seoDescription || post.summary || '',
       images: post.featuredImage ? [post.featuredImage] : [],
+      creator: '@idealy_mx',
     },
   };
 }
@@ -68,6 +86,10 @@ export async function generateMetadata({
 function estimateReadTime(content: string): number {
   const words = content.replace(/<[^>]*>/g, '').split(/\s+/).length;
   return Math.max(1, Math.round(words / 200));
+}
+
+function getWordCount(content: string): number {
+  return content.replace(/<[^>]*>/g, '').split(/\s+/).length;
 }
 
 export default async function PostDetailPage({
@@ -98,6 +120,7 @@ export default async function PostDetailPage({
   }
 
   const readTime = estimateReadTime(post.content);
+  const wordCount = getWordCount(post.content);
   const canonicalUrl =
     post.canonicalUrl || `https://www.idealy.com.mx/${locale}/blog/${slug}`;
 
@@ -132,9 +155,10 @@ export default async function PostDetailPage({
     dateModified: post.updatedAt.toISOString(),
     keywords: post.tags.join(', '),
     inLanguage: locale,
+    wordCount: wordCount,
     author: {
       '@type': 'Person',
-      name: 'Leo',
+      name: 'Leo — Idea.ly',
       url: 'https://www.idealy.com.mx',
     },
     publisher: {

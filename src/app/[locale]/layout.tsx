@@ -8,6 +8,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import Navbar from "../ui/navbar/navbar";
 import { ThemeProvider } from "../ui/ThemeProvider";
+import StructuredData from "../ui/StructuredData";
 
 
 const geistSans = Geist({
@@ -22,8 +23,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.idealy.com.mx'),
-  title: "Idea.ly | High-Performance Software, AI Automation & UX Design",
-  description: "Top-tier Nearshore Strategic Studio. We build scalable software with Next.js & Go, implement custom AI agents, and design intuitive UX. Driving exponential growth for US & MX markets. Let's make it real.",
+  title: "Idea.ly | High-Performance Solutions",
+  description: "Scale your business with Next.js & Go software. Experts in custom AI & high-impact UX for US & MX markets. Let’s make it real and drive your growth today!",
   keywords: [
     // --- Original & Base Keywords ---
     'desarrollo de software',
@@ -138,12 +139,16 @@ export default async function LocaleLayout({ children, params }: Props) {
 
   return (
     <html lang={locale} suppressHydrationWarning>
+      <head>
+        <StructuredData />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground transition-colors duration-300`}>
         <GoogleAnalytics gaId="G-GJBZY50Y93" />
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider
             attribute="data-theme"
             defaultTheme="dark"
+            forcedTheme="dark"
             enableSystem={false}
             disableTransitionOnChange
           >

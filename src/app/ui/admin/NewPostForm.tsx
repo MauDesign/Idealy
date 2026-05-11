@@ -219,6 +219,34 @@ export default function NewPostForm({ categories, translateFromPost }: NewPostFo
               <input type="hidden" name="published" value={published ? 'true' : 'false'} />
             </div>
 
+            {/* Language Selector */}
+            <div className="form-control">
+              <label className="label pb-1">
+                <span className="label-text font-medium text-sm flex items-center gap-1.5">
+                  <Globe className="w-3.5 h-3.5" />
+                  Idioma de la nota
+                </span>
+              </label>
+              <div className="flex items-center gap-2">
+                <select 
+                  className="select select-bordered rounded-xl w-full text-sm font-semibold"
+                  value={locale}
+                  onChange={(e) => {
+                    const nextLocale = e.target.value;
+                    const url = new URL(window.location.href);
+                    const newPath = window.location.pathname.replace(`/${locale}/`, `/${nextLocale}/`);
+                    window.location.href = newPath + url.search;
+                  }}
+                >
+                  <option value="es">Español (MX)</option>
+                  <option value="en">English (US)</option>
+                </select>
+              </div>
+              <p className="text-[10px] text-base-content/40 mt-1.5 px-1">
+                Define el idioma en el que se indexará esta nota.
+              </p>
+            </div>
+
             {/* Slug */}
             <div className="form-control">
               <label className="label pb-1">
