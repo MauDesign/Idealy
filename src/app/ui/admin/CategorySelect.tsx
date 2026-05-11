@@ -1,7 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { ChevronDown, FolderOpen, Plus, X } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { ChevronDown, FolderOpen, Plus, X, Loader2 } from 'lucide-react';
 
 interface Category {
   id: string;
@@ -21,12 +22,20 @@ export default function CategorySelect({
   initialCategoryId,
   name = 'categoryId',
 }: CategorySelectProps) {
+  const router = useRouter();
+  const [localCategories, setLocalCategories] = useState<Category[]>(categories);
   const [selectedId, setSelectedId] = useState<string>(initialCategoryId || '');
   const [isOpen, setIsOpen] = useState(false);
   const [newCategoryName, setNewCategoryName] = useState('');
   const [showNew, setShowNew] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
 
-  const selected = categories.find((c) => c.id === selectedId);
+  // Sync with props when they change
+  useEffect(() => {
+    setLocalCategories(categories);
+  }, [categories]);
+
+  const selected = localCategories.find((c) => c.id === selectedId);
 
   const handleSelect = (id: string) => {
     setSelectedId(id);
@@ -79,8 +88,11 @@ export default function CategorySelect({
 
       {/* Dropdown */}
       {isOpen && (
-        <div className="absolute z-30 mt-1 w-full bg-base-100 border border-base-300 rounded-xl shadow-xl overflow-hidden">
-          {categories.length > 0 ? (
+        <>
+          {/* Backdrop to close on click outside */}
+          <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
+          <div className="absolute z-50 mt-1 w-full bg-base-100 border border-base-300 rounded-xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
+          {localCategories.length > 0 ? (
             <ul className="py-1 max-h-48 overflow-y-auto">
               <li>
                 <button
@@ -91,7 +103,7 @@ export default function CategorySelect({
                   Sin categoría
                 </button>
               </li>
-              {categories.map((cat) => (
+              {localCategories.map((cat) => (
                 <li key={cat.id}>
                   <button
                     type="button"
@@ -117,41 +129,53 @@ export default function CategorySelect({
             </p>
           )}
 
-          {/* Quick-create new category */}
           <div className="border-t border-base-300 p-2">
             {showNew ? (
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-                  if (!newCategoryName.trim()) return;
-                  try {
-                    const res = await fetch('/api/admin/categories', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ name: newCategoryName.trim() }),
-                    });
-                    if (res.ok) {
-                      const cat = await res.json();
-                      categories.push(cat);
-                      handleSelect(cat.id);
-                    }
-                  } catch {}
-                  setNewCategoryName('');
-                  setShowNew(false);
-                }}
-                className="flex gap-1"
-              >
+              <div className="flex gap-1">
                 <input
                   autoFocus
                   type="text"
                   value={newCategoryName}
                   onChange={(e) => setNewCategoryName(e.target.value)}
-                  placeholder="Nombre de categoría..."
+                  onKeyDown={async (e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      const btn = e.currentTarget.nextSibling as HTMLButtonElement;
+                      btn?.click();
+                    }
+                  }}
+                  placeholder="Nueva categoría..."
                   className="input input-bordered input-sm flex-1 rounded-lg text-xs"
                   maxLength={40}
+                  disabled={isAdding}
                 />
-                <button type="submit" className="btn btn-primary btn-sm btn-square rounded-lg">
-                  <Plus className="w-3.5 h-3.5" />
+                <button 
+                  type="button"
+                  disabled={isAdding || !newCategoryName.trim()}
+                  onClick={async () => {
+                    if (!newCategoryName.trim() || isAdding) return;
+                    setIsAdding(true);
+                    try {
+                      const res = await fetch('/api/admin/categories', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: newCategoryName.trim() }),
+                      });
+                      if (res.ok) {
+                        const cat = await res.json();
+                        setLocalCategories((prev) => [...prev, cat]);
+                        handleSelect(cat.id);
+                        setNewCategoryName('');
+                        setShowNew(false);
+                        router.refresh();
+                      }
+                    } catch {} finally {
+                      setIsAdding(false);
+                    }
+                  }}
+                  className="btn btn-primary btn-sm btn-square rounded-lg"
+                >
+                  {isAdding ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : <Plus className="w-3.5 h-3.5" />}
                 </button>
                 <button
                   type="button"
@@ -160,7 +184,7 @@ export default function CategorySelect({
                 >
                   <X className="w-3.5 h-3.5" />
                 </button>
-              </form>
+              </div>
             ) : (
               <button
                 type="button"
