@@ -7,6 +7,7 @@ import Editor from '@/app/ui/admin/Editor';
 import TagsInput from '@/app/ui/admin/TagsInput';
 import CategorySelect from '@/app/ui/admin/CategorySelect';
 import SeoPreview from '@/app/ui/admin/SeoPreview';
+import ImageSelector from '@/app/ui/admin/ImageSelector';
 import { updatePost } from '@/lib/actions/posts';
 
 interface Category {
@@ -41,7 +42,6 @@ export default function EditPostForm({ post, locale, categories }: EditPostFormP
   const [error, setError] = useState('');
   const [showSeo, setShowSeo] = useState(false);
   const [published, setPublished] = useState(post.published);
-  const [featuredImageUrl, setFeaturedImageUrl] = useState(post.featuredImage || '');
 
   const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -302,28 +302,7 @@ export default function EditPostForm({ post, locale, categories }: EditPostFormP
             </div>
 
             {/* Featured Image */}
-            <div className="form-control">
-              <label className="label pb-1">
-                <span className="label-text font-medium text-sm">Imagen destacada (URL)</span>
-              </label>
-              <input
-                type="text"
-                name="featuredImage"
-                value={featuredImageUrl}
-                onChange={(e) => setFeaturedImageUrl(e.target.value)}
-                placeholder="https://..."
-                className="input input-bordered rounded-xl w-full text-sm"
-              />
-              {featuredImageUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img
-                  src={featuredImageUrl}
-                  alt="Preview"
-                  className="mt-2 w-full aspect-video object-cover rounded-lg border border-base-300"
-                  onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                />
-              )}
-            </div>
+            <ImageSelector name="featuredImage" initialValue={post.featuredImage || ''} />
 
             {/* Summary */}
             <div className="form-control">

@@ -50,3 +50,14 @@ model Post {
   @@index([published, locale])
   @@index([translationGroupId])
 }
+
+model Media {
+  id        String   @id @default(cuid())
+  url       String   @unique
+  name      String?
+  type      String?
+  size      Int?
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
