@@ -197,7 +197,8 @@ export default function CategorySelect({
             )}
           </div>
         </div>
-      )}
+      </>
+    )}
     </div>
   );
 }
