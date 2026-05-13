@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { UploadDropzone } from '@/lib/uploadthing';
 import { X, Image as ImageIcon, Loader2, CheckCircle2, Search } from 'lucide-react';
 import Image from 'next/image';
@@ -23,6 +24,12 @@ export default function MediaGallery({ onSelect, onClose }: MediaGalleryProps) {
   const [activeTab, setActiveTab] = useState<'gallery' | 'upload'>('gallery');
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUrl, setSelectedUrl] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    fetchMedia();
+  }, []);
 
   const fetchMedia = async () => {
     setLoading(true);
@@ -39,17 +46,18 @@ export default function MediaGallery({ onSelect, onClose }: MediaGalleryProps) {
     }
   };
 
-  useEffect(() => {
-    fetchMedia();
-  }, []);
-
   const filteredMedia = media.filter((item) =>
     item.name?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  return (
+  if (!mounted) return null;
+
+  return createPortal(
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
-      <div className="bg-base-100 w-full max-w-4xl h-[80vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-base-300">
+      <div 
+        className="bg-base-100 w-full max-w-4xl h-[80vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-base-300"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Header */}
         <div className="p-4 border-b border-base-300 flex items-center justify-between">
@@ -57,7 +65,7 @@ export default function MediaGallery({ onSelect, onClose }: MediaGalleryProps) {
             <ImageIcon className="w-5 h-5 text-primary" />
             <h2 className="text-lg font-bold">Galería de Imágenes</h2>
           </div>
-          <button onClick={onClose} className="btn btn-ghost btn-sm btn-circle">
+          <button type="button" onClick={onClose} className="btn btn-ghost btn-sm btn-circle">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -65,6 +73,7 @@ export default function MediaGallery({ onSelect, onClose }: MediaGalleryProps) {
         {/* Tabs */}
         <div className="flex border-b border-base-300 bg-base-200/50">
           <button
+            type="button"
             onClick={() => setActiveTab('gallery')}
             className={`px-6 py-3 text-sm font-semibold transition-all ${
               activeTab === 'gallery'
@@ -75,6 +84,7 @@ export default function MediaGallery({ onSelect, onClose }: MediaGalleryProps) {
             Explorar Biblioteca
           </button>
           <button
+            type="button"
             onClick={() => setActiveTab('upload')}
             className={`px-6 py-3 text-sm font-semibold transition-all ${
               activeTab === 'upload'
@@ -167,10 +177,11 @@ export default function MediaGallery({ onSelect, onClose }: MediaGalleryProps) {
 
         {/* Footer */}
         <div className="p-4 border-t border-base-300 flex justify-end gap-3 bg-base-200/30">
-          <button onClick={onClose} className="btn btn-ghost rounded-xl">
+          <button type="button" onClick={onClose} className="btn btn-ghost rounded-xl">
             Cancelar
           </button>
           <button
+            type="button"
             disabled={!selectedUrl}
             onClick={() => selectedUrl && onSelect(selectedUrl)}
             className="btn btn-primary rounded-xl px-8"
@@ -179,6 +190,7 @@ export default function MediaGallery({ onSelect, onClose }: MediaGalleryProps) {
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

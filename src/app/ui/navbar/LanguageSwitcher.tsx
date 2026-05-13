@@ -3,17 +3,14 @@
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
 import Image from 'next/image';
-import { usePathname, useRouter } from 'next/navigation';
-
+import { usePathname, useRouter } from '@/i18n/navigation';
 
 export default function LanguageSwitcher({ locale }: { locale: string }) {
-    const Pathname = usePathname();
-    const Router = useRouter();
-
+    const pathname = usePathname();
+    const router = useRouter();
 
     const handleLanguageChange = (newLocale: string) => {
-        const path = Pathname.split("/").slice(2).join("/");
-        Router.push(`/${newLocale}${path}`);
+        router.replace(pathname, { locale: newLocale });
     }
 
     const options = [
