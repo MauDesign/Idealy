@@ -7,9 +7,28 @@ import Footer from "@/app/ui/Footer/Footer";
 import { setRequestLocale } from 'next-intl/server';
 import GSAPInitializer from "@/app/ui/components/GSAPInitializer";
 import CardStack from "@/app/ui/cardstack/cardstak";
+import type { Metadata } from 'next';
+import { keywordsByPage } from '@/config/keywords';
 
 import type { locales } from '../../i18n/routing'
 type Props = { params: Promise<{ locale: typeof locales[number] }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === 'en';
+
+  return {
+    title: isEn 
+      ? "Idea.ly | High-Performance Solutions & AI Automation" 
+      : "Idea.ly | Software de Alto Rendimiento y Automatización de IA",
+    description: isEn 
+      ? "Scale your business with Next.js & Go software. Experts in custom AI agents, workflow automation & high-impact UX for US & MX markets."
+      : "Escala tu negocio con software de Next.js y Go. Expertos en agentes de IA personalizados, automatización de flujos y UX de alto impacto para mercados de EE.UU. y México.",
+    keywords: isEn 
+      ? [...keywordsByPage['home-en']] 
+      : [...keywordsByPage['home-es']]
+  };
+}
 
 export default async function Home({ params }: Props) {
   const { locale } = await params;

@@ -1,3 +1,115 @@
+# =========================================================================
+# Robots.txt for Idealy
+# Dynamic configuration & SEO compliance
+#
+# We welcome and explicitly allow all AI search, crawling, and training bots
+# to explore, index, and reference the content on this website.
+# =========================================================================
+
+# --- OpenAI (ChatGPT & Search) ---
+User-agent: GPTBot
+Allow: /
+Disallow: /api/
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /api/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /api/
+
+# --- Anthropic (Claude & Search) ---
+User-agent: ClaudeBot
+Allow: /
+Disallow: /api/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /api/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /api/
+
+# --- Google (Gemini & Vertex AI) ---
+User-agent: Google-Extended
+Allow: /
+Disallow: /api/
+
+User-agent: Google-CloudVertexBot
+Allow: /
+Disallow: /api/
+
+# --- Perplexity AI ---
+User-agent: PerplexityBot
+Allow: /
+Disallow: /api/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /api/
+
+# --- Meta (Facebook & Meta AI) ---
+User-agent: FacebookBot
+Allow: /
+Disallow: /api/
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /api/
+
+User-agent: Meta-ExternalFetcher
+Allow: /
+Disallow: /api/
+
+# --- Apple (Applebot & Apple Intelligence) ---
+User-agent: Applebot
+Allow: /
+Disallow: /api/
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /api/
+
+# --- Amazon AI ---
+User-agent: Amazonbot
+Allow: /
+Disallow: /api/
+
+# --- Cohere AI ---
+User-agent: cohere-ai
+Allow: /
+Disallow: /api/
+
+# --- Common Crawl (AI Training dataset) ---
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+
+# --- ByteDance (TikTok & AI) ---
+User-agent: Bytespider
+Allow: /
+Disallow: /api/
+
+User-agent: TikTokSpider
+Allow: /
+Disallow: /api/
+
+# --- Diffbot ---
+User-agent: Diffbot
+Allow: /
+Disallow: /api/
+
+# --- You.com AI ---
+User-agent: Youbot
+Allow: /
+Disallow: /api/
+
+# --- All other Web Crawlers (Googlebot, Bingbot, etc.) ---
 User-agent: *
 Allow: /
-Sitemap: https://www.idealy.com/sitemap.xml
+Disallow: /api/
+
+# Sitemap location
+Sitemap: https://www.idealy.com.mx/sitemap.xml

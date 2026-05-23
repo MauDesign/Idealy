@@ -21,116 +21,65 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL('https://www.idealy.com.mx'),
-  title: "Idea.ly | High-Performance Solutions",
-  description: "Scale your business with Next.js & Go software. Experts in custom AI & high-impact UX for US & MX markets. Let’s make it real and drive your growth today!",
-  keywords: [
-    // --- Original & Base Keywords ---
-    'desarrollo de software',
-    'soluciones tecnológicas',
-    'software a la medida',
-    'aplicaciones web',
-    'aplicaciones móviles',
-    'transformación digital',
-    'marketing digital',
-    'Ideas y soluciones',
-    'Diseño web',
-    'Desarrollo web',
-    '¿cuánto cuesta una página web?',
-    '¿qué se necesita para crear una página web?',
-    'diseño web responsivo',
-    'creación de sitios web',
-    'diseño de páginas web para pymes',
-    'diseño de páginas web para empresas',
-    'diseño de páginas web para startups',
-    'diseño de páginas web para emprendedores',
-    'Desarrollo de software a la medida',
-    'Desarrollo de aplicaciones web',
-    'Desarrollo de aplicaciones móviles',
-    'Desarrollo de sitios web',
-    'Desarrollo de sitios web responsivos',
-    'Desarro web profesional',
-    'Diseño UX',
-    'Consultoria Diseño UX',
-    'Diseño Web puebla',
-    'Desarrollo Nearshoring',
-    'Innovacion tecnologica',
-    'desarrollo de software a la medida',
-    'desarrollo de aplicaciones web',
-    'desarrollo de aplicaciones móviles',
-    'desarrollo de sitios web',
-    'desarrollo de sitios web responsivos',
-    'desarro web profesional',
-    'diseño UX',
-    'consultoria Diseño UX',
-    'diseño Web puebla',
-    'desarrollo Nearshoring',
-    'innovacion tecnologica',
-    'Idea.ly',
-    'idealy',
+import { getKeywordsForLocale } from '@/config/keywords';
 
-    // --- New Strategic AI & Automation Keywords (ES) ---
-    'automatización de procesos con IA',
-    'agentes de inteligencia artificial para empresas',
-    'consultoría de IA aplicada',
-    'integración de modelos de lenguaje LLM',
-    'eficiencia operativa con IA',
-    'expertos en automatización inteligente',
-    'desarrollo de software con inteligencia artificial',
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === 'en';
 
-    // --- New High-Performance & Growth Keywords (ES) ---
-    'estrategia de crecimiento digital exponencial',
-    'embudos de venta de alta conversión',
-    'consultoría de negocios digitales',
-    'desarrollo web con Next.js y Go',
-    'arquitectura de software escalable',
-    'diseño de productos digitales premium',
-    'marketing basado en resultados ROI',
+  return {
+    metadataBase: new URL('https://www.idealy.com.mx'),
+    title: isEn 
+      ? "Idea.ly | High-Performance Solutions & Custom AI" 
+      : "Idea.ly | Soluciones de Alto Rendimiento y Automatización de IA",
+    description: isEn
+      ? "Scale your business with Next.js & Go software. Experts in custom AI, intelligent automation & high-impact UX for US & MX markets."
+      : "Escala tu negocio con software de Next.js y Go. Expertos en agentes de IA personalizados, automatización de flujos y UX de alto impacto para mercados de EE.UU. y México.",
+    keywords: getKeywordsForLocale(locale as 'es' | 'en'),
+    openGraph: {
+      title: isEn 
+        ? 'Idea.ly | Turning Vision into Reality through Software & AI' 
+        : 'Idea.ly | De la Idea a la Realidad con Software e Inteligencia Artificial',
+      description: isEn
+        ? 'Custom software engineering and AI-driven workflows for forward-thinking companies. Explore the Idea.ly method.'
+        : 'Ingeniería de software a la medida y flujos automatizados con IA para empresas innovadoras. Conoce el método Idea.ly.',
+      url: 'https://www.idealy.com.mx',
+      siteName: 'Idea.ly',
+      images: [
+        {
+          url: 'https://www.idealy.com.mx/img/Consulting-leo-idealy.jpg',
+          width: 600,
+          height: 300,
+          alt: isEn 
+            ? 'Custom software development by Idea.ly' 
+            : 'Desarrollo de software a la medida por Idea.ly',
+        },
+      ],
+      locale: isEn ? 'en_US' : 'es_MX',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: isEn 
+        ? 'Idea.ly - Custom Technological Solutions' 
+        : 'Idea.ly - Soluciones Tecnológicas a Medida',
+      description: isEn
+        ? 'We blend technology and creativity to build software that transforms challenges into opportunities.'
+        : 'Fusionamos tecnología y creatividad para desarrollar software que transforma desafíos en oportunidades.',
+      images: ['https://www.idealy.com.mx/img/Consulting-leo-idealy.jpg'],
+    },
+  };
+}
 
-    // --- New International & Nearshore Keywords (EN) ---
-    'nearshore software development Mexico',
-    'custom AI agents for business',
-    'AI-driven workflow automation',
-    'premium UX/UI design agency',
-    'full-stack development Next.js Go',
-    'strategic digital growth funnels',
-    'bilingual tech partner Mexico USA',
-    'high-performance web engineering',
-    'scalable cloud solutions',
-    'digital transformation consultancy North America'
-  ],
-  openGraph: {
-    title: 'Idea.ly | Turning Vision into Reality through Software & IA',
-    description: 'Custom software engineering and AI-driven workflows for forward-thinking companies. Explore the Idea.ly method.',
-    url: 'https://www.idealy.com.mx',
-    siteName: 'Idea.ly',
-    images: [
-      {
-        url: 'https://www.idealy.com.mx/img/Consulting-leo-idealy.jpg',
-        width: 600,
-        height: 300,
-        alt: 'Desarrollo de software a la medida por Idea.ly',
-      },
-    ],
-    locale: 'es_ES',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'Idea.ly - Soluciones Tecnológicas a Medida',
-    description: 'Fusionamos tecnología y creatividad para desarrollar software que transforma desafíos en oportunidades.',
-    images: ['https://www.idealy.com.mx/img/Consulting-leo-idealy.jpg'],
-  },
-};
 export const viewport: Viewport = {
   themeColor: 'black',
-}
+};
 
 type Props = {
   children: React.ReactNode,
   params: Promise<{ locale: string }>;
 };
+
 
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
@@ -140,7 +89,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <StructuredData />
+        <StructuredData locale={locale} />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground transition-colors duration-300`}>
         <GoogleAnalytics gaId="G-GJBZY50Y93" />

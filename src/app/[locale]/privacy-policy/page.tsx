@@ -6,10 +6,24 @@ type Props = { params: Promise<{ locale: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'PrivacyPolicy' });
+  const isEn = locale === 'en';
 
   return {
     title: `${t('title')} | Idea.ly`,
     description: t('intro'),
+    keywords: isEn ? [
+      'privacy policy',
+      'data privacy',
+      'terms of service',
+      'Idea.ly privacy',
+      'user data protection'
+    ] : [
+      'política de privacidad',
+      'privacidad de datos',
+      'términos y condiciones',
+      'privacidad Idea.ly',
+      'protección de datos personales'
+    ]
   };
 }
 

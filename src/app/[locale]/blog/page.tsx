@@ -8,10 +8,40 @@ import { Calendar, Clock, ArrowRight, Rss, FolderOpen } from 'lucide-react';
 import Footer from '@/app/ui/Footer/Footer';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: 'Blog | Idea.ly — Tecnología, Estrategia & Diseño',
-  description: 'Explora nuestros artículos sobre desarrollo de software, inteligencia artificial, diseño UX y estrategia digital.',
-};
+type Props = { params: Promise<{ locale: string }> };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === 'en';
+
+  return {
+    title: isEn
+      ? "Blog | Idea.ly — Technology, Strategy & Design Insights"
+      : "Blog | Idea.ly — Tecnología, Estrategia & Diseño",
+    description: isEn
+      ? "Explore our latest articles, guides, and case studies about web development, custom AI automation, UX/UI, and digital growth."
+      : "Explora nuestros artículos sobre desarrollo de software, inteligencia artificial, diseño UX y estrategia digital.",
+    keywords: isEn ? [
+      'technology blog',
+      'software development articles',
+      'AI integration guides',
+      'UX design trends',
+      'growth marketing case studies',
+      'Next.js blog',
+      'Go backend insights',
+      'digital transformation trends'
+    ] : [
+      'blog de tecnología',
+      'artículos de desarrollo de software',
+      'guías de inteligencia artificial',
+      'tendencias de diseño UX',
+      'casos de estudio marketing',
+      'ideas de tecnología',
+      'desarrollo web Next.js',
+      'transformación digital artículos'
+    ]
+  };
+}
 
 function estimateReadTime(content: string): number {
   const words = content.replace(/<[^>]*>/g, '').split(/\s+/).length;
