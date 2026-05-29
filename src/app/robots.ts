@@ -31,12 +31,24 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: aiUserAgents,
         allow: '/',
-        disallow: '/api/',
+        disallow: [
+          '/api/',
+          '/admin/',
+          '/auth/',
+          '/*/admin/',
+          '/*/auth/',
+        ],
       },
       {
         userAgent: '*',
         allow: '/',
-        disallow: '/api/',
+        disallow: [
+          '/api/',
+          '/admin/',
+          '/auth/',
+          '/*/admin/',
+          '/*/auth/',
+        ],
       },
     ],
     sitemap: 'https://www.idealy.com.mx/sitemap.xml',

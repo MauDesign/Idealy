@@ -33,6 +33,43 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
 
+  // Localized services list pages
+  const servicesListEntries: MetadataRoute.Sitemap = locales.map((locale) => ({
+    url: `${baseUrl}/${locale}/services`,
+    lastModified: new Date(),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }));
+
+  // Localized services detail pages (5 core slugs)
+  const validSlugs = [
+    'software-development',
+    'ai-automation',
+    'ux-ui-design',
+    'digital-marketing',
+    'consulting'
+  ];
+
+  const serviceEntries: MetadataRoute.Sitemap = [];
+  for (const locale of locales) {
+    for (const slug of validSlugs) {
+      serviceEntries.push({
+        url: `${baseUrl}/${locale}/services/${slug}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.7,
+      });
+    }
+  }
+
+  // Localized privacy policy pages
+  const privacyEntries: MetadataRoute.Sitemap = locales.map((locale) => ({
+    url: `${baseUrl}/${locale}/privacy-policy`,
+    lastModified: new Date(),
+    changeFrequency: 'yearly',
+    priority: 0.3,
+  }));
+
   // Fetch all published posts
   const posts = (await prisma.post.findMany({
     where: { published: true },
@@ -51,6 +88,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...baseEntries,
     ...localeHomeEntries,
     ...blogListEntries,
+    ...servicesListEntries,
+    ...serviceEntries,
+    ...privacyEntries,
     ...postEntries,
   ];
 }
