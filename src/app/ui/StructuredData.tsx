@@ -78,7 +78,7 @@ const StructuredData = ({ locale = 'es' }: StructuredDataProps) => {
           "@type": "Offer",
           "itemOffered": {
             "@type": "Service",
-            "name": isEn ? "AI Automation" : "Automatización con IA",
+            "name": isEn ? "AI Automation & Agents" : "Automatización y Agentes de IA",
             "description": isEn 
               ? "Custom AI agents and LLM integration for business workflow optimization."
               : "Agentes de IA personalizados e integración de modelos LLM para la optimización de flujos de trabajo empresariales."
@@ -92,6 +92,26 @@ const StructuredData = ({ locale = 'es' }: StructuredDataProps) => {
             "description": isEn 
               ? "Intuitive and premium user experience design for digital products."
               : "Diseño de experiencia de usuario intuitivo y premium para productos digitales."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": isEn ? "Digital Marketing" : "Marketing Digital y Crecimiento",
+            "description": isEn 
+              ? "Conversion funnel engineering and high-ROI growth marketing."
+              : "Ingeniería de embudos de conversión y marketing de crecimiento con alto retorno de inversión."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": isEn ? "Digital Transformation Consulting" : "Consultoría de Transformación Digital",
+            "description": isEn 
+              ? "Practical technological strategy driven by AI workflows and LEO."
+              : "Estrategia tecnológica práctica impulsada por flujos de trabajo de IA y LEO."
           }
         }
       ]

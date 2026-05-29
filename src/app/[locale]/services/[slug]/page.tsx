@@ -115,6 +115,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     : [...serviceKeywords[activeService].es, 'idealy', 'idealy mexico'];
 
   return {
+    alternates: {
+      canonical: locale === 'en' ? `/en/services/${slug}` : `/services/${slug}`,
+      languages: {
+        en: `/en/services/${slug}`,
+        es: `/services/${slug}`,
+        'x-default': `/services/${slug}`,
+      },
+    },
     title: `${title} | Idea.ly`,
     description: `${subtitle}. ${description.substring(0, 120)}...`,
     keywords
@@ -229,6 +237,26 @@ export default async function ServiceDetailPage({ params }: Props) {
       desc: tDetails(`${activeService}.process3_desc`)
     }
   ];
+
+  // Dynamic Service Schema JSON-LD
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": title,
+    "description": description,
+    "provider": {
+      "@type": "Organization",
+      "name": "Idea.ly",
+      "url": "https://www.idealy.com.mx",
+      "logo": "https://www.idealy.com.mx/img/Logo-Idealy.png"
+    },
+    "areaServed": ["MX", "US"],
+    "serviceType": subtitle,
+    "offers": {
+      "@type": "Offer",
+      "description": heroPhrase
+    }
+  };
 
   return (
     <div className="flex flex-col min-h-screen bg-[#01131b]">
@@ -406,6 +434,10 @@ export default async function ServiceDetailPage({ params }: Props) {
       </main>
 
       <Footer />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
     </div>
   );
 }
