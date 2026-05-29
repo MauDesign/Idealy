@@ -24,9 +24,11 @@ const StructuredData = ({ locale = 'es' }: StructuredDataProps) => {
       "addressCountry": "MX"
     },
     "sameAs": [
+      "https://www.facebook.com/idealy.com.mx",
+      "https://www.instagram.com/idealy.com.mx",
+      "https://x.com/idealy_mx",
       "https://www.linkedin.com/company/idealy",
-      "https://twitter.com/idealy",
-      "https://www.instagram.com/idealy"
+      "https://www.tiktok.com/@idealy.com.mx"
     ],
     "contactPoint": {
       "@type": "ContactPoint",

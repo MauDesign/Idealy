@@ -26,12 +26,32 @@ return(
         </div>
         <div className='lg:w-full sm:w-full grow justify-center items-center'>
           
-          <ul className='list text-neutral-content'>
-            <li><Link href="https://www.facebook.com/">Facebook</Link></li>
-            <li><Link href="https://www.instagram.com/">Instagram</Link> </li>
-            <li><Link href="https://www.x.com/">X</Link>  </li>
-            <li><Link href="https://www.linkedin.com/">Linkedin</Link>  </li>
-            <li><Link href="https://www.tiktok.com/">Tik Tok</Link> </li>
+          <ul className='list text-slate-300 space-y-1.5 pt-2 text-center lg:text-left'>
+            <li>
+              <a href="https://www.facebook.com/idealy.com.mx" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+                Facebook
+              </a>
+            </li>
+            <li>
+              <a href="https://www.instagram.com/idealy.com.mx" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a href="https://x.com/idealy_mx" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+                X (Twitter)
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/company/idealy" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+                LinkedIn
+              </a>
+            </li>
+            <li>
+              <a href="https://www.tiktok.com/@idealy.com.mx" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+                TikTok
+              </a>
+            </li>
           </ul>
         </div> 
       </div>
