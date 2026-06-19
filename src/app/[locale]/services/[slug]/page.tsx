@@ -6,6 +6,7 @@ import { ArrowLeft, Terminal, Cpu, Layers, TrendingUp, Lightbulb, CheckCircle2, 
 import Contact from "@/app/ui/contact/contact";
 import Footer from "@/app/ui/Footer/Footer";
 import GSAPInitializer from "@/app/ui/components/GSAPInitializer";
+import PageSchema from "@/app/ui/PageSchema";
 import type { Metadata } from 'next';
 import { keywordsByPage } from '@/config/keywords';
 import type { locales } from '../../../../i18n/routing';
@@ -238,28 +239,61 @@ export default async function ServiceDetailPage({ params }: Props) {
     }
   ];
 
-  // Dynamic Service Schema JSON-LD
-  const serviceSchema = {
-    "@context": "https://schema.org",
-    "@type": "Service",
-    "name": title,
-    "description": description,
-    "provider": {
-      "@type": "Organization",
-      "name": "Idea.ly",
-      "url": "https://www.idealy.com.mx",
-      "logo": "https://www.idealy.com.mx/img/Logo-Idealy.png"
+  // ── Schemas JSON-LD específicos de la página ────────────────────────────────
+  const BASE_URL = 'https://www.idealy.com.mx';
+  const pageUrl = `${BASE_URL}/${locale}/services/${slug}`;
+
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: `${title} | Idea.ly`,
+    description: `${subtitle}. ${description.substring(0, 120)}...`,
+    inLanguage: locale,
+    isPartOf: { '@id': `${BASE_URL}/#website` },
+    about: { '@id': `${BASE_URL}/#organization` },
+    publisher: { '@id': `${BASE_URL}/#organization` },
+  };
+
+  const serviceDetailSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    '@id': `${pageUrl}#service`,
+    name: title,
+    description: description,
+    url: pageUrl,
+    provider: { '@id': `${BASE_URL}/#organization` },
+    areaServed: [
+      { '@type': 'Country', name: 'Mexico' },
+      { '@type': 'Country', name: 'United States' },
+    ],
+    serviceType: subtitle,
+    offers: {
+      '@type': 'Offer',
+      description: heroPhrase,
+      seller: { '@id': `${BASE_URL}/#organization` },
     },
-    "areaServed": ["MX", "US"],
-    "serviceType": subtitle,
-    "offers": {
-      "@type": "Offer",
-      "description": heroPhrase
-    }
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: locale === 'en' ? 'Service Features' : 'Características del Servicio',
+      itemListElement: features.map((feat) => ({
+        '@type': 'Offer',
+        itemOffered: {
+          '@type': 'Service',
+          name: feat.title,
+          description: feat.desc,
+        },
+      })),
+    },
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#01131b]">
+    <>
+      {/* JSON-LD: WebPage + Service schemas — Next.js los eleva al <head> */}
+      <PageSchema schemas={[webPageSchema, serviceDetailSchema]} />
+
+      <div className="flex flex-col min-h-screen bg-[#01131b]">
       {/* Background glow effects */}
       <div className={`absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b ${config.gradient} pointer-events-none opacity-60 z-0`} />
 
@@ -434,10 +468,7 @@ export default async function ServiceDetailPage({ params }: Props) {
       </main>
 
       <Footer />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
-      />
     </div>
+    </>
   );
 }

@@ -28,12 +28,12 @@ return(
           
           <ul className='list text-slate-300 space-y-1.5 pt-2 text-center lg:text-left'>
             <li>
-              <a href="https://www.facebook.com/idealy.com.mx" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+              <a href="https://www.facebook.com/idealymx" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
                 Facebook
               </a>
             </li>
             <li>
-              <a href="https://www.instagram.com/idealy.com.mx" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+              <a href="https://www.instagram.com/idea.ly_design/" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
                 Instagram
               </a>
             </li>
@@ -43,7 +43,7 @@ return(
               </a>
             </li>
             <li>
-              <a href="https://www.linkedin.com/company/idealy" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
+              <a href="https://www.linkedin.com/company/idea-ly-mx" target="_blank" rel="noopener noreferrer" className="hover:text-primary transition-colors duration-200">
                 LinkedIn
               </a>
             </li>

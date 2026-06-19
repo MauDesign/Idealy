@@ -6,6 +6,7 @@ import Header from "@/app/ui/header/header";
 import Contact from "@/app/ui/contact/contact";
 import Footer from "@/app/ui/Footer/Footer";
 import GSAPInitializer from "@/app/ui/components/GSAPInitializer";
+import PageSchema from "@/app/ui/PageSchema";
 import type { Metadata } from 'next';
 import { keywordsByPage } from '@/config/keywords';
 import type { locales } from '../../../i18n/routing';
@@ -82,8 +83,31 @@ export default async function ServicesPage({ params }: Props) {
   const tPage = await getTranslations('ServicesPage');
   const tDetails = await getTranslations('ServicesDetails');
 
+  const BASE_URL = 'https://www.idealy.com.mx';
+  const pageUrl = `${BASE_URL}/${locale}/services`;
+  const isEn = locale === 'en';
+
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    '@id': `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: isEn
+      ? 'Our Services | Idea.ly — High-Performance Software & AI Automation'
+      : 'Nuestros Servicios | Idea.ly — Software de Alto Rendimiento y Automatización',
+    description: isEn
+      ? 'Explore our custom software development, advanced AI agents, UX/UI premium designs, growth marketing, and digital consulting services.'
+      : 'Explora nuestros servicios de desarrollo de software a la medida, agentes de IA avanzados, diseño UX/UI, marketing digital y consultoría tecnológica.',
+    inLanguage: isEn ? 'en' : 'es',
+    isPartOf: { '@id': `${BASE_URL}/#website` },
+    about: { '@id': `${BASE_URL}/#organization` },
+    publisher: { '@id': `${BASE_URL}/#organization` },
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-[#01131b]">
+    <>
+      <PageSchema schemas={[webPageSchema]} />
+      <div className="flex flex-col min-h-screen bg-[#01131b]">
       {/* Hero Banner */}
       <section className="relative pt-36 pb-20 overflow-hidden bg-gradient-to-b from-[#011b27] to-[#01131b]">
         {/* Subtle grid background */}
@@ -219,5 +243,6 @@ export default async function ServicesPage({ params }: Props) {
 
       <Footer />
     </div>
+    </>
   );
 }

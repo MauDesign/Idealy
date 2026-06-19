@@ -6,6 +6,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, Clock, ArrowRight, Rss, FolderOpen } from 'lucide-react';
 import Footer from '@/app/ui/Footer/Footer';
+import PageSchema from '@/app/ui/PageSchema';
 import type { Metadata } from 'next';
 
 type Props = { params: Promise<{ locale: string }> };
@@ -15,6 +16,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isEn = locale === 'en';
 
   return {
+    alternates: {
+      canonical: locale === 'en' ? '/en/blog' : '/blog',
+      languages: {
+        'en': '/en/blog',
+        'es': '/blog',
+        'x-default': '/blog',
+      },
+    },
     title: isEn
       ? "Blog | Idea.ly — Technology, Strategy & Design Insights"
       : "Blog | Idea.ly — Tecnología, Estrategia & Diseño",
@@ -60,8 +69,37 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 
   const [featuredPost, ...restPosts] = posts;
 
+  const BASE_URL = 'https://www.idealy.com.mx';
+  const pageUrl = `${BASE_URL}/${locale}/blog`;
+  const isEn = locale === 'en';
+
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: isEn
+      ? 'Blog | Idea.ly — Technology, Strategy & Design Insights'
+      : 'Blog | Idea.ly — Tecnología, Estrategia & Diseño',
+    description: isEn
+      ? 'Explore our latest articles, guides, and case studies about web development, custom AI automation, UX/UI, and digital growth.'
+      : 'Explora nuestros artículos sobre desarrollo de software, inteligencia artificial, diseño UX y estrategia digital.',
+    inLanguage: isEn ? 'en' : 'es',
+    isPartOf: { '@id': `${BASE_URL}/#website` },
+    publisher: { '@id': `${BASE_URL}/#organization` },
+    blogPost: posts.slice(0, 5).map((post: any) => ({
+      '@type': 'BlogPosting',
+      headline: post.title,
+      url: `${BASE_URL}/${locale}/blog/${post.slug}`,
+      datePublished: post.createdAt,
+      author: { '@type': 'Person', name: 'Leo — Idea.ly' },
+    })),
+  };
+
   return (
-    <div className="flex flex-col min-h-screen bg-base-100">
+    <>
+      <PageSchema schemas={[webPageSchema]} />
+      <div className="flex flex-col min-h-screen bg-base-100">
       {/* Hero Banner */}
       <section className="relative pt-36 pb-24 overflow-hidden bg-base-100">
         {/* Decorative grid */}
@@ -266,5 +304,6 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
 
       <Footer />
     </div>
+    </>
   );
 }

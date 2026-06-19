@@ -20,6 +20,8 @@ export async function generateMetadata({
   const post = (await prisma.post.findUnique({ where: { slug }, include: { category: true } } as any)) as any;
   if (!post) return {};
 
+  const currentUrl = `https://www.idealy.com.mx/${locale}/blog/${slug}`;
+
   const otherLocale = locale === 'es' ? 'en' : 'es';
   let translatedUrl = undefined;
   if (post.translationGroupId) {
@@ -33,7 +35,11 @@ export async function generateMetadata({
   }
 
   const canonicalUrl =
-    post.canonicalUrl || `https://www.idealy.com.mx/${locale}/blog/${slug}`;
+    post.canonicalUrl || currentUrl;
+
+  // Build hreflang map — always declare both locales
+  const hreflangEn = locale === 'en' ? canonicalUrl : (translatedUrl ?? canonicalUrl);
+  const hreflangEs = locale === 'es' ? canonicalUrl : (translatedUrl ?? canonicalUrl);
 
   return {
     title: `${post.seoTitle || post.title} | Idea.ly`,
@@ -56,7 +62,11 @@ export async function generateMetadata({
     },
     alternates: { 
       canonical: canonicalUrl,
-      ...(translatedUrl ? { languages: { [otherLocale]: translatedUrl } } : {})
+      languages: {
+        'en': hreflangEn,
+        'es': hreflangEs,
+        'x-default': hreflangEs,
+      },
     },
     openGraph: {
       title: post.seoTitle || post.title,

@@ -1,5 +1,6 @@
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Metadata } from 'next';
+import PageSchema from '@/app/ui/PageSchema';
 
 type Props = { params: Promise<{ locale: string }> };
 
@@ -9,6 +10,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isEn = locale === 'en';
 
   return {
+    alternates: {
+      canonical: locale === 'en' ? '/en/privacy-policy' : '/privacy-policy',
+      languages: {
+        'en': '/en/privacy-policy',
+        'es': '/privacy-policy',
+        'x-default': '/privacy-policy',
+      },
+    },
     title: `${t('title')} | Idea.ly`,
     description: t('intro'),
     keywords: isEn ? [
@@ -31,9 +40,28 @@ export default async function PrivacyPolicyPage({ params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('PrivacyPolicy');
+  const isEn = locale === 'en';
+
+  const BASE_URL = 'https://www.idealy.com.mx';
+  const pageUrl = `${BASE_URL}/${locale}/privacy-policy`;
+
+  const webPageSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    '@id': `${pageUrl}#webpage`,
+    url: pageUrl,
+    name: `${t('title')} | Idea.ly`,
+    description: t('intro'),
+    inLanguage: isEn ? 'en' : 'es',
+    isPartOf: { '@id': `${BASE_URL}/#website` },
+    publisher: { '@id': `${BASE_URL}/#organization` },
+    about: { '@id': `${BASE_URL}/#organization` },
+  };
 
   return (
-    <div className="min-h-screen bg-[#334B5F] pt-32 pb-20">
+    <>
+      <PageSchema schemas={[webPageSchema]} />
+      <div className="min-h-screen bg-[#334B5F] pt-32 pb-20">
       <div className="max-w-3xl mx-auto px-6">
         <div className="mb-12">
            <h1 className="text-4xl md:text-5xl font-extrabold text-[#00B5A7] mb-6">
@@ -67,5 +95,6 @@ export default async function PrivacyPolicyPage({ params }: Props) {
         </div>
       </div>
     </div>
+    </>
   );
 }
