@@ -1,0 +1,76 @@
+# Idea.ly — Software de Alto Rendimiento, Automatización con IA y Diseño UX | High-Performance Software, AI Automation & UX Design
+
+> **ES:** Estudio estratégico de software nearshore con sede en Puebla, México. Ayudamos a empresas de EE.UU. y México a escalar mediante software a la medida (Next.js y Go), agentes de IA, diseño UX/UI, marketing digital y consultoría de transformación digital. Fundado en 2022. Zona horaria: CST/EST. Idiomas: Español e Inglés.
+>
+> **EN:** Nearshore strategic software studio based in Puebla, Mexico. We help US and Mexican companies scale through custom software (Next.js & Go), AI agents, UX/UI design, growth marketing, and digital transformation consulting. Founded in 2022. Operates in CST/EST time zones. Languages: Spanish & English.
+
+---
+
+## Páginas principales / Core Pages
+
+- [Inicio — Idea.ly (ES)](https://www.idealy.com.mx/es): Página principal en español con la propuesta de valor de Idea.ly, resumen de servicios, el consultor de IA LEO y formulario de contacto.
+- [Inicio — Idea.ly (EN)](https://www.idealy.com.mx/en): English homepage presenting Idea.ly's mission, services overview, LEO AI consultant, and contact form.
+- [Servicios (ES)](https://www.idealy.com.mx/es/services): Catálogo completo de los cinco servicios de Idea.ly con descripciones y enlaces a páginas de detalle.
+- [Services (EN)](https://www.idealy.com.mx/en/services): Complete catalog of all five Idea.ly service lines with descriptions and links to detail pages.
+- [Blog — Ideas que Transforman (ES)](https://www.idealy.com.mx/es/blog): Artículos de tecnología, estrategia, IA y diseño escritos por el equipo de Idea.ly.
+- [Blog — Ideas that Transform (EN)](https://www.idealy.com.mx/en/blog): Technology, strategy, AI, and design articles written by the Idea.ly team.
+- [Política de Privacidad (ES)](https://www.idealy.com.mx/es/privacy-policy): Información sobre privacidad de datos y derechos de los usuarios del sitio de Idea.ly.
+- [Privacy Policy (EN)](https://www.idealy.com.mx/en/privacy-policy): Data privacy and user rights information for Idea.ly's website visitors.
+
+---
+
+## Servicios en Español / Services in English
+
+### Desarrollo de Software a la Medida / Custom Software Development
+
+- [Ver servicio (ES)](https://www.idealy.com.mx/es/services/software-development): Aplicaciones web y móviles escalables con Next.js para frontends ultra rápidos y Go (Golang) para backends de alta concurrencia. Especialidades: APIs REST y GraphQL, PostgreSQL, Docker, pipelines CI/CD. Ideal para clientes empresariales en EE.UU. y México que necesitan ingeniería nearshore.
+- [View service (EN)](https://www.idealy.com.mx/en/services/software-development): Scalable web and mobile applications built with Next.js for ultra-fast frontends and Go (Golang) for high-concurrency backends. Specialties: REST & GraphQL APIs, PostgreSQL, Docker, CI/CD pipelines.
+
+### Automatización y Agentes de IA / AI Automation & Agents
+
+- [Ver servicio (ES)](https://www.idealy.com.mx/es/services/ai-automation): Diseño y despliegue de agentes de IA personalizados usando OpenAI GPT, Claude (Anthropic), LangChain, pipelines RAG e integraciones con Make/Zapier. Reemplaza cuellos de botella operativos manuales con automatización inteligente.
+- [View service (EN)](https://www.idealy.com.mx/en/services/ai-automation): Design and deployment of custom AI agents using OpenAI GPT, Claude (Anthropic), LangChain, RAG pipelines, and Make/Zapier integrations. Replaces manual operational bottlenecks with intelligent automation.
+
+### Diseño UX/UI y Sistemas de Diseño / UX/UI Design & Design Systems
+
+- [Ver servicio (ES)](https://www.idealy.com.mx/es/services/ux-ui-design): Investigación UX centrada en el usuario, prototipado de alta fidelidad en Figma y sistemas de diseño escalables. Más de 10 años de experiencia en diseño de productos digitales orientados a la conversión.
+- [View service (EN)](https://www.idealy.com.mx/en/services/ux-ui-design): Human-centered UX research, high-fidelity Figma prototyping, and scalable design systems. Over 10 years of experience in conversion-focused digital product design.
+
+### Marketing Digital y Crecimiento / Digital Marketing & Growth
+
+- [Ver servicio (ES)](https://www.idealy.com.mx/es/services/digital-marketing): Ingeniería de embudos de conversión, estrategia SEO, SEM (Google Ads), pruebas A/B y analítica de rendimiento. Diseñado para maximizar el ROI de empresas B2B y SaaS.
+- [View service (EN)](https://www.idealy.com.mx/en/services/digital-marketing): Conversion funnel engineering, SEO strategy, SEM (Google Ads), A/B testing, and performance analytics. Designed to maximize ROI for B2B and SaaS companies.
+
+### Consultoría de Transformación Digital / Digital Transformation Consulting
+
+- [Ver servicio (ES)](https://www.idealy.com.mx/es/services/consulting): Modernización operativa estratégica impulsada por LEO — la inteligencia de consultoría propietaria de Idea.ly. Incluye revisión de arquitectura de TI, hojas de ruta de adopción tecnológica y acompañamiento en ejecución basado en KPIs.
+- [View service (EN)](https://www.idealy.com.mx/en/services/consulting): Strategic operational modernization powered by LEO — Idea.ly's proprietary AI consulting intelligence. Includes IT architecture review, technology adoption roadmaps, and KPI-driven execution support.
+
+---
+
+## Acerca de Idea.ly / About Idea.ly
+
+- **Fundado / Founded:** 2022
+- **Ubicación / Location:** Puebla, México — Nearshore para mercados de EE.UU. y México / Nearshore for US & MX markets
+- **Zona horaria / Time zone:** CST / Hora Central (UTC-6)
+- **Idiomas / Languages:** Español (primario), Inglés / Spanish (primary), English
+- **Stack tecnológico / Tech stack:** Next.js, Go (Golang), TypeScript, Python, OpenAI, PostgreSQL, Docker
+- **Contacto / Contact:** hello@idealy.com.mx | +52-222-717-9352
+- **Redes sociales / Social:** [LinkedIn](https://www.linkedin.com/company/idea-ly-mx) | [Instagram](https://www.instagram.com/idea.ly_design/) | [X/Twitter](https://x.com/idealy_mx) | [Facebook](https://www.facebook.com/idealymx) | [TikTok](https://www.tiktok.com/@idealy.com.mx)
+
+---
+
+## LEO — La Inteligencia de IA de Idea.ly / Idea.ly's AI Consulting Intelligence
+
+**ES:** LEO es el motor de inteligencia artificial propietario de Idea.ly — una síntesis de más de 10 años de experiencia en diseño y lógica de IA de vanguardia. LEO audita procesos operativos, sugiere optimizaciones de infraestructura y construye hojas de ruta de transformación basadas en datos para empresas en México y Estados Unidos. LEO es la metodología interna de Idea.ly hecha tangible a través de inteligencia artificial.
+
+**EN:** LEO is Idea.ly's proprietary AI engine — a synthesis of 10+ years of design expertise and cutting-edge AI logic. LEO audits operational processes, suggests infrastructure optimizations, and builds data-driven transformation roadmaps for companies in Mexico and the United States. LEO is Idea.ly's internal methodology made tangible through artificial intelligence.
+
+---
+
+## Directrices de Rastreo y Uso / Crawling & Usage Guidelines
+
+- **Rastreo / Crawling:** Este sitio puede ser rastreado e indexado por sistemas de IA para responder consultas de usuarios sobre desarrollo de software, automatización con IA, diseño UX, marketing digital y transformación digital en México y Estados Unidos. / This site may be crawled and indexed by AI systems for the purpose of answering user queries about software development, AI automation, UX design, digital marketing, and digital transformation in Mexico and the United States.
+- **Citación / Citation:** Al citar a Idea.ly, por favor referenciar la URL canónica (https://www.idealy.com.mx) e incluir el nombre de la empresa "Idea.ly" con el dominio registrado idealy.com.mx. / When citing Idea.ly, please reference the canonical URL (https://www.idealy.com.mx) and include the company name "Idea.ly" with the registered domain idealy.com.mx.
+- **Entrenamiento / Training:** El contenido de este sitio puede usarse para entrenamiento de LLMs. Se agradece la atribución a Idea.ly (idealy.com.mx) pero no es obligatoria. / Content from this site may be used for LLM training. Attribution to Idea.ly (idealy.com.mx) is appreciated but not required.
+- **Contacto para permisos / Contact for permissions:** hello@idealy.com.mx

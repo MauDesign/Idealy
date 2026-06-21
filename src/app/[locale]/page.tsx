@@ -52,7 +52,7 @@ export default async function Home({ params }: Props) {
             <div className='flex flex-wrap w-3/4 m-auto '>
               <div id="about" className="lg:w-full sm:w-full  grow py-5 p-10 sm:p-3 ">
                 <div className='w-full lg:mt-10 '>
-                  <h1 className=" font-bold text-4xl text-center mb-5 text-[#00B5A7]">{t("frase")}</h1>
+                  <h2 className=" font-bold text-4xl text-center mb-5 text-[#00B5A7]">{t("frase")}</h2>
                   <p className=" text-center text-lg text-[#ffffff]">{t("About-us")}</p>
                   <p className=" text-center text-lg text-[#ffffff]">{t("About-us2")}</p>
                   <p className=" text-center text-lg text-[#ffffff]">{t("About-us3")}</p>
@@ -72,12 +72,12 @@ export default async function Home({ params }: Props) {
           <div className='w-full flex justify-center items-center mb-10'>
             <h2 className='text-primary center font-bold text-4xl'>{t("title-method")}</h2>
           </div>
-          <div id="services" className='w-full mb-15 '>
+          <div id="method" className='w-full mb-15 '>
             <div className='w-3/4 m-auto flex flex-wrap'>
               <div className='lg:w-1/2 grow sm:w-full hover-3d center'>
                 <Image
                   src="/img/idealy-dev.webp"
-                  alt='Desarrollo a la medida'
+                  alt='Arquitectura de software y desarrollo a la medida con Next.js y Go'
                   width={600}
                   height={400}
                   className='object-cover mask mask-squircle overflow-hidden shadow-md'
@@ -94,7 +94,7 @@ export default async function Home({ params }: Props) {
                 </ul>
                 <p className='w-full text-md'>{t("text2-development")}</p>
                 <p className='w-full  text-md text-secondary'>{t("frase-dev")}</p>
-                <a role="button" href="#" className="mt-5 btn btn-soft btn-primary"> {t("button-development")} </a>
+                <a href="/services/software-development" className="mt-5 btn btn-soft btn-primary"> {t("button-development")} </a>
               </div>
             </div>
           </div>
@@ -116,7 +116,7 @@ export default async function Home({ params }: Props) {
 
                 <Image
                   src="/img/idealy-ai-automate.webp"
-                  alt='Desarrollo a la medida'
+                  alt='Automatización de procesos con inteligencia artificial y agentes de IA'
                   width={600}
                   height={300}
                   className=' object-cover mask mask-squircle overflow-hidden shadow-md'
@@ -132,7 +132,7 @@ export default async function Home({ params }: Props) {
 
                 <Image
                   src="/img/idealy-ux-ui.webp"
-                  alt='Desarrollo a la medida'
+                  alt='Diseño UX/UI premium e interfaces de usuario para productos digitales'
                   width={600}
                   height={400}
                   className='object-cover mask mask-squircle overflow-hidden shadow-md'
@@ -149,7 +149,7 @@ export default async function Home({ params }: Props) {
                   <li className='list-row'>{t("bullet9")}</li>
                 </ul>
                 <p className='w-full  text-md text-secondary'>{t("frase-ux")}</p>
-                <a role="button" href="#" className="mt-5 btn btn-soft btn-primary"> {t("button-ux")} </a>
+                <a href="/services/ux-ui-design" className="mt-5 btn btn-soft btn-primary"> {t("button-ux")} </a>
               </div>
             </div>
           </div>
@@ -165,13 +165,13 @@ export default async function Home({ params }: Props) {
                   <li className='list-row'>{t("bullet12")}</li>
                 </ul>
                 <p className='w-full  text-md text-secondary'>{t("frase-grow")}</p>
-                <a role="button" href="#" className="mt-5 btn btn-soft btn-primary"> {t("button-grow")} </a>
+                <a href="/services/digital-marketing" className="mt-5 btn btn-soft btn-primary"> {t("button-grow")} </a>
               </div>
               <div className='lg:w-1/2 sm:w-full grow hover-3d'>
 
                 <Image
                   src="/img/idealy-marketing.webp"
-                  alt='Desarrollo a la medida'
+                  alt='Estrategia de marketing digital y crecimiento de negocios en línea'
                   width={600}
                   height={300}
                   className='object-cover mask mask-squircle overflow-hidden shadow-xl'
@@ -186,7 +186,7 @@ export default async function Home({ params }: Props) {
             <div className='lg:w-1/3 sm:w-full grow hover-3d items-center p-5'>
               <Image
                 src="/img/Consulting-leo-idealy.jpg"
-                alt='Desarrollo a la medida'
+                alt='LEO, el consultor de inteligencia artificial de Idea.ly'
                 width={600}
                 height={300}
                 className='w-[22rem] h-[22rem] ml-10 m-auto  mask mask-squircle shadow-xl'
@@ -199,7 +199,7 @@ export default async function Home({ params }: Props) {
                 <p className='w-full  text-md text-[#ababab]'>{t("subtitle-consulting")}</p>
                 <p className='w-full text-lg text-justify text-[#ffffff]'>{t("text-consulting")}</p>
                 <p className='w-full text-lg text-justify text-[#ffffff] mt-10'>{t("text-consulting2")}</p>
-                <button className='btn btn-outline btn-primary mt-10'>{t("button-consulting")}</button>
+                <button type="button" className='btn btn-outline btn-primary mt-10'>{t("button-consulting")}</button>
               </div>
             </div>
             <div className="lg:w-1/3 sm:w-full center p-5">
