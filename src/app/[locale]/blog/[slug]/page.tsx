@@ -63,8 +63,8 @@ export async function generateMetadata({
     alternates: { 
       canonical: canonicalUrl,
       languages: {
-        'en': hreflangEn,
-        'es': hreflangEs,
+        'en-US': hreflangEn,
+        'es-MX': hreflangEs,
         'x-default': hreflangEs,
       },
     },

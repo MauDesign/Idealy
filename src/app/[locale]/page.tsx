@@ -18,6 +18,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const isEn = locale === 'en';
 
   return {
+    alternates: {
+      canonical: locale === 'en' ? '/en' : '/',
+      languages: {
+        'en-US': '/en',
+        'es-MX': '/',
+        'x-default': '/',
+      },
+    },
     title: isEn 
       ? "Idea.ly | High-Performance Solutions & AI Automation" 
       : "Idea.ly | Software de Alto Rendimiento y Automatización de IA",

@@ -13,8 +13,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     alternates: {
       canonical: locale === 'en' ? '/en/privacy-policy' : '/privacy-policy',
       languages: {
-        'en': '/en/privacy-policy',
-        'es': '/privacy-policy',
+        'en-US': '/en/privacy-policy',
+        'es-MX': '/privacy-policy',
         'x-default': '/privacy-policy',
       },
     },

@@ -32,8 +32,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     alternates: {
       canonical: locale === 'en' ? '/en' : '/',
       languages: {
-        en: '/en',
-        es: '/',
+        'en-US': '/en',
+        'es-MX': '/',
         'x-default': '/',
       },
     },
