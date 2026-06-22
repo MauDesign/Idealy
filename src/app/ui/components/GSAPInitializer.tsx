@@ -44,10 +44,16 @@ export default function GSAPInitializer({ children }: { children: React.ReactNod
           el,
         );
 
+        // STEP 1: Batch all DOM Writes (gsap.set) to prevent Layout Thrashing
+        gsap.set(sections, { opacity: 0, y: 50, filter: 'blur(10px)' });
+        
+        const images = gsap.utils.toArray<HTMLElement>('.hover-3d', el);
+        gsap.set(images, { scale: 0.8, opacity: 0 });
+
+        // STEP 2: Batch all DOM Reads (ScrollTrigger creation)
         sections.forEach((section) => {
-          gsap.fromTo(
+          gsap.to(
             section,
-            { opacity: 0, y: 50, filter: 'blur(10px)' },
             {
               opacity: 1,
               y: 0,
@@ -66,11 +72,10 @@ export default function GSAPInitializer({ children }: { children: React.ReactNod
         });
 
         // ── Animate 3D-hover images ──────────────────────────────────────────
-        const images = gsap.utils.toArray<HTMLElement>('.hover-3d', el);
         images.forEach((img) => {
-          gsap.from(img, {
-            scale: 0.8,
-            opacity: 0,
+          gsap.to(img, {
+            scale: 1,
+            opacity: 1,
             duration: 1.2,
             ease: 'back.out(1.7)',
             scrollTrigger: {
