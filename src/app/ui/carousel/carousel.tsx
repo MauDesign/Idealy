@@ -20,10 +20,10 @@ export default function Carousel() {
     };
 
     const items = [
-        { id: "1", image: "img/wise-case.jpg" },
-        { id: "2", image: "img/orbeo-case.jpg" },
-        { id: "3", image: "img/padel-case.jpg" },
-        { id: "4", image: "img/mar-holidays-case.jpg" },
+        { id: "1", image: "img/wise-case.webp" },
+        { id: "2", image: "img/orbeo-case.webp" },
+        { id: "3", image: "img/padel-case.webp" },
+        { id: "4", image: "img/mar-holidays-case.webp" },
     ];
 
     return (
