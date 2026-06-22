@@ -67,7 +67,7 @@ export default function NewPostForm({ categories, translateFromPost }: NewPostFo
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Header */}
       <div className="flex items-center gap-4">
-        <Link href={`/${locale}/admin/posts`} className="btn btn-ghost btn-circle btn-sm">
+        <Link href={`/${locale}/admin/posts`} className="btn btn-ghost btn-circle btn-sm" aria-label="Regresar a publicaciones">
           <ChevronLeft className="w-5 h-5" />
         </Link>
         <div>

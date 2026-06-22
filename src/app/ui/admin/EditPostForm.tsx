@@ -74,7 +74,7 @@ export default function EditPostForm({ post, locale, categories }: EditPostFormP
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Link href={`/${locale}/admin/posts`} className="btn btn-ghost btn-circle btn-sm">
+          <Link href={`/${locale}/admin/posts`} className="btn btn-ghost btn-circle btn-sm" aria-label="Regresar a publicaciones">
             <ChevronLeft className="w-5 h-5" />
           </Link>
           <div>

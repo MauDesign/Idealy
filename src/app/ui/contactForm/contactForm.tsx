@@ -62,63 +62,63 @@ export default function ContactForm() {
     return (
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="form-control w-full">
-                <fieldset>
-                    <legend className="Fieldset-legend"> {t("name")} </legend>
-                    <input
-                        type="text"
-                        id="name"
-                        name="name"
-                        placeholder={t("nameholder")}
-                        value={formData.name}
-                        onChange={handleChange}
-                        className="input input-bordered w-full p-1"
-                        required
-                    />
-                </fieldset>
+                <label htmlFor="name" className="label">
+                    <span className="label-text">{t("name")}</span>
+                </label>
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder={t("nameholder")}
+                    value={formData.name}
+                    onChange={handleChange}
+                    className="input input-bordered w-full p-1"
+                    required
+                />
             </div>
             <div className="form-control w-full">
-                <fieldset>
-                    <legend className="Fieldset-legend"> {t("email")} </legend>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        className="input input-bordered w-full p-1"
-                        placeholder={t("emailholder")}
-                        required
-                    />
-                </fieldset>
+                <label htmlFor="email" className="label">
+                    <span className="label-text">{t("email")}</span>
+                </label>
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="input input-bordered w-full p-1"
+                    placeholder={t("emailholder")}
+                    required
+                />
             </div>
             <div className="form-control w-full">
-                <fieldset>
-                    <legend className="Fieldset-legend"> {t("subject")} </legend>
-                    <input
-                        type="text"
-                        id="subject"
-                        name="subject"
-                        value={formData.subject}
-                        onChange={handleChange}
-                        placeholder={t("subjectholder")}
-                        className="input input-bordered w-full p-1"
-                        required
-                    />
-                </fieldset>
+                <label htmlFor="subject" className="label">
+                    <span className="label-text">{t("subject")}</span>
+                </label>
+                <input
+                    type="text"
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    placeholder={t("subjectholder")}
+                    className="input input-bordered w-full p-1"
+                    required
+                />
             </div>
             <div className="form-control w-full">
-                <fieldset>
-                    <legend className="Fieldset-legend"> {t("message")} </legend>
-                    <textarea
-                        id="message"
-                        name="message"
-                        className='textarea texarea-bordered w-full'
-                        rows={5}
-                        value={formData.message}
-                        onChange={handleChange}
-                        required
-                    />
-                </fieldset>
+                <label htmlFor="message" className="label">
+                    <span className="label-text">{t("message")}</span>
+                </label>
+                <textarea
+                    id="message"
+                    name="message"
+                    className='textarea texarea-bordered w-full'
+                    rows={5}
+                    value={formData.message}
+                    onChange={handleChange}
+                    required
+                />
             </div>
             <button type="submit" className='btn btn-primary w-full mt-2' disabled={isSubmitting}>
                 {isSubmitting ? t('submitting') : t("submit")}

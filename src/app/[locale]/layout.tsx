@@ -29,14 +29,6 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
   return {
     metadataBase: new URL('https://www.idealy.com.mx'),
-    alternates: {
-      canonical: locale === 'en' ? '/en' : '/',
-      languages: {
-        'en-US': '/en',
-        'es-MX': '/',
-        'x-default': '/',
-      },
-    },
     title: isEn 
       ? "Idea.ly | High-Performance Solutions & Custom AI" 
       : "Idea.ly | Soluciones de Alto Rendimiento y Automatización de IA",

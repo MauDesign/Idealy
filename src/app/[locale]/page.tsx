@@ -1,12 +1,13 @@
 import { getTranslations } from 'next-intl/server';
 import Image from "next/image";
 import Header from "@/app/ui/header/header";
-import Carousel from "@/app/ui/carousel/carousel";
+import dynamic from 'next/dynamic';
+const Carousel = dynamic(() => import("@/app/ui/carousel/carousel"));
 import Contact from "@/app/ui/contact/contact";
 import Footer from "@/app/ui/Footer/Footer";
 import { setRequestLocale } from 'next-intl/server';
 import GSAPInitializer from "@/app/ui/components/GSAPInitializer";
-import CardStack from "@/app/ui/cardstack/cardstak";
+const CardStack = dynamic(() => import("@/app/ui/cardstack/cardstak"));
 import type { Metadata } from 'next';
 import { keywordsByPage } from '@/config/keywords';
 
@@ -80,6 +81,7 @@ export default async function Home({ params }: Props) {
                   alt='Arquitectura de software y desarrollo a la medida con Next.js y Go'
                   width={600}
                   height={400}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className='object-cover mask mask-squircle overflow-hidden shadow-md'
                 />
               </div>
@@ -119,6 +121,7 @@ export default async function Home({ params }: Props) {
                   alt='Automatización de procesos con inteligencia artificial y agentes de IA'
                   width={600}
                   height={300}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className=' object-cover mask mask-squircle overflow-hidden shadow-md'
                 />
 
@@ -135,6 +138,7 @@ export default async function Home({ params }: Props) {
                   alt='Diseño UX/UI premium e interfaces de usuario para productos digitales'
                   width={600}
                   height={400}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className='object-cover mask mask-squircle overflow-hidden shadow-md'
                 />
 
@@ -174,6 +178,7 @@ export default async function Home({ params }: Props) {
                   alt='Estrategia de marketing digital y crecimiento de negocios en línea'
                   width={600}
                   height={300}
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className='object-cover mask mask-squircle overflow-hidden shadow-xl'
                 />
 
@@ -189,6 +194,7 @@ export default async function Home({ params }: Props) {
                 alt='LEO, el consultor de inteligencia artificial de Idea.ly'
                 width={600}
                 height={300}
+                sizes="(max-width: 768px) 100vw, 33vw"
                 className='w-[22rem] h-[22rem] ml-10 m-auto  mask mask-squircle shadow-xl'
               />
 

@@ -2,6 +2,7 @@
 import { useTranslations } from "next-intl";
 import { useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 export default function Carousel() {
     const t = useTranslations("Carousel");
@@ -58,9 +59,11 @@ export default function Carousel() {
                     <div key={item.id} className="carousel-item">
                         <div className="card bg-[#011b27] w-[18rem] sm:w-[25rem] lg:w-[35rem] shadow-2xl border border-white/5 overflow-hidden transform transition-transform hover:scale-[1.01]">
                             <figure className="relative h-48 sm:h-64 lg:h-80">
-                                <img
-                                    src={item.image}
+                                <Image
+                                    src={'/' + item.image}
                                     alt={t(`items.${item.id}.title`)}
+                                    fill
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                     className="object-cover w-full h-full brightness-90 hover:brightness-100 transition-all"
                                 />
                             </figure>
