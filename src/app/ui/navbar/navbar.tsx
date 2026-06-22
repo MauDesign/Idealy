@@ -48,14 +48,13 @@ const Navbar = ({ locale }: { locale: string }) => {
                             id="mobile-menu"
                             tabIndex={0}
                             className="flex menu menu-sm menu-horizontal dropdown-content rounded-sm bg-base-100 px-1 gap-2 w-45 shadow-lg border border-base-300"
-                            role="menu"
                         >
-                            <li role="none"><Link href="/" role="menuitem">{t('home')}</Link></li>
-                            <li role="none"><Link href="/#about" role="menuitem">{t('about')}</Link></li>
-                            <li role="none"><Link href="/services" role="menuitem">{t('services')}</Link></li>
-                            <li role="none"><Link href="/blog" role="menuitem">{t('blog')}</Link></li>
-                            <li role="none"><Link href="/#contact" role="menuitem">{t('contact')}</Link></li>
-                            <li role="none" className="min-w-40 flex-row items-center justify-between gap-2 px-4 py-2 border-t mt-2">
+                            <li><Link href="/">{t('home')}</Link></li>
+                            <li><Link href="/#about">{t('about')}</Link></li>
+                            <li><Link href="/services">{t('services')}</Link></li>
+                            <li><Link href="/blog">{t('blog')}</Link></li>
+                            <li><Link href="/#contact">{t('contact')}</Link></li>
+                            <li className="min-w-40 flex-row items-center justify-between gap-2 px-4 py-2 border-t mt-2">
                                 <LanguageSwitcher locale={locale} />
                                 <ThemeToggle />
                             </li>

@@ -98,22 +98,6 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html lang={locale} suppressHydrationWarning>
       <head>
         <StructuredData locale={locale} />
-        {/* ── LCP image preload ────────────────────────────────────────────────
-            The hero image is inside a 'use client' component. Without this hint
-            the browser can't discover it until JS hydrates (~300-500ms later),
-            delaying LCP. Preloading it here makes it discoverable from the raw
-            HTML stream, fixing the Lighthouse 'LCP request discovery' warning.
-            imagesizes/imagesrcset must match what next/image emits exactly so
-            the browser reuses the in-flight request instead of double-fetching.
-        ────────────────────────────────────────────────────────────────────── */}
-        <link
-          rel="preload"
-          as="image"
-          href="/img/idea-transform.webp"
-          imageSizes="(max-width: 1024px) 100vw, 50vw"
-          // @ts-expect-error — fetchpriority is valid HTML but not in TS types yet
-          fetchpriority="high"
-        />
         {/* Resource hints — shorten TCP handshake for any Google-origin asset */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

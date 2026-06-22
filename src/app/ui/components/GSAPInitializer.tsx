@@ -34,48 +34,50 @@ export default function GSAPInitializer({ children }: { children: React.ReactNod
       if (typeof window === 'undefined') return;
       gsap.registerPlugin(ScrollTrigger);
 
-      const el = container.current;
-      if (!el) return;
+      requestAnimationFrame(() => {
+        const el = container.current;
+        if (!el) return;
 
-      // ── Animate sections on scroll ───────────────────────────────────────
-      const sections = gsap.utils.toArray<HTMLElement>(
-        'section, .w-full.mb-15, #services, #portfolio',
-        el,
-      );
-
-      sections.forEach((section) => {
-        gsap.fromTo(
-          section,
-          { opacity: 0, y: 50, filter: 'blur(10px)' },
-          {
-            opacity: 1,
-            y: 0,
-            filter: 'blur(0px)',
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: section,
-              start: 'top 85%',
-              end: 'top 50%',
-              scrub: false,
-              toggleActions: 'play none none none',
-            },
-          },
+        // ── Animate sections on scroll ───────────────────────────────────────
+        const sections = gsap.utils.toArray<HTMLElement>(
+          'section, .w-full.mb-15, #services, #portfolio',
+          el,
         );
-      });
 
-      // ── Animate 3D-hover images ──────────────────────────────────────────
-      const images = gsap.utils.toArray<HTMLElement>('.hover-3d', el);
-      images.forEach((img) => {
-        gsap.from(img, {
-          scale: 0.8,
-          opacity: 0,
-          duration: 1.2,
-          ease: 'back.out(1.7)',
-          scrollTrigger: {
-            trigger: img,
-            start: 'top 90%',
-          },
+        sections.forEach((section) => {
+          gsap.fromTo(
+            section,
+            { opacity: 0, y: 50, filter: 'blur(10px)' },
+            {
+              opacity: 1,
+              y: 0,
+              filter: 'blur(0px)',
+              duration: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: section,
+                start: 'top 85%',
+                end: 'top 50%',
+                scrub: false,
+                toggleActions: 'play none none none',
+              },
+            },
+          );
+        });
+
+        // ── Animate 3D-hover images ──────────────────────────────────────────
+        const images = gsap.utils.toArray<HTMLElement>('.hover-3d', el);
+        images.forEach((img) => {
+          gsap.from(img, {
+            scale: 0.8,
+            opacity: 0,
+            duration: 1.2,
+            ease: 'back.out(1.7)',
+            scrollTrigger: {
+              trigger: img,
+              start: 'top 90%',
+            },
+          });
         });
       });
     });
