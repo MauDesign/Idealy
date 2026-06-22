@@ -2,12 +2,16 @@ import { getTranslations } from 'next-intl/server';
 import Image from "next/image";
 import Header from "@/app/ui/header/header";
 import dynamic from 'next/dynamic';
-const Carousel = dynamic(() => import("@/app/ui/carousel/carousel"));
+const Carousel = dynamic(() => import("@/app/ui/carousel/carousel"), {
+  loading: () => <div className="h-[400px] w-full animate-pulse bg-base-200/20 rounded-box"></div>
+});
 import Contact from "@/app/ui/contact/contact";
 import Footer from "@/app/ui/Footer/Footer";
 import { setRequestLocale } from 'next-intl/server';
 import GSAPInitializer from "@/app/ui/components/GSAPInitializer";
-const CardStack = dynamic(() => import("@/app/ui/cardstack/cardstak"));
+const CardStack = dynamic(() => import("@/app/ui/cardstack/cardstak"), {
+  loading: () => <div className="h-[300px] w-full animate-pulse bg-base-200/20 rounded-box"></div>
+});
 import type { Metadata } from 'next';
 import { keywordsByPage } from '@/config/keywords';
 

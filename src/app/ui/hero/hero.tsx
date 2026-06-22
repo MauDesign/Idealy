@@ -52,13 +52,15 @@ export default async function Hero() {
                         {t('title')}
                     </h1>
 
-                    <p className="text-5xl lg:text-7xl font-black text-white leading-tight tracking-tight min-h-[1.2em]">
-                        {t('title2')}{' '}
-                        {/* Typewriter is a Client Component — only this subtree hydrates */}
-                        <span className="text-primary">
-                            <Typewriter words={switcherWords} />
-                        </span>
-                    </p>
+                    <div className="min-h-[120px] lg:min-h-[180px] flex items-start justify-center lg:justify-start">
+                        <p className="text-5xl lg:text-7xl font-black text-white leading-tight tracking-tight">
+                            {t('title2')}{' '}
+                            {/* Typewriter is a Client Component — only this subtree hydrates */}
+                            <span className="text-primary">
+                                <Typewriter words={switcherWords} />
+                            </span>
+                        </p>
+                    </div>
 
                     <p className="py-8 text-lg lg:text-xl text-slate-300 max-w-xl">
                         {t('description')}
