@@ -17,11 +17,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     alternates: {
-      canonical: locale === 'en' ? '/en/blog' : '/blog',
+      canonical: `/${locale}/blog`,
       languages: {
         'en-US': '/en/blog',
-        'es-MX': '/blog',
-        'x-default': '/blog',
+        'es-MX': '/es/blog',
+        'x-default': '/es/blog',
       },
     },
     title: isEn
@@ -92,6 +92,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
       headline: post.title,
       url: `${BASE_URL}/${locale}/blog/${post.slug}`,
       datePublished: post.createdAt,
+      image: post.featuredImage || `${BASE_URL}/img/Consulting-leo-idealy.jpg`,
       author: { '@type': 'Person', name: 'Leo — Idea.ly' },
     })),
   };

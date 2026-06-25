@@ -19,11 +19,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     alternates: {
-      canonical: locale === 'en' ? '/en/services' : '/services',
+      canonical: `/${locale}/services`,
       languages: {
         'en-US': '/en/services',
-        'es-MX': '/services',
-        'x-default': '/services',
+        'es-MX': '/es/services',
+        'x-default': '/es/services',
       },
     },
     title: isEn 

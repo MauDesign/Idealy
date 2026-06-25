@@ -37,9 +37,16 @@ export async function generateMetadata({
   const canonicalUrl =
     post.canonicalUrl || currentUrl;
 
-  // Build hreflang map — always declare both locales
-  const hreflangEn = locale === 'en' ? canonicalUrl : (translatedUrl ?? canonicalUrl);
-  const hreflangEs = locale === 'es' ? canonicalUrl : (translatedUrl ?? canonicalUrl);
+  const languages: Record<string, string> = {};
+  if (locale === 'en') {
+    languages['en-US'] = canonicalUrl;
+    if (translatedUrl) languages['es-MX'] = translatedUrl;
+    languages['x-default'] = translatedUrl ?? canonicalUrl;
+  } else {
+    languages['es-MX'] = canonicalUrl;
+    if (translatedUrl) languages['en-US'] = translatedUrl;
+    languages['x-default'] = canonicalUrl;
+  }
 
   return {
     title: `${post.seoTitle || post.title} | Idea.ly`,
@@ -62,11 +69,7 @@ export async function generateMetadata({
     },
     alternates: { 
       canonical: canonicalUrl,
-      languages: {
-        'en-US': hreflangEn,
-        'es-MX': hreflangEs,
-        'x-default': hreflangEs,
-      },
+      languages,
     },
     openGraph: {
       title: post.seoTitle || post.title,
@@ -159,7 +162,7 @@ export default async function PostDetailPage({
     '@type': 'BlogPosting',
     headline: post.seoTitle || post.title,
     description: post.seoDescription || post.summary || '',
-    image: post.featuredImage || undefined,
+    image: post.featuredImage || 'https://www.idealy.com.mx/img/Consulting-leo-idealy.jpg',
     url: canonicalUrl,
     datePublished: post.createdAt.toISOString(),
     dateModified: post.updatedAt.toISOString(),

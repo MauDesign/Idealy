@@ -112,14 +112,14 @@ const StructuredData = ({
     contactPoint: [
       {
         '@type': 'ContactPoint',
-        contactType: isEn ? 'customer support' : 'soporte al cliente',
+        contactType: 'customer support',
         email: 'hello@idealy.com.mx',
         availableLanguage: ['Spanish', 'English'],
         url: `${BASE_URL}/${locale}#contact`,
       },
       {
         '@type': 'ContactPoint',
-        contactType: isEn ? 'sales' : 'ventas',
+        contactType: 'sales',
         email: 'hello@idealy.com.mx',
         availableLanguage: ['Spanish', 'English'],
       },
@@ -224,89 +224,83 @@ const StructuredData = ({
   // ── 5. Catálogo de servicios (global, presente en todo el sitio) ─────────────
   const servicesSchema: SchemaObject = {
     '@context': 'https://schema.org',
-    '@type': 'Service',
+    '@type': 'ItemList',
     '@id': `${BASE_URL}/#services`,
-    serviceType: isEn
-      ? 'Software Development & AI Automation'
-      : 'Desarrollo de Software y Automatización con IA',
-    provider: { '@id': ORG_ID },
-    areaServed: [
-      { '@type': 'Country', name: 'Mexico' },
-      { '@type': 'Country', name: 'United States' },
-    ],
-    serviceOutput: isEn
+    name: isEn ? 'Idea.ly Services' : 'Servicios de Idea.ly',
+    description: isEn
       ? 'Scalable web applications, AI agents, UX/UI systems and digital growth strategies'
       : 'Aplicaciones web escalables, agentes de IA, sistemas UX/UI y estrategias de crecimiento digital',
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: isEn ? 'Idea.ly Services' : 'Servicios de Idea.ly',
-      itemListElement: [
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: isEn
-              ? 'Custom Software Development'
-              : 'Desarrollo de Software a la Medida',
-            description: isEn
-              ? 'Scalable web and mobile applications built with Next.js and Go. High-performance architecture for US and MX enterprise clients.'
-              : 'Aplicaciones web y móviles escalables construidas con Next.js y Go. Arquitectura de alto rendimiento para clientes empresariales en EE.UU. y México.',
-            url: `${BASE_URL}/${locale}/services/software-development`,
-            provider: { '@id': ORG_ID },
-          },
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        item: {
+          '@type': 'Service',
+          name: isEn
+            ? 'Custom Software Development'
+            : 'Desarrollo de Software a la Medida',
+          description: isEn
+            ? 'Scalable web and mobile applications built with Next.js and Go. High-performance architecture for US and MX enterprise clients.'
+            : 'Aplicaciones web y móviles escalables construidas con Next.js y Go. Arquitectura de alto rendimiento para clientes empresariales en EE.UU. y México.',
+          url: `${BASE_URL}/${locale}/services/software-development`,
+          provider: { '@id': ORG_ID },
         },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: isEn ? 'AI Automation & Agents' : 'Automatización y Agentes de IA',
-            description: isEn
-              ? 'Custom AI agents and LLM integration for business workflow optimization. Reduce operational costs with intelligent automation.'
-              : 'Agentes de IA personalizados e integración de modelos LLM para la optimización de flujos de trabajo empresariales. Reduce costos operativos con automatización inteligente.',
-            url: `${BASE_URL}/${locale}/services/ai-automation`,
-            provider: { '@id': ORG_ID },
-          },
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        item: {
+          '@type': 'Service',
+          name: isEn ? 'AI Automation & Agents' : 'Automatización y Agentes de IA',
+          description: isEn
+            ? 'Custom AI agents and LLM integration for business workflow optimization. Reduce operational costs with intelligent automation.'
+            : 'Agentes de IA personalizados e integración de modelos LLM para la optimización de flujos de trabajo empresariales. Reduce costos operativos con automatización inteligente.',
+          url: `${BASE_URL}/${locale}/services/ai-automation`,
+          provider: { '@id': ORG_ID },
         },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: isEn ? 'UX/UI Design' : 'Diseño UX/UI',
-            description: isEn
-              ? 'Intuitive and premium user experience design for digital products. High-fidelity prototyping and scalable design systems.'
-              : 'Diseño de experiencia de usuario intuitivo y premium para productos digitales. Prototipado de alta fidelidad y sistemas de diseño escalables.',
-            url: `${BASE_URL}/${locale}/services/ux-ui-design`,
-            provider: { '@id': ORG_ID },
-          },
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        item: {
+          '@type': 'Service',
+          name: isEn ? 'UX/UI Design' : 'Diseño UX/UI',
+          description: isEn
+            ? 'Intuitive and premium user experience design for digital products. High-fidelity prototyping and scalable design systems.'
+            : 'Diseño de experiencia de usuario intuitivo y premium para productos digitales. Prototipado de alta fidelidad y sistemas de diseño escalables.',
+          url: `${BASE_URL}/${locale}/services/ux-ui-design`,
+          provider: { '@id': ORG_ID },
         },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: isEn ? 'Digital Marketing & Growth' : 'Marketing Digital y Crecimiento',
-            description: isEn
-              ? 'Conversion funnel engineering and high-ROI growth marketing. SEO, SEM and performance analytics for scalable acquisition.'
-              : 'Ingeniería de embudos de conversión y marketing de crecimiento con alto retorno de inversión. SEO, SEM y analítica de rendimiento para adquisición escalable.',
-            url: `${BASE_URL}/${locale}/services/digital-marketing`,
-            provider: { '@id': ORG_ID },
-          },
+      },
+      {
+        '@type': 'ListItem',
+        position: 4,
+        item: {
+          '@type': 'Service',
+          name: isEn ? 'Digital Marketing & Growth' : 'Marketing Digital y Crecimiento',
+          description: isEn
+            ? 'Conversion funnel engineering and high-ROI growth marketing. SEO, SEM and performance analytics for scalable acquisition.'
+            : 'Ingeniería de embudos de conversión y marketing de crecimiento con alto retorno de inversión. SEO, SEM y analítica de rendimiento para adquisición escalable.',
+          url: `${BASE_URL}/${locale}/services/digital-marketing`,
+          provider: { '@id': ORG_ID },
         },
-        {
-          '@type': 'Offer',
-          itemOffered: {
-            '@type': 'Service',
-            name: isEn
-              ? 'Digital Transformation Consulting'
-              : 'Consultoría de Transformación Digital',
-            description: isEn
-              ? 'Practical technological strategy driven by AI workflows and LEO. Operational modernization and technology adoption roadmaps.'
-              : 'Estrategia tecnológica práctica impulsada por flujos de trabajo de IA y LEO. Modernización operativa y hojas de ruta de adopción tecnológica.',
-            url: `${BASE_URL}/${locale}/services/consulting`,
-            provider: { '@id': ORG_ID },
-          },
+      },
+      {
+        '@type': 'ListItem',
+        position: 5,
+        item: {
+          '@type': 'Service',
+          name: isEn
+            ? 'Digital Transformation Consulting'
+            : 'Consultoría de Transformación Digital',
+          description: isEn
+            ? 'Practical technological strategy driven by AI workflows and LEO. Operational modernization and technology adoption roadmaps.'
+            : 'Estrategia tecnológica práctica impulsada por flujos de trabajo de IA y LEO. Modernización operativa y hojas de ruta de adopción tecnológica.',
+          url: `${BASE_URL}/${locale}/services/consulting`,
+          provider: { '@id': ORG_ID },
         },
-      ],
-    },
+      },
+    ],
   };
 
   // ── 6. FAQPage ───────────────────────────────────────────────────────────────

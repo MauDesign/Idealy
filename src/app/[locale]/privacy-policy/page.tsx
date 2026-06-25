@@ -11,11 +11,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     alternates: {
-      canonical: locale === 'en' ? '/en/privacy-policy' : '/privacy-policy',
+      canonical: `/${locale}/privacy-policy`,
       languages: {
         'en-US': '/en/privacy-policy',
-        'es-MX': '/privacy-policy',
-        'x-default': '/privacy-policy',
+        'es-MX': '/es/privacy-policy',
+        'x-default': '/es/privacy-policy',
       },
     },
     title: `${t('title')} | Idea.ly`,

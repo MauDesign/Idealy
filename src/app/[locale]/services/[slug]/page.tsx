@@ -117,11 +117,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     alternates: {
-      canonical: locale === 'en' ? `/en/services/${slug}` : `/services/${slug}`,
+      canonical: `/${locale}/services/${slug}`,
       languages: {
         'en-US': `/en/services/${slug}`,
-        'es-MX': `/services/${slug}`,
-        'x-default': `/services/${slug}`,
+        'es-MX': `/es/services/${slug}`,
+        'x-default': `/es/services/${slug}`,
       },
     },
     title: `${title} | Idea.ly`,
@@ -269,23 +269,6 @@ export default async function ServiceDetailPage({ params }: Props) {
       { '@type': 'Country', name: 'United States' },
     ],
     serviceType: subtitle,
-    offers: {
-      '@type': 'Offer',
-      description: heroPhrase,
-      seller: { '@id': `${BASE_URL}/#organization` },
-    },
-    hasOfferCatalog: {
-      '@type': 'OfferCatalog',
-      name: locale === 'en' ? 'Service Features' : 'Características del Servicio',
-      itemListElement: features.map((feat) => ({
-        '@type': 'Offer',
-        itemOffered: {
-          '@type': 'Service',
-          name: feat.title,
-          description: feat.desc,
-        },
-      })),
-    },
   };
 
   return (
