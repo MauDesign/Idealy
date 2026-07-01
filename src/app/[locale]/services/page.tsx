@@ -17,13 +17,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const isEn = locale === 'en';
 
+  const baseUrl = 'https://www.idealy.com.mx';
+
   return {
     alternates: {
-      canonical: `/${locale}/services`,
+      canonical: `${baseUrl}/${locale}/services`,
       languages: {
-        'en-US': '/en/services',
-        'es-MX': '/es/services',
-        'x-default': '/es/services',
+        'en': `${baseUrl}/en/services`,
+        'es': `${baseUrl}/es/services`,
+        'en-US': `${baseUrl}/en/services`,
+        'es-MX': `${baseUrl}/es/services`,
+        'x-default': `${baseUrl}/es/services`,
       },
     },
     title: isEn 

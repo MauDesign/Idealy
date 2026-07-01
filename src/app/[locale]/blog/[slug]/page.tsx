@@ -39,12 +39,20 @@ export async function generateMetadata({
 
   const languages: Record<string, string> = {};
   if (locale === 'en') {
+    languages['en'] = canonicalUrl;
     languages['en-US'] = canonicalUrl;
-    if (translatedUrl) languages['es-MX'] = translatedUrl;
+    if (translatedUrl) {
+      languages['es'] = translatedUrl;
+      languages['es-MX'] = translatedUrl;
+    }
     languages['x-default'] = translatedUrl ?? canonicalUrl;
   } else {
+    languages['es'] = canonicalUrl;
     languages['es-MX'] = canonicalUrl;
-    if (translatedUrl) languages['en-US'] = translatedUrl;
+    if (translatedUrl) {
+      languages['en'] = translatedUrl;
+      languages['en-US'] = translatedUrl;
+    }
     languages['x-default'] = canonicalUrl;
   }
 

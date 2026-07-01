@@ -14,6 +14,7 @@ const CardStack = dynamic(() => import("@/app/ui/cardstack/cardstak"), {
 });
 import type { Metadata } from 'next';
 import { keywordsByPage } from '@/config/keywords';
+import StructuredData from "../ui/StructuredData";
 
 import type { locales } from '../../i18n/routing'
 type Props = { params: Promise<{ locale: typeof locales[number] }> };
@@ -22,13 +23,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
   const isEn = locale === 'en';
 
+  const baseUrl = 'https://www.idealy.com.mx';
+
   return {
     alternates: {
-      canonical: `/${locale}`,
+      canonical: `${baseUrl}/${locale}`,
       languages: {
-        'en-US': '/en',
-        'es-MX': '/es',
-        'x-default': '/es',
+        'en': `${baseUrl}/en`,
+        'es': `${baseUrl}/es`,
+        'en-US': `${baseUrl}/en`,
+        'es-MX': `${baseUrl}/es`,
+        'x-default': `${baseUrl}/es`,
       },
     },
     title: isEn 
@@ -49,9 +54,11 @@ export default async function Home({ params }: Props) {
 
   const t = await getTranslations('Home');
   return (
-    <GSAPInitializer>
-      <div className="w-full">
-        <main className="flex flex-wrap sm:w-full sm:flex-row">
+    <>
+      <StructuredData locale={locale} />
+      <GSAPInitializer>
+        <div className="w-full">
+          <main className="flex flex-wrap sm:w-full sm:flex-row">
           <Header />
           <div className="bg-[#334B5F] w0full  lg:pb-5 sm:mt-5 ">
             <div className='flex flex-wrap w-3/4 m-auto '>
@@ -100,7 +107,7 @@ export default async function Home({ params }: Props) {
                 </ul>
                 <p className='w-full text-md'>{t("text2-development")}</p>
                 <p className='w-full  text-md text-secondary'>{t("frase-dev")}</p>
-                <a href="/services/software-development" className="mt-5 btn btn-soft btn-primary"> {t("button-development")} </a>
+                <a href="/services/software-development" aria-label={`${t("button-development")} - ${t("title-development")}`} className="mt-5 btn btn-soft btn-primary"> {t("button-development")} </a>
               </div>
             </div>
           </div>
@@ -157,7 +164,7 @@ export default async function Home({ params }: Props) {
                   <li className='list-row'>{t("bullet9")}</li>
                 </ul>
                 <p className='w-full  text-md text-secondary'>{t("frase-ux")}</p>
-                <a href="/services/ux-ui-design" className="mt-5 btn btn-soft btn-primary"> {t("button-ux")} </a>
+                <a href="/services/ux-ui-design" aria-label={`${t("button-ux")} - ${t("title-ux")}`} className="mt-5 btn btn-soft btn-primary"> {t("button-ux")} </a>
               </div>
             </div>
           </div>
@@ -173,7 +180,7 @@ export default async function Home({ params }: Props) {
                   <li className='list-row'>{t("bullet12")}</li>
                 </ul>
                 <p className='w-full  text-md text-secondary'>{t("frase-grow")}</p>
-                <a href="/services/digital-marketing" className="mt-5 btn btn-soft btn-primary"> {t("button-grow")} </a>
+                <a href="/services/digital-marketing" aria-label={`${t("button-grow")} - ${t("title-grow")}`} className="mt-5 btn btn-soft btn-primary"> {t("button-grow")} </a>
               </div>
               <div className='lg:w-1/2 sm:w-full grow hover-3d'>
 
@@ -222,10 +229,11 @@ export default async function Home({ params }: Props) {
           <div id="contact" className='w-full'>
 
             <Contact />
-          </div>
-        </main>
-        <Footer />
-      </div>
-    </GSAPInitializer>
+        </div>
+      </main>
+      <Footer />
+    </div>
+  </GSAPInitializer>
+  </>
   );
 }

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { GoogleAnalytics } from "@next/third-parties/google";
+import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import type { Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
@@ -90,22 +90,9 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <Script id="google-tag-manager" strategy="afterInteractive">
-          {`
-            (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-            new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-            j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-            'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-            })(window,document,'script','dataLayer','GTM-WDB3RSDZ');
-          `}
-        </Script>
-        <StructuredData locale={locale} />
-        {/* Resource hints — shorten TCP handshake for any Google-origin asset */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <GoogleTagManager gtmId="GTM-WDB3RSDZ" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <GoogleAnalytics gaId="G-GJBZY50Y93" />
-        {/* Google tag (gtag.js) */}
         <Script src="https://www.googletagmanager.com/gtag/js?id=AW-18107657847" strategy="afterInteractive" />
         <Script id="google-ads-tag" strategy="afterInteractive">
           {`

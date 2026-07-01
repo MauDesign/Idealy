@@ -9,13 +9,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const t = await getTranslations({ locale, namespace: 'PrivacyPolicy' });
   const isEn = locale === 'en';
 
+  const baseUrl = 'https://www.idealy.com.mx';
+
   return {
     alternates: {
-      canonical: `/${locale}/privacy-policy`,
+      canonical: `${baseUrl}/${locale}/privacy-policy`,
       languages: {
-        'en-US': '/en/privacy-policy',
-        'es-MX': '/es/privacy-policy',
-        'x-default': '/es/privacy-policy',
+        'en': `${baseUrl}/en/privacy-policy`,
+        'es': `${baseUrl}/es/privacy-policy`,
+        'en-US': `${baseUrl}/en/privacy-policy`,
+        'es-MX': `${baseUrl}/es/privacy-policy`,
+        'x-default': `${baseUrl}/es/privacy-policy`,
       },
     },
     title: `${t('title')} | Idea.ly`,

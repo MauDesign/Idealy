@@ -124,6 +124,7 @@ const StructuredData = ({
         availableLanguage: ['Spanish', 'English'],
       },
     ],
+    hasOfferCatalog: { '@id': `${BASE_URL}/#services` },
   };
 
   // ── 2. LocalBusiness ─────────────────────────────────────────────────────────
@@ -179,6 +180,7 @@ const StructuredData = ({
       'https://x.com/idealy_mx',
       'https://www.linkedin.com/company/idea-ly-mx',
     ],
+    hasOfferCatalog: { '@id': `${BASE_URL}/#services` },
   };
 
   // ── 3. WebSite ──────────────────────────────────────────────────────────────
@@ -224,7 +226,7 @@ const StructuredData = ({
   // ── 5. Catálogo de servicios (global, presente en todo el sitio) ─────────────
   const servicesSchema: SchemaObject = {
     '@context': 'https://schema.org',
-    '@type': 'ItemList',
+    '@type': 'OfferCatalog',
     '@id': `${BASE_URL}/#services`,
     name: isEn ? 'Idea.ly Services' : 'Servicios de Idea.ly',
     description: isEn
@@ -232,9 +234,9 @@ const StructuredData = ({
       : 'Aplicaciones web escalables, agentes de IA, sistemas UX/UI y estrategias de crecimiento digital',
     itemListElement: [
       {
-        '@type': 'ListItem',
+        '@type': 'Offer',
         position: 1,
-        item: {
+        itemOffered: {
           '@type': 'Service',
           name: isEn
             ? 'Custom Software Development'
@@ -247,9 +249,9 @@ const StructuredData = ({
         },
       },
       {
-        '@type': 'ListItem',
+        '@type': 'Offer',
         position: 2,
-        item: {
+        itemOffered: {
           '@type': 'Service',
           name: isEn ? 'AI Automation & Agents' : 'Automatización y Agentes de IA',
           description: isEn
@@ -260,9 +262,9 @@ const StructuredData = ({
         },
       },
       {
-        '@type': 'ListItem',
+        '@type': 'Offer',
         position: 3,
-        item: {
+        itemOffered: {
           '@type': 'Service',
           name: isEn ? 'UX/UI Design' : 'Diseño UX/UI',
           description: isEn
@@ -273,9 +275,9 @@ const StructuredData = ({
         },
       },
       {
-        '@type': 'ListItem',
+        '@type': 'Offer',
         position: 4,
-        item: {
+        itemOffered: {
           '@type': 'Service',
           name: isEn ? 'Digital Marketing & Growth' : 'Marketing Digital y Crecimiento',
           description: isEn
@@ -286,9 +288,9 @@ const StructuredData = ({
         },
       },
       {
-        '@type': 'ListItem',
+        '@type': 'Offer',
         position: 5,
-        item: {
+        itemOffered: {
           '@type': 'Service',
           name: isEn
             ? 'Digital Transformation Consulting'

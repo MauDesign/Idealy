@@ -115,13 +115,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     ? [...serviceKeywords[activeService].en, 'idealy', 'idealy AI consulting']
     : [...serviceKeywords[activeService].es, 'idealy', 'idealy mexico'];
 
+  const baseUrl = 'https://www.idealy.com.mx';
+
   return {
     alternates: {
-      canonical: `/${locale}/services/${slug}`,
+      canonical: `${baseUrl}/${locale}/services/${slug}`,
       languages: {
-        'en-US': `/en/services/${slug}`,
-        'es-MX': `/es/services/${slug}`,
-        'x-default': `/es/services/${slug}`,
+        'en': `${baseUrl}/en/services/${slug}`,
+        'es': `${baseUrl}/es/services/${slug}`,
+        'en-US': `${baseUrl}/en/services/${slug}`,
+        'es-MX': `${baseUrl}/es/services/${slug}`,
+        'x-default': `${baseUrl}/es/services/${slug}`,
       },
     },
     title: `${title} | Idea.ly`,

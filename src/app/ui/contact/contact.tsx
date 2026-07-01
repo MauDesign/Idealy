@@ -25,8 +25,8 @@ export default async function Contact() {
                     </div>
 
                     <p className="text-center mb-5">{t("descCont")}</p>
-                    <p className=" mb-3"><strong>{t("telCont")}: ;</strong>+52 222 2581829</p>
-                    <p className=" mb-3"><strong>{t("emailCont")}:</strong> contact@idealy.com.mx</p>
+                    <p className=" mb-3"><strong>{t("telCont")}: ;</strong>+52 222 717 9352</p>
+                    <p className=" mb-3"><strong>{t("emailCont")}:</strong> hello@idealy.com.mx</p>
                     <p className=" mb-3"><strong>{t("locationCont")}:</strong> Puebla Pue. México</p>
 
                 </div>
