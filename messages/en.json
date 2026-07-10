@@ -1,6 +1,7 @@
 {
     "Home": {
         "frase": "Idea-to-Reality",
+        "hero-subtitle": "Nearshore software development agency in Puebla, Mexico | AI automation & custom engineering",
         "About-us": "At Idealy.ly, we blend technology and creativity to develop software that turns challenges into opportunities. We are a team passionate about innovation, committed to simplifying processes, optimizing experiences, and building tools that make a difference. ",
         "About-us2": "We believe in the power of technology to improve lives and empower businesses. That’s why we design tailor-made solutions—from intuitive apps to scalable platforms—always with a human-centric approach and a clear purpose: to make the complex simple and the innovative accessible.",
         "About-us3": "Ready to bring your ideas to life? Together, we can create change.  ",
@@ -291,5 +292,28 @@
             "process3_title": "Execution Accompaniment",
             "process3_desc": "We guide you step-by-step in the adoption of the new software and measure impact on your KPIs."
         }
+    },
+    "LeoPage": {
+        "hero_title": "Meet LEO: Your AI Strategic Consultant",
+        "hero_subtitle": "It's not just a chatbot. It's the synthesis of over 10 years of engineering and design expertise, powered by the most advanced language models on the market.",
+        "what_is_leo": "What truly is LEO?",
+        "what_is_leo_desc": "LEO is Idea.ly's applied intelligence system. It analyzes your business model, detects operational bottlenecks, and delivers precise technical recommendations to scale your company at a fraction of the cost of traditional consultancies.",
+        "process_title": "How our Intelligence works",
+        "process_1": "1. Deep Diagnosis",
+        "process_1_desc": "LEO processes your company's information and market status to find inefficiencies invisible to the naked eye.",
+        "process_2": "2. Bottleneck Detection",
+        "process_2_desc": "We identify the manual processes costing you money and time, designing automated solutions.",
+        "process_3": "3. Architectural Recommendation",
+        "process_3_desc": "We deliver an actionable technical roadmap: from autonomous agents to high-performance applications.",
+        "benefits_title": "Unfair Competitive Advantage",
+        "benefit_1": "Cost Reduction",
+        "benefit_1_desc": "Automate repetitive tasks and drastically reduce your operating expenses.",
+        "benefit_2": "Data-Driven Precision",
+        "benefit_2_desc": "Decision-making backed by real-time analysis of large volumes of information.",
+        "benefit_3": "24/7 Availability",
+        "benefit_3_desc": "A strategic consultant that never sleeps, ready to scale your operation whenever you decide.",
+        "cta_title": "Ready to evolve?",
+        "cta_desc": "Book a strategic session with our team and let LEO show you the future of your company.",
+        "cta_button": "Book Free Consultation"
     }
 }

@@ -1,6 +1,7 @@
 {
     "Home": {
         "frase": "De la Idea a la Realidad",
+        "hero-subtitle": "Agencia nearshore de desarrollo de software en Puebla, México | Automatización con IA e ingeniería a medida",
         "About-us": "En Idealy.ly, fusionamos tecnología y creatividad para desarrollar software que convierte desafíos en oportunidades. Somos un equipo apasionado por la innovación, comprometido con simplificar procesos, optimizar experiencias y construir herramientas que marcan la diferencia.",
         "About-us2": "Creemos en el poder de la tecnología para mejorar vidas y potenciar negocios. Por eso, diseñamos soluciones a medida —desde aplicaciones intuitivas hasta plataformas escalables— siempre con un enfoque centrado en el ser humano y un propósito claro: hacer lo complejo simple y lo innovador accesible.",
         "About-us3": "¿Listo para dar vida a tus ideas? Juntos, podemos crear el cambio.",
@@ -291,5 +292,29 @@
             "process3_title": "Acompañamiento en Ejecución",
             "process3_desc": "Te guiamos paso a paso en la adopción del nuevo software y medimos el impacto en tus KPIs."
         }
+    },
+    "LeoPage": {
+        "hero_title": "Conoce a LEO: Tu Consultor Estratégico de IA",
+        "hero_subtitle": "No es un simple chatbot. Es la síntesis de más de 10 años de experiencia en ingeniería y diseño, potenciada por los modelos de lenguaje más avanzados del mercado.",
+        "what_is_leo": "¿Qué es verdaderamente LEO?",
+        "what_is_leo_desc": "LEO es el sistema de inteligencia aplicada de Idea.ly. Analiza tu modelo de negocio, detecta cuellos de botella operativos y te entrega recomendaciones técnicas precisas para escalar tu empresa a una fracción del costo de consultoras tradicionales.",
+        "process_title": "Cómo funciona nuestra Inteligencia",
+        "process_1": "1. Diagnóstico Profundo",
+        "process_1_desc": "LEO procesa la información de tu empresa y el estado de tu mercado para encontrar ineficiencias invisibles a simple vista.",
+        "process_2": "2. Detección de Cuellos de Botella",
+        "process_2_desc": "Identificamos los procesos manuales que te están costando dinero y tiempo, diseñando soluciones automatizadas.",
+        "process_3": "3. Recomendación Arquitectónica",
+        "process_3_desc": "Te entregamos un roadmap técnico accionable: desde agentes autónomos hasta aplicaciones de alto rendimiento.",
+        "benefits_title": "Ventaja Competitiva Injusta",
+        "benefit_1": "Reducción de Costos",
+        "benefit_1_desc": "Automatiza tareas repetitivas y reduce tu gasto operativo de manera drástica.",
+        "benefit_2": "Precisión Basada en Datos",
+        "benefit_2_desc": "Toma de decisiones respaldada por el análisis en tiempo real de grandes volúmenes de información.",
+        "benefit_3": "Disponibilidad 24/7",
+        "benefit_3_desc": "Un consultor estratégico que no duerme, listo para escalar tu operación cuando tú lo decidas.",
+        "cta_title": "¿Listo para evolucionar?",
+        "cta_desc": "Agenda una sesión estratégica con nuestro equipo y deja que LEO te muestre el futuro de tu empresa.",
+        "cta_button": "Agendar Consulta Gratuita"
     }
+}
 }
