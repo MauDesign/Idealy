@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import { Link } from '@/i18n/navigation';
 import Image from "next/image";
 import Header from "@/app/ui/header/header";
 import dynamic from 'next/dynamic';
@@ -223,7 +224,7 @@ export default async function Home({ params }: Props) {
                   <p className='w-full  text-md text-[#ababab]'>{t("subtitle-consulting")}</p>
                   <p className='w-full text-lg text-justify text-[#ffffff]'>{t("text-consulting")}</p>
                   <p className='w-full text-lg text-justify text-[#ffffff] mt-10'>{t("text-consulting2")}</p>
-                  <a href={`/${locale}/leo`} className='btn btn-outline btn-primary mt-10'>{t("button-consulting")}</a>
+                  <Link href="/leo" aria-label={`${t("button-consulting")} - ${t("title-consulting")}`} className='btn border-none bg-gradient-to-r from-primary to-purple-600 text-white hover:scale-105 transition-all shadow-[0_0_20px_rgba(168,85,247,0.4)] hover:shadow-[0_0_30px_rgba(168,85,247,0.6)] mt-10 px-8'>{t("button-consulting")}</Link>
                 </div>
               </div>
               <div className="lg:w-1/3 sm:w-full center p-5">

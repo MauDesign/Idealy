@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
+import Script from 'next/script';
 import { faqData } from './faqData'; // Asegúrate de ajustar el import
 
 interface FAQSectionProps {
@@ -33,7 +34,8 @@ export default function FAQSection({ language = 'es' }: FAQSectionProps) {
   return (
     <section className="relative w-full py-24 bg-black overflow-hidden">
       {/* Schema Markup for SEO */}
-      <script
+      <Script
+        id="faq-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
@@ -99,21 +101,17 @@ export default function FAQSection({ language = 'es' }: FAQSectionProps) {
                   </motion.div>
                 </button>
 
-                <AnimatePresence initial={false}>
-                  {isActive && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
-                      className="overflow-hidden"
-                    >
-                      <div className="pb-6 px-6 pt-2 text-gray-400 leading-relaxed">
-                        {faq.answer}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                <motion.div
+                  initial={false}
+                  animate={{ height: isActive ? 'auto' : 0, opacity: isActive ? 1 : 0 }}
+                  transition={{ duration: 0.3, ease: [0.04, 0.62, 0.23, 0.98] }}
+                  className="overflow-hidden"
+                  aria-hidden={!isActive}
+                >
+                  <div className="pb-6 px-6 pt-2 text-gray-400 leading-relaxed">
+                    {faq.answer}
+                  </div>
+                </motion.div>
               </motion.div>
             );
           })}
