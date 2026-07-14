@@ -103,6 +103,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             gtag('config', 'AW-18107657847');
           `}
         </Script>
+        <StructuredData locale={locale} />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground transition-colors duration-300`}>
         <noscript>
