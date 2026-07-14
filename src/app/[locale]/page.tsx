@@ -57,7 +57,6 @@ export default async function Home({ params }: Props) {
   const t = await getTranslations('Home');
   return (
     <>
-      <StructuredData locale={locale} />
       <GSAPInitializer>
         <div className="w-full">
           <main className="flex flex-wrap sm:w-full sm:flex-row">
