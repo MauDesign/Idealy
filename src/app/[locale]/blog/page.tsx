@@ -18,6 +18,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const baseUrl = 'https://www.idealy.com.mx';
 
   return {
+    robots: {
+      index: true,
+      follow: true,
+      nocache: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
     alternates: {
       canonical: `${baseUrl}/${locale}/blog`,
       languages: {

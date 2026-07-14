@@ -5,7 +5,6 @@ export const dynamic = 'force-dynamic';
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import Script from 'next/script';
 import Footer from '@/app/ui/Footer/Footer';
 import { Calendar, Clock, ArrowLeft, Tag, FolderOpen, Languages } from 'lucide-react';
 import type { Metadata } from 'next';
@@ -194,6 +193,7 @@ export default async function PostDetailPage({
       '@type': 'WebPage',
       '@id': canonicalUrl,
     },
+    articleBody: post.content.replace(/<[^>]*>/g, ''), // Strip HTML tags for clean AI/LLM citability
     ...(post.category
       ? { articleSection: post.category.name }
       : {}),
@@ -201,11 +201,9 @@ export default async function PostDetailPage({
 
   return (
     <div className="flex flex-col min-h-screen bg-base-100">
-      {/* JSON-LD Structured Data — uses Next.js Script to avoid React 19 warning */}
-      <Script
-        id="article-jsonld"
+      {/* JSON-LD Structured Data — inline script for synchronous SEO & AI crawler rendering */}
+      <script
         type="application/ld+json"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
