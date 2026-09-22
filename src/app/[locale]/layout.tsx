@@ -101,6 +101,21 @@ export default async function LocaleLayout({ children, params }: Props) {
             gtag('js', new Date());
 
             gtag('config', 'AW-18107657847');
+
+            function gtag_report_conversion(url) {
+              var callback = function () {
+                if (typeof(url) != 'undefined') {
+                  window.location = url;
+                }
+              };
+              gtag('event', 'conversion', {
+                  'send_to': 'AW-18107657847/-BzNCLXUzsUcEPfcs7pD',
+                  'value': 1.0,
+                  'currency': 'MXN',
+                  'event_callback': callback
+              });
+              return false;
+            }
           `}
         </Script>
       </head>

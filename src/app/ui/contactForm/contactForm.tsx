@@ -2,6 +2,8 @@
 import { useTranslations } from 'next-intl'
 import React, { useState, ChangeEvent, } from "react";
 
+import { gtagReportConversion } from '@/lib/gtag';
+
 type SubmissionStatus = 'success' | 'error' | null;
 
 
@@ -41,6 +43,7 @@ export default function ContactForm() {
 
             if (response.ok) {
                 setSubmissionStatus('success');
+                gtagReportConversion();
                 // Resetear el formulario solo si el envío fue exitoso
                 setFormData({
                     name: '',
