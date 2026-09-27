@@ -1,0 +1,138 @@
+{
+  "name": "Idealy - Página Express Lead Workflow (Evolution API)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pagina-express-lead",
+        "responseMode": "onReceived",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        200,
+        300
+      ],
+      "id": "webhook-lead-entry",
+      "name": "Webhook - Recepción Lead"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalizar datos del lead para Evolution API\nconst lead = $input.first().json.body || $input.first().json;\n\nconst nombre = lead.nombre || 'Cliente';\nconst whatsappClean = (lead.whatsapp || '').replace(/\\D/g, '');\nconst numberFormatted = whatsappClean.startsWith('52') ? whatsappClean : '52' + whatsappClean;\nconst nombreNegocio = lead.nombreNegocio || 'Negocio';\nconst dedicacion = lead.dedicacion || 'No especificado';\nconst tienePagina = lead.tienePagina || 'No';\nconst urgencia = lead.urgencia || 'Esta semana';\nconst socialLink = lead.socialLink || '';\nconst utm = lead.utm || {};\n\n// Determinar Prioridad\nlet prioridad = 'MEDIA (Vista previa 24h)';\nif (urgencia.toLowerCase().includes('semana')) {\n  prioridad = 'ALTA (Llamar Hoy)';\n} else if (urgencia.toLowerCase().includes('viendo')) {\n  prioridad = 'BAJA (Guía 3 días)';\n}\n\n// Texto del mensaje de bienvenida por WhatsApp (Evolution API)\nconst textoMensaje = `Hola ${nombre} 👋, soy Mauricio de Idealy. Ya recibimos los datos de *${nombreNegocio}*. Mañana a primera hora te mando tu vista previa por este medio.\\n\\nSi tienes alguna duda previa, me puedes escribir directamente por aquí.`;\n\nreturn {\n  nombre,\n  whatsappClean,\n  numberFormatted,\n  nombreNegocio,\n  dedicacion,\n  tienePagina,\n  urgencia,\n  prioridad,\n  socialLink,\n  utm_source: utm.source || 'Directo',\n  utm_medium: utm.medium || '-',\n  utm_campaign: utm.campaign || '-',\n  gclid: utm.gclid || '-',\n  textoMensaje,\n  fechaRegistro: new Date().toISOString()\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        420,
+        300
+      ],
+      "id": "code-format-lead",
+      "name": "Format & Prioritize Lead"
+    },
+    {
+      "parameters": {
+        "operation": "executeQuery",
+        "query": "INSERT INTO leads_pagina_express (nombre, whatsapp, nombre_negocio, dedicacion, tiene_pagina, urgencia, prioridad, social_link, utm_source, utm_medium, utm_campaign, gclid)\nVALUES ('{{ $json.nombre }}', '{{ $json.numberFormatted }}', '{{ $json.nombreNegocio }}', '{{ $json.dedicacion }}', '{{ $json.tienePagina }}', '{{ $json.urgencia }}', '{{ $json.prioridad }}', '{{ $json.socialLink }}', '{{ $json.utm_source }}', '{{ $json.utm_medium }}', '{{ $json.utm_campaign }}', '{{ $json.gclid }}');"
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.4,
+      "position": [
+        660,
+        180
+      ],
+      "id": "postgres-save-lead",
+      "name": "Guardar en Postgres DB"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://evolution.idealy.com.mx/message/sendText/IdealyExpress",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "apikey",
+              "value": "TU_EVOLUTION_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.numberFormatted }}\",\n  \"options\": {\n    \"delay\": 1200,\n    \"presence\": \"composing\"\n  },\n  \"textMessage\": {\n    \"text\": \"{{ $json.textoMensaje }}\"\n  }\n}"
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        660,
+        380
+      ],
+      "id": "evolution-api-whatsapp-send",
+      "name": "Evolution API - Envío WhatsApp"
+    },
+    {
+      "parameters": {
+        "fromEmail": "admin@idealy.com.mx",
+        "toEmail": "admin@idealy.com.mx",
+        "subject": "=🚨 NUEVO LEAD [{{ $json.prioridad }}]: {{ $json.nombreNegocio }} ({{ $json.nombre }})",
+        "html": "=<h2>NUEVO LEAD DE PÁGINA EXPRESS</h2><p><strong>Nombre:</strong> {{ $json.nombre }}</p><p><strong>WhatsApp:</strong> <a href=\"https://wa.me/{{ $json.numberFormatted }}\">+{{ $json.numberFormatted }}</a></p><p><strong>Negocio:</strong> {{ $json.nombreNegocio }}</p><p><strong>Giro:</strong> {{ $json.dedicacion }}</p><p><strong>Prioridad:</strong> <strong>{{ $json.prioridad }}</strong></p><p><strong>Urgencia:</strong> {{ $json.urgencia }}</p><p><strong>UTM Source:</strong> {{ $json.utm_source }}</p>"
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        900,
+        280
+      ],
+      "id": "email-alert-idealy",
+      "name": "Notificación Email a Idealy"
+    }
+  ],
+  "connections": {
+    "Webhook - Recepción Lead": {
+      "main": [
+        [
+          {
+            "node": "Format & Prioritize Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Format & Prioritize Lead": {
+      "main": [
+        [
+          {
+            "node": "Guardar en Postgres DB",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Evolution API - Envío WhatsApp",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Evolution API - Envío WhatsApp": {
+      "main": [
+        [
+          {
+            "node": "Notificación Email a Idealy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

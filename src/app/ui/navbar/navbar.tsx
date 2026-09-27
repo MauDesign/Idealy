@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation';
 const Navbar = ({ locale }: { locale: string }) => {
     const t = useTranslations('NavbarLinks');
     const pathname = usePathname();
-    const isExcluded = pathname?.includes('/admin') || pathname?.includes('/auth');
+    const isExcluded = pathname?.includes('/admin') || pathname?.includes('/auth') || pathname?.includes('/pagina-express');
 
     if (isExcluded) return null;
 

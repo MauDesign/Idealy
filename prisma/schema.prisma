@@ -61,3 +61,24 @@ model Media {
 
   @@index([createdAt])
 }
+
+model ExpressLead {
+  id            String   @id @default(cuid())
+  nombre        String
+  whatsapp      String
+  nombreNegocio String
+  dedicacion    String?
+  tienePagina   String?
+  urgencia      String?
+  prioridad     String?
+  socialLink    String?
+  utmSource     String?
+  utmMedium     String?
+  utmCampaign   String?
+  gclid         String?
+  createdAt     DateTime @default(now())
+
+  @@index([createdAt])
+  @@index([urgencia])
+}
+

@@ -25,6 +25,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
+  // Pagina Express landing page
+  const expressEntries: MetadataRoute.Sitemap = [
+    {
+      url: `${baseUrl}/pagina-express`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
+  ];
+
   // Localized blog list pages
   const blogListEntries: MetadataRoute.Sitemap = locales.map((locale) => ({
     url: `${baseUrl}/${locale}/blog`,
@@ -87,6 +97,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   return [
     ...baseEntries,
     ...localeHomeEntries,
+    ...expressEntries,
     ...blogListEntries,
     ...servicesListEntries,
     ...serviceEntries,
