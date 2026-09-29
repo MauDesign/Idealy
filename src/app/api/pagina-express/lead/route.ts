@@ -16,58 +16,68 @@ export async function POST(request: Request) {
       utm = {},
     } = body;
 
-    let certRecord = null;
-    let leadRecord = null;
+    const now = new Date();
+    const validUntil = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
 
-    // Save lead and certificate in PostgreSQL database via Prisma
-    try {
-      const count = await prisma.expressCertificate.count();
-      const nextFolioNum = count + 1;
-      const folioCode = `PE-${String(nextFolioNum).padStart(4, '0')}`;
-      const now = new Date();
-      const validUntil = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    // 1. SEQUENTIAL STEP: Save Certificate to Postgres first
+    const tempFolioCode = `TEMP-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+    const certRecord = await prisma.expressCertificate.create({
+      data: {
+        folioCode: tempFolioCode,
+        nombre,
+        nombreNegocio,
+        whatsapp,
+        issuedAt: now,
+        validUntil,
+      },
+    });
 
-      certRecord = await prisma.expressCertificate.create({
-        data: {
-          folioCode,
-          nombre,
-          nombreNegocio,
-          whatsapp,
-          issuedAt: now,
-          validUntil,
-        },
-      });
+    // 2. Format the real unique folio code from Postgres autoincremented `certRecord.folio`
+    const realFolioCode = `PE-${String(certRecord.folio).padStart(4, '0')}`;
 
-      leadRecord = await prisma.expressLead.create({
-        data: {
-          folio: certRecord.folio,
-          folioCode: certRecord.folioCode,
-          certificateId: certRecord.id,
-          nombre,
-          whatsapp,
-          nombreNegocio,
-          dedicacion,
-          tienePagina,
-          urgencia,
-          prioridad: urgencia.toLowerCase().includes('semana') ? 'ALTA' : 'MEDIA',
-          socialLink,
-          utmSource: utm.source || null,
-          utmMedium: utm.medium || null,
-          utmCampaign: utm.campaign || null,
-          gclid: utm.gclid || null,
-        },
-      });
-    } catch (dbErr) {
-      console.error('Error persisting lead in database:', dbErr);
-    }
+    const updatedCert = await prisma.expressCertificate.update({
+      where: { id: certRecord.id },
+      data: { folioCode: realFolioCode },
+    });
 
-    // Build email HTML payload
+    // 3. Save Lead in Postgres linked to certificate
+    const leadRecord = await prisma.expressLead.create({
+      data: {
+        folio: updatedCert.folio,
+        folioCode: updatedCert.folioCode,
+        certificateId: updatedCert.id,
+        nombre,
+        whatsapp,
+        nombreNegocio,
+        dedicacion,
+        tienePagina,
+        urgencia,
+        prioridad: urgencia.toLowerCase().includes('semana') ? 'ALTA' : 'MEDIA',
+        socialLink,
+        utmSource: utm.source || null,
+        utmMedium: utm.medium || null,
+        utmCampaign: utm.campaign || null,
+        gclid: utm.gclid || null,
+      },
+    });
+
+    // Extract exact saved values from database records
+    const leadId = leadRecord.id;
+    const folioCode = updatedCert.folioCode;
+    const folioNumber = updatedCert.folio;
+
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.idealy.com.mx';
+    const personalDownloadUrl = `${baseUrl}/pagina-express/descarga?leadId=${leadId}`;
+
+    // 4. Send Email Notification
     const mailOptions = {
       from: `"Página Express Leads" <${process.env.SMTP_USER || 'admin@idealy.com.mx'}>`,
       replyTo: 'hello@idealy.com.mx',
       to: process.env.LEAD_NOTIFICATION_EMAIL || 'admin@idealy.com.mx',
-      subject: `🚀 NUEVO LEAD Página Express: ${nombreNegocio} (${nombre})`,
+      subject: `🚀 NUEVO LEAD Página Express (${folioCode}): ${nombreNegocio} (${nombre})`,
       text: `NUEVO LEAD DE PÁGINA EXPRESS
+Folio: ${folioCode}
+Lead ID: ${leadId}
 Nombre: ${nombre}
 WhatsApp: ${whatsapp}
 Negocio: ${nombreNegocio}
@@ -82,14 +92,22 @@ GCLID: ${utm.gclid || '-'}
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #00b4a6; border-radius: 8px; overflow: hidden;">
           <div style="background-color: #0069a9; color: #ffffff; padding: 20px; text-align: center;">
-            <h2 style="margin: 0; font-size: 22px;">🚀 Nuevo Lead — Página Express</h2>
+            <h2 style="margin: 0; font-size: 22px;">🚀 Nuevo Lead — Página Express (${folioCode})</h2>
             <p style="margin: 5px 0 0 0; font-size: 14px; opacity: 0.9;">Recibido desde idealy.com.mx/pagina-express</p>
           </div>
           
           <div style="padding: 20px; background-color: #ffffff; color: #333333;">
             <table style="width: 100%; border-collapse: collapse;">
               <tr>
-                <td style="padding: 8px 0; font-weight: bold; width: 140px;">Nombre:</td>
+                <td style="padding: 8px 0; font-weight: bold; width: 140px;">Folio:</td>
+                <td style="padding: 8px 0;"><strong style="color: #0069a9;">${folioCode}</strong></td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; font-weight: bold;">Lead ID:</td>
+                <td style="padding: 8px 0;"><code style="background: #f1f5f9; padding: 2px 6px; border-radius: 4px;">${leadId}</code></td>
+              </tr>
+              <tr>
+                <td style="padding: 8px 0; font-weight: bold;">Nombre:</td>
                 <td style="padding: 8px 0;">${nombre}</td>
               </tr>
               <tr>
@@ -135,34 +153,30 @@ GCLID: ${utm.gclid || '-'}
       `,
     };
 
-    // Send email if SMTP configured
     if (process.env.SMTP_HOST && process.env.SMTP_USER) {
-      const transporter = nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT) || 465,
-        secure: process.env.SMTP_SECURE === 'true',
-        auth: {
-          user: process.env.SMTP_USER,
-          pass: process.env.SMTP_PASS,
-        },
-      });
+      try {
+        const transporter = nodemailer.createTransport({
+          host: process.env.SMTP_HOST,
+          port: Number(process.env.SMTP_PORT) || 465,
+          secure: process.env.SMTP_SECURE === 'true',
+          auth: {
+            user: process.env.SMTP_USER,
+            pass: process.env.SMTP_PASS,
+          },
+        });
 
-      await transporter.sendMail(mailOptions);
+        await transporter.sendMail(mailOptions);
+      } catch (mailErr) {
+        console.error('Error sending email notification:', mailErr);
+      }
     }
 
-    const leadId = leadRecord?.id || '';
-    const redirectFolio = certRecord?.folioCode || 'PE-0001';
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.idealy.com.mx';
-    const personalDownloadUrl = leadId
-      ? `${baseUrl}/pagina-express/descarga?leadId=${leadId}`
-      : `${baseUrl}/pagina-express/descarga?folio=${encodeURIComponent(redirectFolio)}&nombre=${encodeURIComponent(nombre)}&negocio=${encodeURIComponent(nombreNegocio)}`;
-
-    // Optional Evolution API direct WhatsApp dispatch
+    // 5. Optional Evolution API direct WhatsApp dispatch
     if (process.env.EVOLUTION_API_URL && process.env.EVOLUTION_API_KEY && process.env.EVOLUTION_INSTANCE_NAME) {
       try {
         const cleanNumber = whatsapp.replace(/\D/g, '');
         const targetNumber = cleanNumber.startsWith('52') ? cleanNumber : `52${cleanNumber}`;
-        const autoText = `Hola ${nombre}, soy Mauricio de Idealy. Ya recibimos los datos de *${nombreNegocio}*. Aquí tienes tu enlace personal para descargar tus 10 Mensajes y activar tu Certificado Página Express (${redirectFolio}) con $5,000 congelados + 1 mes de mantenimiento gratis:\n\n${personalDownloadUrl}`;
+        const autoText = `Hola ${nombre}, soy Mauricio de Idealy. Ya recibimos los datos de *${nombreNegocio}*. Aquí tienes tu enlace personal para descargar tus 10 Mensajes y activar tu Certificado Página Express (${folioCode}) con $5,000 congelados + 1 mes de mantenimiento gratis:\n\n${personalDownloadUrl}`;
 
         await fetch(
           `${process.env.EVOLUTION_API_URL}/message/sendText/${process.env.EVOLUTION_INSTANCE_NAME}`,
@@ -189,7 +203,7 @@ GCLID: ${utm.gclid || '-'}
       }
     }
 
-    // Optional N8N webhook dispatch
+    // 6. DISPATCH TO WEBHOOK (N8N) WITH SAVED DB VALUES
     if (process.env.N8N_LEAD_WEBHOOK_URL) {
       try {
         await fetch(process.env.N8N_LEAD_WEBHOOK_URL, {
@@ -198,8 +212,13 @@ GCLID: ${utm.gclid || '-'}
           body: JSON.stringify({
             ...body,
             leadId,
-            folioCode: redirectFolio,
+            lead_id: leadId,
+            id: leadId,
+            folioCode,
+            folio: folioCode,
+            folioNum: folioNumber,
             downloadUrl: personalDownloadUrl,
+            personalDownloadUrl,
           }),
         });
       } catch (webhookErr) {
@@ -213,7 +232,7 @@ GCLID: ${utm.gclid || '-'}
       {
         success: true,
         leadId,
-        folioCode: redirectFolio,
+        folioCode,
         downloadUrl: personalDownloadUrl,
         redirectUrl,
       },

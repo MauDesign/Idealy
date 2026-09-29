@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 import { prisma } from '@/lib/prisma';
 import { generateExpressCertificatePdf } from '@/lib/pdf/generateExpressCertificatePdf';
 
@@ -9,6 +11,7 @@ export async function GET(request: NextRequest) {
     const nombreParam = searchParams.get('nombre') || searchParams.get('n') || '';
     const negocioParam = searchParams.get('negocio') || searchParams.get('b') || '';
     const leadIdParam = searchParams.get('leadId');
+    const typeParam = searchParams.get('type') || searchParams.get('t');
 
     let certRecord = null;
 
@@ -104,22 +107,44 @@ export async function GET(request: NextRequest) {
       }).catch((e: unknown) => console.error('Error updating download count:', e));
     }
 
-    // 4. Generate PDF buffer
+    const isInline = searchParams.get('inline') === 'true';
+
+    // 4. Return Guide PDF if requested
+    if (typeParam === 'guia' || typeParam === 'mensajes') {
+      const pdfPath = path.join(
+        process.cwd(),
+        'public',
+        'pdf',
+        'Idealy-10-mensajes-para-vender-por-WhatsApp_1.pdf'
+      );
+      if (fs.existsSync(pdfPath)) {
+        const fileBuffer = fs.readFileSync(pdfPath);
+        return new NextResponse(fileBuffer, {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `${isInline ? 'inline' : 'attachment'}; filename="Guia_10_Mensajes_WhatsApp_Idealy.pdf"`,
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+          },
+        });
+      }
+    }
+
+    // 5. Return Certificate PDF (1 page)
     const pdfBytes = await generateExpressCertificatePdf({
       folioCode: certRecord.folioCode,
       nombre: certRecord.nombre,
       nombreNegocio: certRecord.nombreNegocio,
       issuedAt: certRecord.issuedAt,
       validUntil: certRecord.validUntil,
+      includeGuide: false,
     });
-
-    const isInline = searchParams.get('inline') === 'true';
 
     return new NextResponse(Buffer.from(pdfBytes), {
       status: 200,
       headers: {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': `${isInline ? 'inline' : 'attachment'}; filename="Idealy_10_Mensajes_y_Certificado_${certRecord.folioCode}.pdf"`,
+        'Content-Disposition': `${isInline ? 'inline' : 'attachment'}; filename="Certificado_Pagina_Express_${certRecord.folioCode}.pdf"`,
         'Cache-Control': 'no-cache, no-store, must-revalidate',
       },
     });

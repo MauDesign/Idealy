@@ -8,6 +8,7 @@ interface CertificateData {
   nombreNegocio: string;
   issuedAt?: Date;
   validUntil?: Date;
+  includeGuide?: boolean;
 }
 
 export async function generateExpressCertificatePdf(data: CertificateData): Promise<Uint8Array> {
@@ -330,27 +331,29 @@ export async function generateExpressCertificatePdf(data: CertificateData): Prom
   });
 
   // ==========================================
-  // PAGES 2+: MERGE UPLOADED PDF GUIDE (Idealy-10-mensajes-para-vender-por-WhatsApp_1.pdf)
+  // PAGES 2+: MERGE UPLOADED PDF GUIDE (ONLY IF includeGuide IS TRUE)
   // ==========================================
-  try {
-    const pdfPath = path.join(
-      process.cwd(),
-      'public',
-      'pdf',
-      'Idealy-10-mensajes-para-vender-por-WhatsApp_1.pdf'
-    );
-
-    if (fs.existsSync(pdfPath)) {
-      const existingPdfBytes = fs.readFileSync(pdfPath);
-      const existingPdfDoc = await PDFDocument.load(existingPdfBytes);
-      const copiedPages = await pdfDoc.copyPages(
-        existingPdfDoc,
-        existingPdfDoc.getPageIndices()
+  if (data.includeGuide) {
+    try {
+      const pdfPath = path.join(
+        process.cwd(),
+        'public',
+        'pdf',
+        'Idealy-10-mensajes-para-vender-por-WhatsApp_1.pdf'
       );
-      copiedPages.forEach((page) => pdfDoc.addPage(page));
+
+      if (fs.existsSync(pdfPath)) {
+        const existingPdfBytes = fs.readFileSync(pdfPath);
+        const existingPdfDoc = await PDFDocument.load(existingPdfBytes);
+        const copiedPages = await pdfDoc.copyPages(
+          existingPdfDoc,
+          existingPdfDoc.getPageIndices()
+        );
+        copiedPages.forEach((page) => pdfDoc.addPage(page));
+      }
+    } catch (mergeErr) {
+      console.error('Error merging uploaded 10 mensajes PDF:', mergeErr);
     }
-  } catch (mergeErr) {
-    console.error('Error merging uploaded 10 mensajes PDF:', mergeErr);
   }
 
   return await pdfDoc.save();
