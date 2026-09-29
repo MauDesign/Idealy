@@ -61,7 +61,7 @@ export default function FAQAccordion() {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" suppressHydrationWarning>
       {FAQS.map((faq, idx) => {
         const isOpen = openIndex === idx;
         return (

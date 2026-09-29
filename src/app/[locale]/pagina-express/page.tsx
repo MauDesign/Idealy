@@ -442,6 +442,7 @@ export default function PaginaExpressPage() {
                 src="/img/express/express_mauricio.jpg"
                 alt="Mauricio Casado - Idealy Puebla"
                 fill
+                sizes="(max-width: 768px) 192px, 224px"
                 className="object-cover"
               />
             </div>
