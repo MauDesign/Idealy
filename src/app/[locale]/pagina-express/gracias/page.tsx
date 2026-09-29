@@ -6,7 +6,7 @@ import { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: '¡Gracias por tus datos! | Idealy Página Express',
-  description: 'En menos de 24 horas recibirás tu vista previa por WhatsApp.',
+  description: 'Tus 10 mensajes listos para vender por WhatsApp van en camino.',
   robots: {
     index: false,
     follow: false,
@@ -16,10 +16,14 @@ export const metadata: Metadata = {
 export default async function GraciasPage({
   searchParams,
 }: {
-  searchParams: Promise<{ nombre?: string }>;
+  searchParams: Promise<{ nombre?: string; leadId?: string }>;
 }) {
-  const { nombre } = await searchParams;
+  const { nombre, leadId } = await searchParams;
   const leadNombre = nombre ? decodeURIComponent(nombre) : 'amigo/a';
+
+  const downloadTargetUrl = leadId
+    ? `/pagina-express/descarga?leadId=${encodeURIComponent(leadId)}`
+    : `/pagina-express/descarga?nombre=${encodeURIComponent(leadNombre)}`;
 
   return (
     <div className="min-h-screen bg-[#07131e] text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
@@ -49,25 +53,32 @@ export default async function GraciasPage({
           ¡Listo, <span className="text-[#00b4a6]">{leadNombre}</span>!
         </h1>
 
-        <p className="text-lg sm:text-xl text-gray-200 mb-8 leading-relaxed">
-          En menos de 24 horas te llega tu vista previa personalizada por WhatsApp.
+        <p className="text-lg sm:text-xl text-gray-200 mb-6 leading-relaxed">
+          Tus 10 mensajes ya van en camino a tu WhatsApp, y te agregamos un regalo sorpresa 🎁.
         </p>
 
         <div className="bg-[#0069a9]/20 border border-[#0069a9]/40 rounded-2xl p-6 mb-8 text-left">
           <p className="text-sm font-semibold text-[#00b4a6] mb-1">
-            ¿Tienes prisa por ver tu diseño o empezar?
+            Revisa tu chat de WhatsApp
           </p>
           <p className="text-xs text-gray-300">
-            Escríbenos directamente y adelantamos la entrega de tu boceto.
+            Te enviamos tu enlace personal para abrir la guía PDF y activar tu Certificado Página Express con precio congelado y 1 mes de mantenimiento gratis.
           </p>
         </div>
 
         <div className="space-y-4">
+          <Link
+            href={downloadTargetUrl}
+            className="w-full py-4 px-6 rounded-2xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-extrabold text-lg shadow-xl flex items-center justify-center gap-2"
+          >
+            <span>📥 Ir a la Zona de Descarga PDF</span>
+          </Link>
+
           <WhatsAppButton
-            buttonText="Escríbenos ahora por WhatsApp →"
+            buttonText="Escríbenos por WhatsApp →"
             locationTag="gracias_page"
-            presetMessage="Hola, acabo de dejar mis datos para la vista previa"
-            className="w-full py-4 px-6 rounded-2xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-extrabold text-lg shadow-xl"
+            presetMessage="Hola, quiero usar mi certificado Página Express"
+            className="w-full py-3.5 px-6 rounded-2xl bg-[#0069a9] hover:bg-[#00588f] text-white font-bold text-base shadow-lg"
           />
 
           <Link

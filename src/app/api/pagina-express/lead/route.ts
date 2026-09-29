@@ -16,10 +16,33 @@ export async function POST(request: Request) {
       utm = {},
     } = body;
 
-    // Save lead in PostgreSQL database via Prisma
+    let certRecord = null;
+    let leadRecord = null;
+
+    // Save lead and certificate in PostgreSQL database via Prisma
     try {
-      await prisma.expressLead.create({
+      const count = await prisma.expressCertificate.count();
+      const nextFolioNum = count + 1;
+      const folioCode = `PE-${String(nextFolioNum).padStart(4, '0')}`;
+      const now = new Date();
+      const validUntil = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+
+      certRecord = await prisma.expressCertificate.create({
         data: {
+          folioCode,
+          nombre,
+          nombreNegocio,
+          whatsapp,
+          issuedAt: now,
+          validUntil,
+        },
+      });
+
+      leadRecord = await prisma.expressLead.create({
+        data: {
+          folio: certRecord.folio,
+          folioCode: certRecord.folioCode,
+          certificateId: certRecord.id,
           nombre,
           whatsapp,
           nombreNegocio,
@@ -127,12 +150,19 @@ GCLID: ${utm.gclid || '-'}
       await transporter.sendMail(mailOptions);
     }
 
+    const leadId = leadRecord?.id || '';
+    const redirectFolio = certRecord?.folioCode || 'PE-0001';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://www.idealy.com.mx';
+    const personalDownloadUrl = leadId
+      ? `${baseUrl}/pagina-express/descarga?leadId=${leadId}`
+      : `${baseUrl}/pagina-express/descarga?folio=${encodeURIComponent(redirectFolio)}&nombre=${encodeURIComponent(nombre)}&negocio=${encodeURIComponent(nombreNegocio)}`;
+
     // Optional Evolution API direct WhatsApp dispatch
     if (process.env.EVOLUTION_API_URL && process.env.EVOLUTION_API_KEY && process.env.EVOLUTION_INSTANCE_NAME) {
       try {
         const cleanNumber = whatsapp.replace(/\D/g, '');
         const targetNumber = cleanNumber.startsWith('52') ? cleanNumber : `52${cleanNumber}`;
-        const autoText = `Hola ${nombre} 👋, soy Mauricio de Idealy. Ya recibimos los datos de *${nombreNegocio}*. Mañana a primera hora te mando tu vista previa por este medio.`;
+        const autoText = `Hola ${nombre}, soy Mauricio de Idealy. Ya recibimos los datos de *${nombreNegocio}*. Aquí tienes tu enlace personal para descargar tus 10 Mensajes y activar tu Certificado Página Express (${redirectFolio}) con $5,000 congelados + 1 mes de mantenimiento gratis:\n\n${personalDownloadUrl}`;
 
         await fetch(
           `${process.env.EVOLUTION_API_URL}/message/sendText/${process.env.EVOLUTION_INSTANCE_NAME}`,
@@ -165,17 +195,27 @@ GCLID: ${utm.gclid || '-'}
         await fetch(process.env.N8N_LEAD_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
+          body: JSON.stringify({
+            ...body,
+            leadId,
+            folioCode: redirectFolio,
+            downloadUrl: personalDownloadUrl,
+          }),
         });
       } catch (webhookErr) {
         console.error('N8N webhook dispatch error:', webhookErr);
       }
     }
 
+    const redirectUrl = `/pagina-express/gracias?nombre=${encodeURIComponent(nombre)}&leadId=${encodeURIComponent(leadId)}`;
+
     return NextResponse.json(
       {
         success: true,
-        redirectUrl: `/pagina-express/gracias?nombre=${encodeURIComponent(nombre)}`,
+        leadId,
+        folioCode: redirectFolio,
+        downloadUrl: personalDownloadUrl,
+        redirectUrl,
       },
       { status: 200 }
     );

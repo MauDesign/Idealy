@@ -5,7 +5,7 @@ const PHONE_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '522227179352';
 const CHANNEL_MESSAGES: Record<string, string> = {
   encabezado: 'Hola, quiero mi Página Express 🚀',
   cierre: 'Hola, quiero apartar mi lugar de la Página Express',
-  gracias: 'Hola, acabo de dejar mis datos para la vista previa',
+  gracias: 'Hola, quiero usar mi certificado Página Express',
   google: 'Hola, vi su anuncio en Google y quiero mi página',
   estados: 'QUIERO MI PÁGINA',
   facebook: 'Hola, vi su publicación y quiero mi página',

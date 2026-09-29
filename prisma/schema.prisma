@@ -63,22 +63,46 @@ model Media {
 }
 
 model ExpressLead {
-  id            String   @id @default(cuid())
-  nombre        String
-  whatsapp      String
-  nombreNegocio String
-  dedicacion    String?
-  tienePagina   String?
-  urgencia      String?
-  prioridad     String?
-  socialLink    String?
-  utmSource     String?
-  utmMedium     String?
-  utmCampaign   String?
-  gclid         String?
-  createdAt     DateTime @default(now())
+  id               String              @id @default(cuid())
+  folio            Int?
+  folioCode        String?
+  nombre           String
+  whatsapp         String
+  nombreNegocio    String
+  dedicacion       String?
+  tienePagina      String?
+  urgencia         String?
+  prioridad        String?
+  socialLink       String?
+  utmSource        String?
+  utmMedium        String?
+  utmCampaign      String?
+  gclid            String?
+  hasDownloadedPdf Boolean             @default(false)
+  downloadedAt     DateTime?
+  certificateId    String?             @unique
+  certificate      ExpressCertificate? @relation(fields: [certificateId], references: [id])
+  createdAt        DateTime            @default(now())
 
   @@index([createdAt])
   @@index([urgencia])
 }
+
+model ExpressCertificate {
+  id            String       @id @default(cuid())
+  folio         Int          @default(autoincrement())
+  folioCode     String       @unique
+  nombre        String
+  nombreNegocio String
+  whatsapp      String?
+  downloadCount Int          @default(1)
+  issuedAt      DateTime     @default(now())
+  validUntil    DateTime
+  lead          ExpressLead?
+  createdAt     DateTime     @default(now())
+
+  @@index([folioCode])
+  @@index([createdAt])
+}
+
 

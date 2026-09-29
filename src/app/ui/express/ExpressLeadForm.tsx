@@ -127,7 +127,8 @@ export default function ExpressLeadForm() {
   };
 
   return (
-    <div id="formulario-vista-previa" className="w-full bg-base-100/90 border border-[#00b4a6]/30 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md">
+    <div id="formulario-mensajes" className="w-full bg-base-100/90 border border-[#00b4a6]/30 rounded-3xl p-6 sm:p-8 shadow-2xl backdrop-blur-md">
+      <div id="formulario-vista-previa"></div>
       {/* Indicator */}
       <div className="flex items-center justify-between mb-6 pb-4 border-b border-white/10">
         <div className="flex items-center gap-2">
@@ -146,12 +147,54 @@ export default function ExpressLeadForm() {
       </div>
 
       <div className="mb-6">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#00b4a6]/15 border border-[#00b4a6]/30 text-[#00b4a6] font-extrabold text-xs tracking-wider uppercase mb-3">
+          🎁 RECURSO GRATUITO · GUÍA PDF INCLUIDA
+        </div>
         <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-2">
-          ¿Quieres ver cómo quedaría tu página?
+          ¿Aún no te decides? Llévate esta guía gratis
         </h3>
-        <p className="text-gray-300 text-sm sm:text-base">
-          Déjanos tus datos y en 24 horas te mandamos por WhatsApp una vista previa de tu página, gratis y sin compromiso.
+        <p className="text-gray-300 text-sm sm:text-base leading-relaxed mb-4">
+          Descarga los <strong>10 mensajes listos para copiar y pegar</strong> que te ayudan a vender más por WhatsApp desde hoy: cómo responder &quot;¿precio?&quot;, &quot;está caro&quot;, &quot;lo pienso&quot; y más.
         </p>
+
+        {/* Visual Preview Pills of the 10 messages */}
+        <div className="bg-[#07131e]/70 border border-white/10 rounded-2xl p-4">
+          <span className="text-xs font-bold text-[#00b4a6] block mb-2 uppercase tracking-wider">
+            📄 Lo que incluye tu PDF de 10 mensajes:
+          </span>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-gray-300 font-medium">
+            <div className="flex items-center gap-2">
+              <span className="text-[#00b4a6]">✓</span> 1. Bienvenida que vende
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#00b4a6]">✓</span> 2. Responder &quot;¿Precio?&quot; sin espantar
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#00b4a6]">✓</span> 3. Catálogo de servicios ordenado
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#00b4a6]">✓</span> 4. Seguimiento a cotizaciones
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#00b4a6]">✓</span> 5. Respuesta a &quot;Está caro&quot;
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#00b4a6]">✓</span> 6. Respuesta a &quot;Lo voy a pensar&quot;
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#00b4a6]">✓</span> 7. Confirmar citas/pedidos
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#00b4a6]">✓</span> 8. Recordatorios automáticos
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#00b4a6]">✓</span> 9. Pedir reseñas en Google Maps
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-[#00b4a6]">✓</span> 10. Reactivar antiguos clientes
+            </div>
+          </div>
+        </div>
       </div>
 
       {errorMessage && (
@@ -178,7 +221,7 @@ export default function ExpressLeadForm() {
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              WhatsApp (10 dígitos)
+              WhatsApp
             </label>
             <div className="relative">
               <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-sm">
@@ -190,13 +233,13 @@ export default function ExpressLeadForm() {
                 pattern="[0-9]*"
                 maxLength={10}
                 required
-                placeholder="222 123 4567"
+                placeholder="Teléfono (10 dígitos)"
                 value={whatsapp}
                 onChange={(e) => setWhatsapp(e.target.value.replace(/\D/g, ''))}
                 className="w-full min-h-[48px] pl-14 pr-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors font-mono"
               />
             </div>
-            <p className="text-xs text-gray-400 mt-1">Ahí te mandamos tu vista previa</p>
+            <p className="text-xs text-gray-400 mt-1">Ahí te mandamos tus 10 mensajes</p>
           </div>
 
           <div>
@@ -330,7 +373,7 @@ export default function ExpressLeadForm() {
               disabled={submitting}
               className="w-2/3 min-h-[52px] rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-bold text-base flex items-center justify-center gap-2 transition-transform transform active:scale-98 shadow-lg cursor-pointer disabled:opacity-50"
             >
-              {submitting ? 'Enviando...' : 'Quiero mi vista previa gratis'}
+              {submitting ? 'Enviando...' : 'Quiero mis 10 mensajes gratis'}
             </button>
           </div>
 

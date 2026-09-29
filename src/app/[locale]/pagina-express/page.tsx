@@ -7,16 +7,16 @@ import ExpressLeadForm from '@/app/ui/express/ExpressLeadForm';
 import FAQAccordion from './FAQAccordion';
 
 export const metadata: Metadata = {
-  title: 'Tu página web lista en 5 días por $5,000 | Idealy Página Express',
+  title: 'Tu página web lista en 5 días por $6,000 + IVA | Idealy Página Express',
   description:
-    'Que tus clientes te encuentren en Google y te escriban directo a WhatsApp. Sin plantillas, sin rentas mensuales. Entrega en 5 días o te devolvemos tu anticipo.',
+    'Que tus clientes te encuentren en Google y te escriban directo a WhatsApp. Sin plantillas, sin rentas mensuales. Entrega en 5 días o te devolvemos tu anticipo. Precios más IVA.',
   alternates: {
     canonical: 'https://www.idealy.com.mx/pagina-express',
   },
   openGraph: {
-    title: 'Tu página web lista en 5 días por $5,000 | Idealy Página Express',
+    title: 'Tu página web lista en 5 días por $6,000 + IVA | Idealy Página Express',
     description:
-      'Página web profesional a la medida para tu negocio. Incluye hosting, dominio, textos que venden y botón de WhatsApp.',
+      'Página web profesional a la medida para tu negocio. Incluye hosting, dominio, textos que venden y botón de WhatsApp. Precios más IVA.',
     url: 'https://www.idealy.com.mx/pagina-express',
     siteName: 'Idealy',
     images: [
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
         url: 'https://www.idealy.com.mx/img/express/express_panaderia.jpg',
         width: 1200,
         height: 630,
-        alt: 'Idealy Página Express $5,000',
+        alt: 'Idealy Página Express $6,000 + IVA',
       },
     ],
     locale: 'es_MX',
@@ -48,7 +48,7 @@ export default function PaginaExpressPage() {
               'Página web profesional lista en 5 días hábiles con botón de WhatsApp, hosting, dominio y copywriting incluido.',
             offers: {
               '@type': 'Offer',
-              price: '5000',
+              price: '6000',
               priceCurrency: 'MXN',
               availability: 'https://schema.org/InStock',
               validFrom: '2026-09-01',
@@ -101,8 +101,9 @@ export default function PaginaExpressPage() {
             <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight mb-5">
               Tu página web lista en 5 días por{' '}
               <span className="text-[#00b4a6] underline decoration-[#0069a9] decoration-4 underline-offset-4">
-                $5,000
-              </span>
+                $6,000
+              </span>{' '}
+              <span className="text-xs sm:text-sm text-gray-400 font-bold tracking-wider uppercase align-super">+ IVA</span>
             </h1>
 
             <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mb-8 max-w-2xl">
@@ -118,10 +119,10 @@ export default function PaginaExpressPage() {
               />
 
               <a
-                href="#formulario-vista-previa"
+                href="#formulario-mensajes"
                 className="w-full sm:w-auto py-4 px-6 rounded-2xl bg-base-200 hover:bg-base-300 border border-white/10 text-gray-200 hover:text-white text-base font-bold text-center transition-colors flex items-center justify-center"
               >
-                Ver cómo quedaría la mía
+                Descargar 10 mensajes gratis
               </a>
             </div>
 
@@ -246,7 +247,7 @@ export default function PaginaExpressPage() {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-4xl font-extrabold text-white mb-3">
-              Todo lo que necesitas por $5,000
+              Todo lo que necesitas por $6,000 <span className="text-base text-gray-400 font-semibold">+ IVA</span>
             </h2>
             <p className="text-gray-300 text-sm sm:text-base">
               Sin sorpresas, sin cargos ocultos, sin mensualidades obligatorias.
@@ -284,7 +285,7 @@ export default function PaginaExpressPage() {
             </span>
             <div className="flex items-center justify-center gap-3">
               <span className="text-lg text-gray-400 line-through font-bold">Valor real: $9,200</span>
-              <span className="text-3xl sm:text-4xl font-extrabold text-white">→ $5,000 MXN</span>
+              <span className="text-3xl sm:text-4xl font-extrabold text-white">→ $6,000 MXN <span className="text-xs sm:text-sm font-semibold text-gray-300">+ IVA</span></span>
             </div>
           </div>
         </div>
@@ -306,7 +307,7 @@ export default function PaginaExpressPage() {
             {[
               {
                 num: '1',
-                title: 'Aparta tu lugar con el 50% ($2,500)',
+                title: 'Aparta tu lugar con el 50% ($3,000 + IVA)',
                 desc: 'Aseguras tu lugar dentro de los 10 cupos disponibles de este mes.',
               },
               {
@@ -346,67 +347,6 @@ export default function PaginaExpressPage() {
         </div>
       </section>
 
-      {/* 6. EJEMPLOS */}
-      <section className="py-16 px-4 sm:px-8 bg-[#0b1c2b] border-y border-white/5">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-4xl font-extrabold text-white mb-3">
-              Así quedan nuestras páginas
-            </h2>
-            <p className="text-gray-300 text-sm sm:text-base">
-              Rápidas, limpias y preparadas para captar clientes desde el teléfono.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                giro: 'Consultorio Dental / Salud',
-                time: 'Entregada en 4 días',
-                score: '99/100 Google Speed',
-                color: 'bg-teal-500/20 text-teal-300 border-teal-500/40',
-                desc: 'Botón directo para agendar citas de valoración por WhatsApp.',
-              },
-              {
-                giro: 'Taller Automotriz',
-                time: 'Entregada en 4 días',
-                score: '100/100 Google Speed',
-                color: 'bg-blue-500/20 text-blue-300 border-blue-500/40',
-                desc: 'Ubicación en Google Maps y lista de servicios mecánicos claros.',
-              },
-              {
-                giro: 'Restaurante / Banquetes',
-                time: 'Entregada en 3 días',
-                score: '99/100 Google Speed',
-                color: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
-                desc: 'Menú digital y botón para pedidos a domicilio o reservaciones.',
-              },
-            ].map((ex, i) => (
-              <div
-                key={i}
-                className="bg-base-100/80 border border-white/10 rounded-2xl p-6 flex flex-col justify-between hover:border-[#00b4a6]/40 transition-colors"
-              >
-                <div>
-                  <div className="flex items-center justify-between gap-2 mb-4">
-                    <span className={`text-xs font-bold py-1 px-3 rounded-full border ${ex.color}`}>
-                      {ex.time}
-                    </span>
-                    <span className="text-xs font-bold text-emerald-400 flex items-center gap-1">
-                      ⚡ {ex.score}
-                    </span>
-                  </div>
-                  <h3 className="font-bold text-white text-xl mb-2">{ex.giro}</h3>
-                  <p className="text-sm text-gray-300 mb-4">{ex.desc}</p>
-                </div>
-                <div className="w-full h-36 rounded-xl bg-gradient-to-br from-[#0069a9]/20 to-[#00b4a6]/20 border border-white/10 flex items-center justify-center text-xs text-gray-400 font-mono">
-                  📱 Vista preliminar móvil optimizada
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 7. COMPARATIVA */}
       <section className="py-16 px-4 sm:px-8 max-w-6xl mx-auto overflow-x-auto">
         <div className="text-center mb-12">
@@ -435,7 +375,7 @@ export default function PaginaExpressPage() {
               <tr>
                 <td className="p-4 sm:p-5 font-bold text-white">Precio</td>
                 <td className="p-4 sm:p-5 font-black text-[#00b4a6] bg-[#00b4a6]/10 text-base">
-                  $5,000
+                  $6,000 <span className="text-xs text-gray-300 font-normal">+ IVA</span>
                 </td>
                 <td className="p-4 sm:p-5 text-gray-400">$15,000+</td>
                 <td className="p-4 sm:p-5 text-gray-400">Renta mensual siempre</td>
@@ -487,7 +427,7 @@ export default function PaginaExpressPage() {
               Lista en 5 días o te devolvemos tu anticipo.
             </h2>
             <p className="text-base text-gray-200 leading-relaxed">
-              Cuando recibimos tu información, empieza el reloj. Si no está lista en 5 días hábiles, te regresamos tus $2,500. Sin letras chiquitas.
+              Cuando recibimos tu información, empieza el reloj. Si no está lista en 5 días hábiles, te regresamos tus $3,000 + IVA. Sin letras chiquitas.
             </p>
           </div>
         </div>
@@ -547,7 +487,7 @@ export default function PaginaExpressPage() {
             ⚡ SOLO 10 LUGARES EN OCTUBRE
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white mb-6">
-            Aparta el tuyo hoy
+            Solo 10 lugares en octubre. Aparta el tuyo hoy.
           </h2>
 
           <div className="flex justify-center mb-8">
@@ -560,12 +500,14 @@ export default function PaginaExpressPage() {
           </div>
 
           <p className="text-sm sm:text-base text-gray-300 mb-8">
-            o déjanos tus datos y te mandamos cómo quedaría la tuya ↓
+            o descarga gratis 10 mensajes para vender más por WhatsApp ↓
           </p>
         </div>
 
         {/* Form component */}
-        <ExpressLeadForm />
+        <div id="formulario-mensajes">
+          <ExpressLeadForm />
+        </div>
       </section>
 
       {/* Footer minimal */}
