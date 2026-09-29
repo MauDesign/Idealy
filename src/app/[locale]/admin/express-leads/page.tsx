@@ -1,0 +1,312 @@
+import React from 'react';
+import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
+import { Download, CheckCircle, Clock, Phone, Search, ExternalLink, Filter, Sparkles } from 'lucide-react';
+
+export const metadata = {
+  title: 'Leads Página Express | Admin Idealy',
+  description: 'Historial de leads, descargas de PDF y seguimiento de clientes de Página Express.',
+};
+
+export default async function ExpressLeadsAdminPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string; status?: string }>;
+}) {
+  const { q = '', status = 'all' } = await searchParams;
+
+  const leads = await prisma.expressLead.findMany({
+    include: {
+      certificate: true,
+    },
+    orderBy: {
+      createdAt: 'desc',
+    },
+  });
+
+  // KPI Calculations
+  const totalLeads = leads.length;
+  const downloadedCount = leads.filter((l) => l.hasDownloadedPdf).length;
+  const downloadRate = totalLeads > 0 ? Math.round((downloadedCount / totalLeads) * 100) : 0;
+  const highPriorityCount = leads.filter((l) => l.urgencia?.toLowerCase().includes('semana')).length;
+
+  // Filtering
+  const filteredLeads = leads.filter((lead) => {
+    const query = q.toLowerCase().trim();
+    const matchesSearch =
+      !query ||
+      lead.nombre.toLowerCase().includes(query) ||
+      lead.nombreNegocio.toLowerCase().includes(query) ||
+      lead.whatsapp.includes(query) ||
+      (lead.folioCode && lead.folioCode.toLowerCase().includes(query));
+
+    const matchesStatus =
+      status === 'all' ||
+      (status === 'downloaded' && lead.hasDownloadedPdf) ||
+      (status === 'pending' && !lead.hasDownloadedPdf);
+
+    return matchesSearch && matchesStatus;
+  });
+
+  const formatDate = (d?: Date | null) => {
+    if (!d) return '-';
+    return new Date(d).toLocaleDateString('es-MX', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
+  const getCleanWhatsapp = (wa: string) => {
+    const clean = wa.replace(/\D/g, '');
+    return clean.startsWith('52') ? clean : `52${clean}`;
+  };
+
+  return (
+    <div className="space-y-8">
+      {/* Header section */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div className="flex items-center gap-2 mb-1">
+            <span className="badge badge-primary font-bold text-xs">PÁGINA EXPRESS</span>
+            <span className="text-xs text-base-content/60 font-medium">Panel de Control de Leads</span>
+          </div>
+          <h1 className="text-3xl font-bold tracking-tight">Historial de Leads y Descargas</h1>
+          <p className="text-base-content/60 text-sm mt-1">
+            Seguimiento en tiempo real de prospectos, folios asignados y confirmación de descargas de PDF.
+          </p>
+        </div>
+
+        <Link
+          href="/pagina-express"
+          target="_blank"
+          className="btn btn-outline btn-sm rounded-xl gap-2 text-xs font-bold self-start md:self-auto"
+        >
+          <ExternalLink className="w-4 h-4" />
+          Ver Landing Page
+        </Link>
+      </div>
+
+      {/* KPI Stats Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="card bg-base-100 border border-base-300 rounded-2xl p-5 shadow-xs">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">Total Leads</p>
+              <h3 className="text-3xl font-extrabold mt-1">{totalLeads}</h3>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold">
+              <Sparkles className="w-6 h-6" />
+            </div>
+          </div>
+        </div>
+
+        <div className="card bg-base-100 border border-base-300 rounded-2xl p-5 shadow-xs">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">PDFs Descargados</p>
+              <h3 className="text-3xl font-extrabold text-success mt-1">{downloadedCount}</h3>
+              <p className="text-xs text-success font-semibold mt-1">Tasa de descarga: {downloadRate}%</p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-success/10 text-success flex items-center justify-center font-bold">
+              <Download className="w-6 h-6" />
+            </div>
+          </div>
+        </div>
+
+        <div className="card bg-base-100 border border-base-300 rounded-2xl p-5 shadow-xs">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">Prioridad Alta</p>
+              <h3 className="text-3xl font-extrabold text-warning mt-1">{highPriorityCount}</h3>
+              <p className="text-xs text-base-content/60 mt-1">Quieren su página esta semana</p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-warning/10 text-warning flex items-center justify-center font-bold">
+              <Clock className="w-6 h-6" />
+            </div>
+          </div>
+        </div>
+
+        <div className="card bg-base-100 border border-base-300 rounded-2xl p-5 shadow-xs">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">Certificados Emitidos</p>
+              <h3 className="text-3xl font-extrabold text-info mt-1">{leads.filter((l) => l.certificateId).length}</h3>
+              <p className="text-xs text-base-content/60 mt-1">$5,000 + IVA congelados</p>
+            </div>
+            <div className="w-12 h-12 rounded-2xl bg-info/10 text-info flex items-center justify-center font-bold">
+              <CheckCircle className="w-6 h-6" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Filter and Table Container */}
+      <div className="card bg-base-100 border border-base-300 rounded-2xl shadow-xs overflow-hidden">
+        {/* Filter Bar */}
+        <div className="p-5 border-b border-base-300 bg-base-100/50 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <form method="GET" className="flex items-center gap-3 w-full sm:w-auto">
+            <div className="relative w-full sm:w-72">
+              <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-base-content/40" />
+              <input
+                type="text"
+                name="q"
+                defaultValue={q}
+                placeholder="Buscar por cliente, negocio, folio o WA..."
+                className="input input-sm input-bordered w-full pl-9 rounded-xl text-xs"
+              />
+            </div>
+
+            <select
+              name="status"
+              defaultValue={status}
+              className="select select-sm select-bordered rounded-xl text-xs"
+            >
+              <option value="all">Todos los estados</option>
+              <option value="downloaded">✓ PDF Descargado</option>
+              <option value="pending">⏳ Pendiente de descarga</option>
+            </select>
+
+            <button type="submit" className="btn btn-sm btn-primary rounded-xl text-xs font-bold gap-1">
+              <Filter className="w-3.5 h-3.5" />
+              Filtrar
+            </button>
+          </form>
+
+          <span className="text-xs font-semibold text-base-content/60">
+            Mostrando {filteredLeads.length} de {totalLeads} leads
+          </span>
+        </div>
+
+        {/* Table View */}
+        <div className="overflow-x-auto">
+          <table className="table w-full text-left">
+            <thead>
+              <tr className="bg-base-200/50 text-xs font-bold uppercase tracking-wider text-base-content/60">
+                <th className="py-4 px-5">Folio</th>
+                <th className="py-4 px-5">Cliente y Negocio</th>
+                <th className="py-4 px-5">WhatsApp</th>
+                <th className="py-4 px-5">Estado de Descarga</th>
+                <th className="py-4 px-5">Urgencia</th>
+                <th className="py-4 px-5">Fecha Registro</th>
+                <th className="py-4 px-5 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-base-200 text-sm">
+              {filteredLeads.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="py-12 text-center text-base-content/50">
+                    No se encontraron leads con los criterios seleccionados.
+                  </td>
+                </tr>
+              ) : (
+                filteredLeads.map((lead) => {
+                  const folioDisplay = lead.folioCode || (lead.folio ? `PE-${String(lead.folio).padStart(4, '0')}` : 'PE-0000');
+                  const waClean = getCleanWhatsapp(lead.whatsapp);
+                  const waMessage = encodeURIComponent(
+                    `Hola ${lead.nombre}, te saludo de Idealy. Vi tu solicitud para la Página Express de *${lead.nombreNegocio}* (Folio ${folioDisplay}). ¿Tuviste oportunidad de revisar la guía y tu certificado?`
+                  );
+                  const waUrl = `https://wa.me/${waClean}?text=${waMessage}`;
+                  const downloadPageUrl = `/pagina-express/descarga?leadId=${lead.id}`;
+
+                  return (
+                    <tr key={lead.id} className="hover:bg-base-200/30 transition-colors">
+                      {/* Folio */}
+                      <td className="py-4 px-5 font-bold">
+                        <span className="font-mono text-xs px-2.5 py-1 rounded-lg bg-primary/10 text-primary border border-primary/20">
+                          {folioDisplay}
+                        </span>
+                      </td>
+
+                      {/* Cliente y Negocio */}
+                      <td className="py-4 px-5">
+                        <div className="font-bold text-base-content">{lead.nombreNegocio}</div>
+                        <div className="text-xs text-base-content/60 font-medium">Atn. {lead.nombre}</div>
+                        {lead.dedicacion && (
+                          <span className="inline-block text-[10px] font-semibold px-2 py-0.5 mt-1 rounded-md bg-base-200 text-base-content/70">
+                            {lead.dedicacion}
+                          </span>
+                        )}
+                      </td>
+
+                      {/* WhatsApp Contact */}
+                      <td className="py-4 px-5">
+                        <a
+                          href={waUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 font-bold text-emerald-600 hover:text-emerald-700 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 px-3 py-1.5 rounded-xl text-xs transition-colors"
+                        >
+                          <Phone className="w-3.5 h-3.5" />
+                          {lead.whatsapp}
+                        </a>
+                      </td>
+
+                      {/* Estado de Descarga */}
+                      <td className="py-4 px-5">
+                        {lead.hasDownloadedPdf ? (
+                          <div className="space-y-1">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-600 border border-emerald-500/30">
+                              <CheckCircle className="w-3.5 h-3.5" />
+                              Descargó PDF
+                            </span>
+                            <div className="text-[11px] text-base-content/50 font-medium">
+                              {formatDate(lead.downloadedAt)}
+                            </div>
+                          </div>
+                        ) : (
+                          <div className="space-y-1">
+                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-600 border border-amber-500/30">
+                              <Clock className="w-3.5 h-3.5" />
+                              Pendiente
+                            </span>
+                            <div className="text-[11px] text-base-content/40 font-medium">
+                              Sin descarga registrada
+                            </div>
+                          </div>
+                        )}
+                      </td>
+
+                      {/* Urgencia */}
+                      <td className="py-4 px-5">
+                        <span
+                          className={`inline-block px-2.5 py-1 rounded-xl text-xs font-bold ${
+                            lead.urgencia?.toLowerCase().includes('semana')
+                              ? 'bg-amber-500/15 text-amber-600 border border-amber-500/30'
+                              : 'bg-base-200 text-base-content/70'
+                          }`}
+                        >
+                          {lead.urgencia || 'Normal'}
+                        </span>
+                      </td>
+
+                      {/* Fecha Registro */}
+                      <td className="py-4 px-5 text-xs text-base-content/60 font-medium">
+                        {formatDate(lead.createdAt)}
+                      </td>
+
+                      {/* Acciones */}
+                      <td className="py-4 px-5 text-right space-x-2">
+                        <Link
+                          href={downloadPageUrl}
+                          target="_blank"
+                          className="btn btn-ghost btn-xs text-primary font-bold gap-1 rounded-lg"
+                          title="Ver enlace personal de descarga"
+                        >
+                          <ExternalLink className="w-3.5 h-3.5" />
+                          Link Personal
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  );
+}

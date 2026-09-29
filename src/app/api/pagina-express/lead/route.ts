@@ -203,9 +203,22 @@ GCLID: ${utm.gclid || '-'}
       }
     }
 
-    // 6. DISPATCH TO WEBHOOK (N8N) WITH SAVED DB VALUES
+    // 6. DISPATCH TO WEBHOOK (N8N) WITH SAVED DB VALUES & PRE-FORMATTED PHONE
     if (process.env.N8N_LEAD_WEBHOOK_URL) {
       try {
+        const cleanWhatsapp = (whatsapp || '').replace(/\D/g, '');
+        let numberFormatted = cleanWhatsapp;
+
+        if (cleanWhatsapp.length === 10) {
+          numberFormatted = `52${cleanWhatsapp}`;
+        } else if (cleanWhatsapp.length === 13 && cleanWhatsapp.startsWith('521')) {
+          numberFormatted = `52${cleanWhatsapp.substring(3)}`;
+        } else if (cleanWhatsapp.length === 11 && cleanWhatsapp.startsWith('1')) {
+          numberFormatted = `52${cleanWhatsapp.substring(1)}`;
+        } else if (!cleanWhatsapp.startsWith('52') && cleanWhatsapp.length > 0) {
+          numberFormatted = `52${cleanWhatsapp}`;
+        }
+
         await fetch(process.env.N8N_LEAD_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -219,6 +232,8 @@ GCLID: ${utm.gclid || '-'}
             folioNum: folioNumber,
             downloadUrl: personalDownloadUrl,
             personalDownloadUrl,
+            whatsappClean: cleanWhatsapp,
+            numberFormatted,
           }),
         });
       } catch (webhookErr) {

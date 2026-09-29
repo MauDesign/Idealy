@@ -42,7 +42,7 @@ export default function LoginPage() {
               <Lock className="text-primary-content w-8 h-8" />
             </div>
             <h2 className="card-title text-3xl font-bold text-primary">Idealy Admin</h2>
-            <p className="text-base-content/60">Ingresa para gestionar el blog</p>
+            <p className="text-base-content/60 text-center">Ingresa para gestionar el blog y los leads de Página Express</p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
