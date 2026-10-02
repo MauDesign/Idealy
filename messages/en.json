@@ -104,6 +104,8 @@
     "ContactForm": {
         "name": "Name",
         "nameholder": "Jhon Doe",
+        "whatsapp": "WhatsApp / Phone",
+        "whatsappholder": "+1 (555) 123-4567",
         "subject": "Subject",
         "email": "E-mail",
         "emailholder": "youremail@domain.com",

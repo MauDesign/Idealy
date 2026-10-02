@@ -13,7 +13,7 @@ declare global {
 }
 
 export const prisma =
-  globalThis.prisma && 'expressCertificate' in globalThis.prisma
+  globalThis.prisma && 'contact' in globalThis.prisma
     ? globalThis.prisma
     : prismaClientSingleton()
 

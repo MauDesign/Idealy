@@ -176,7 +176,7 @@ GCLID: ${utm.gclid || '-'}
       try {
         const cleanNumber = whatsapp.replace(/\D/g, '');
         const targetNumber = cleanNumber.startsWith('52') ? cleanNumber : `52${cleanNumber}`;
-        const autoText = `Hola ${nombre}, soy Mauricio de Idealy. Ya recibimos los datos de *${nombreNegocio}*. Aquí tienes tu enlace personal para descargar tus 10 Mensajes y activar tu Certificado Página Express (${folioCode}) con $5,000 congelados + 1 mes de mantenimiento gratis:\n\n${personalDownloadUrl}`;
+        const autoText = `Hola ${nombre}, soy Mauricio de Idealy. Ya recibimos los datos de *${nombreNegocio}*. Aquí tienes tu enlace personal para descargar tus 10 Mensajes y activar tu Certificado de Descuento Especial Página Express (${folioCode}) + 1 mes de mantenimiento gratis:\n\n${personalDownloadUrl}`;
 
         await fetch(
           `${process.env.EVOLUTION_API_URL}/message/sendText/${process.env.EVOLUTION_INSTANCE_NAME}`,

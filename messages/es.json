@@ -104,6 +104,8 @@
     "ContactForm": {
         "name": "Nombre",
         "nameholder": "Jhon Doe",
+        "whatsapp": "WhatsApp / Teléfono",
+        "whatsappholder": "+52 222 123 4567",
         "subject": "Asunto",
         "email": "E-mail",
         "emailholder": "tucorreo@dominio.com",

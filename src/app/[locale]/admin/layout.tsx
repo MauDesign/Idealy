@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { LayoutDashboard, FileText, Settings, Home, Users } from 'lucide-react';
+import { LayoutDashboard, FileText, Settings, Home, Users, Mail } from 'lucide-react';
 import ThemeToggle from '@/app/ui/ThemeToggle';
 import LogoutButton from '@/app/ui/admin/LogoutButton';
 
@@ -41,6 +41,14 @@ export default async function AdminLayout({
           >
             <LayoutDashboard className="w-5 h-5" />
             <span>Dashboard</span>
+          </Link>
+
+          <Link
+            href={`/${locale}/admin/contacts`}
+            className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all font-medium"
+          >
+            <Mail className="w-5 h-5" />
+            <span>Contactos Web</span>
           </Link>
 
           <Link

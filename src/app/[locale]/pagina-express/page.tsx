@@ -4,6 +4,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import WhatsAppButton from '@/app/ui/express/WhatsAppModal';
 import ExpressLeadForm from '@/app/ui/express/ExpressLeadForm';
+import ExpressGSAPInitializer from '@/app/ui/express/ExpressGSAPInitializer';
 import FAQAccordion from './FAQAccordion';
 
 export const metadata: Metadata = {
@@ -34,133 +35,139 @@ export const metadata: Metadata = {
 
 export default function PaginaExpressPage() {
   return (
-    <div className="w-full bg-[#07131e] text-gray-100 min-h-screen font-sans selection:bg-[#00b4a6] selection:text-white pb-20 lg:pb-0">
-      {/* Dynamic Schema.org Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            '@context': 'https://schema.org',
-            '@type': 'Product',
-            name: 'Idealy Página Express',
-            image: 'https://www.idealy.com.mx/img/express/express_panaderia.jpg',
-            description:
-              'Página web profesional lista en 5 días hábiles con botón de WhatsApp, hosting, dominio y copywriting incluido.',
-            offers: {
-              '@type': 'Offer',
-              price: '6000',
-              priceCurrency: 'MXN',
-              availability: 'https://schema.org/InStock',
-              validFrom: '2026-09-01',
-              priceValidUntil: '2026-10-31',
-              seller: {
-                '@type': 'Organization',
-                name: 'Idealy',
-                url: 'https://www.idealy.com.mx',
+    <ExpressGSAPInitializer>
+      <div className="w-full bg-[#07131e] text-gray-100 min-h-screen font-sans selection:bg-[#00b4a6] selection:text-white pb-20 lg:pb-0 overflow-x-hidden">
+        {/* Dynamic Schema.org Structured Data */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'Product',
+              name: 'Idealy Página Express',
+              image: 'https://www.idealy.com.mx/img/express/express_panaderia.jpg',
+              description:
+                'Página web profesional lista en 5 días hábiles con botón de WhatsApp, hosting, dominio y copywriting incluido.',
+              offers: {
+                '@type': 'Offer',
+                price: '6000',
+                priceCurrency: 'MXN',
+                availability: 'https://schema.org/InStock',
+                validFrom: '2026-09-01',
+                priceValidUntil: '2026-10-31',
+                seller: {
+                  '@type': 'Organization',
+                  name: 'Idealy',
+                  url: 'https://www.idealy.com.mx',
+                },
               },
-            },
-          }),
-        }}
-      />
+            }),
+          }}
+        />
 
-      {/* Dedicated Minimal Header */}
-      <header className="w-full border-b border-white/10 bg-[#07131e]/90 backdrop-blur-md sticky top-0 z-40 py-4 px-4 sm:px-8">
-        <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2">
-            <Image
-              src="/img/Logo-Idealy.png"
-              alt="Idealy Logo"
-              width={130}
-              height={40}
-              priority
-              className="object-contain"
-            />
-          </Link>
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:inline-block text-xs font-bold px-3 py-1 rounded-full bg-[#00b4a6]/20 border border-[#00b4a6]/40 text-[#00b4a6]">
-              PÁGINA EXPRESS · SOLO OCTUBRE
-            </span>
-            <WhatsAppButton
-              buttonText="Quiero mi página →"
-              locationTag="header_nav"
-              presetMessage="Hola, quiero mi Página Express 🚀"
-              className="py-2 px-4 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white text-xs sm:text-sm font-bold shadow-md"
-            />
-          </div>
-        </div>
-      </header>
-
-      {/* 1. HERO SECTION */}
-      <section className="relative pt-8 pb-16 px-4 sm:px-8 max-w-6xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-7 flex flex-col items-start">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#00b4a6]/15 border border-[#00b4a6]/30 text-[#00b4a6] font-extrabold text-xs tracking-wider uppercase mb-5">
-              <span>🔥 PÁGINA EXPRESS · SOLO OCTUBRE</span>
-            </div>
-
-            <h1 className="text-3xl sm:text-5xl font-black text-white leading-tight tracking-tight mb-5">
-              Tu página web lista en 5 días por{' '}
-              <span className="text-[#00b4a6] underline decoration-[#0069a9] decoration-4 underline-offset-4">
-                $6,000
-              </span>{' '}
-              <span className="text-xs sm:text-sm text-gray-400 font-bold tracking-wider uppercase align-super">+ IVA</span>
-            </h1>
-
-            <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mb-8 max-w-2xl">
-              Que tus clientes te encuentren en Google y te escriban directo a WhatsApp. Sin plantillas, sin rentas mensuales.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto mb-6">
-              <WhatsAppButton
-                buttonText="Quiero mi página →"
-                locationTag="hero_primary"
-                presetMessage="Hola, quiero mi Página Express 🚀"
-                className="w-full sm:w-auto py-4 px-8 rounded-2xl bg-[#00b4a6] hover:bg-[#009b8e] text-white text-lg font-extrabold shadow-xl"
-              />
-
-              <a
-                href="#formulario-mensajes"
-                className="w-full sm:w-auto py-4 px-6 rounded-2xl bg-base-200 hover:bg-base-300 border border-white/10 text-gray-200 hover:text-white text-base font-bold text-center transition-colors flex items-center justify-center"
-              >
-                Descargar 10 mensajes gratis
-              </a>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs sm:text-sm text-gray-400 font-medium">
-              <span className="flex items-center gap-1.5 text-[#00b4a6]">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                </svg>
-                Entrega en 5 días o te devolvemos tu anticipo
-              </span>
-              <span className="hidden sm:inline text-gray-600">•</span>
-              <span className="flex items-center gap-1.5 text-amber-400">
-                <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                </svg>
-                Quedan 7 de 10 lugares
-              </span>
-            </div>
-          </div>
-
-          <div className="lg:col-span-5 relative">
-            <div className="relative rounded-3xl overflow-hidden border border-white/10 shadow-2xl group">
+        {/* Dedicated Minimal Header */}
+        <header className="w-full border-b border-white/10 bg-[#07131e]/90 backdrop-blur-md sticky top-0 z-40 py-4 px-4 sm:px-8">
+          <div className="max-w-6xl mx-auto flex items-center justify-between">
+            <Link href="/" className="flex items-center gap-2">
               <Image
-                src="/img/express/express_panaderia.jpg"
-                alt="Arte de lanzamiento Página Express Idealy"
-                width={700}
-                height={450}
+                src="/img/Logo-Idealy.png"
+                alt="Idealy Logo"
+                width={130}
+                height={40}
                 priority
-                className="w-full h-auto object-cover transform group-hover:scale-105 transition-transform duration-500"
+                className="object-contain"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#07131e] via-transparent to-transparent opacity-40"></div>
+            </Link>
+            <div className="flex items-center gap-3">
+              <span className="hidden sm:inline-block text-xs font-bold px-3 py-1 rounded-full bg-[#00b4a6]/20 border border-[#00b4a6]/40 text-[#00b4a6]">
+                PÁGINA EXPRESS · SOLO OCTUBRE
+              </span>
+              <WhatsAppButton
+                buttonText="Preguntar por WhatsApp 💬"
+                locationTag="header_nav"
+                presetMessage="Hola Mauricio, quiero preguntar por la Página Express y solicitar mi obsequio 🎁"
+                className="py-2 px-4 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white text-xs sm:text-sm font-bold shadow-md"
+              />
             </div>
           </div>
-        </div>
-      </section>
+        </header>
 
-      {/* 2. EL PROBLEMA */}
-      <section className="py-16 px-4 sm:px-8 bg-[#0b1c2b] border-y border-white/5">
+        {/* 1. HERO SECTION WITH ACCESSIBLE FORM */}
+        <section className="relative pt-8 pb-16 px-4 sm:px-8 max-w-6xl mx-auto overflow-hidden">
+          {/* High-tech Grid Background Pattern */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00b4a615_1px,transparent_1px),linear-gradient(to_bottom,#00b4a615_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none"></div>
+
+          {/* Background glow orbs */}
+          <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[500px] h-[500px] bg-[#00b4a6]/25 rounded-full blur-[140px] pointer-events-none"></div>
+          <div className="absolute top-10 right-0 w-[500px] h-[500px] bg-[#0069a9]/30 rounded-full blur-[140px] pointer-events-none"></div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start relative z-10">
+            {/* Left Column: Offer & Headline */}
+            <div className="lg:col-span-6 flex flex-col items-start pt-2">
+              <div className="hero-badge inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#00b4a6]/20 to-[#0069a9]/20 border border-[#00b4a6]/40 text-[#00b4a6] font-extrabold text-xs tracking-wider uppercase mb-5 shadow-[0_0_20px_rgba(0,180,166,0.2)]">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00b4a6] opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00b4a6]"></span>
+                </span>
+                <span>✨ PREGÚNTANOS POR WHATSAPP Y RECIBE TU OBSEQUIO</span>
+              </div>
+
+              <h1 className="hero-title text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.15] tracking-tight mb-5">
+                Tu página web lista en 5 días por{' '}
+                <span className="inline-block px-3.5 py-1 rounded-2xl bg-gradient-to-r from-[#00b4a6] to-[#008075] text-white shadow-[0_0_35px_rgba(0,180,166,0.6)] font-black tracking-tight border border-white/20 transform hover:scale-105 transition-transform">
+                  $6,000
+                </span>{' '}
+                <span className="text-xs sm:text-sm text-amber-300 font-bold tracking-wider uppercase align-super">+ IVA</span>
+              </h1>
+
+              <p className="hero-subtitle text-base sm:text-xl text-gray-300 leading-relaxed mb-6 font-normal">
+                Que tus clientes te encuentren en Google y te escriban directo a WhatsApp. Escríbenos por WhatsApp o completa los 3 datos para recibir tu <strong>Kit de Obsequio de Regalo</strong> al instante.
+              </p>
+
+              <div className="hero-cta flex flex-col sm:flex-row gap-3.5 w-full mb-6">
+                <WhatsAppButton
+                  buttonText="Preguntar por WhatsApp 💬"
+                  locationTag="hero_primary"
+                  presetMessage="Hola Mauricio, quiero preguntar por la Página Express y solicitar mi obsequio 🎁"
+                  className="w-full sm:w-auto py-4 px-7 rounded-2xl bg-gradient-to-r from-[#00b4a6] to-[#009b8e] hover:from-[#00c7b7] hover:to-[#00b4a6] text-white text-base sm:text-lg font-extrabold shadow-[0_0_30px_rgba(0,180,166,0.35)] hover:shadow-[0_0_40px_rgba(0,180,166,0.5)] transition-all transform hover:-translate-y-0.5"
+                />
+
+                <a
+                  href="#que-incluye"
+                  className="w-full sm:w-auto py-4 px-5 rounded-2xl bg-base-200/80 hover:bg-base-200 border border-white/10 text-gray-200 hover:text-white text-sm font-bold text-center transition-all flex items-center justify-center gap-2 hover:border-white/30"
+                >
+                  <span>Ver lo que incluye</span>
+                  <span className="text-[#00b4a6] font-extrabold">↓</span>
+                </a>
+              </div>
+
+              <div className="hero-trust space-y-2.5 text-xs sm:text-sm text-gray-300 font-medium bg-[#0b1c2b]/90 border border-white/10 rounded-2xl p-4.5 w-full shadow-lg backdrop-blur-md">
+                <div className="flex items-center gap-2.5 text-[#00b4a6] font-bold">
+                  <span className="w-5 h-5 rounded-full bg-[#00b4a6]/20 flex items-center justify-center text-xs shrink-0">✓</span>
+                  <span>Entrega en 5 días hábiles o te devolvemos tu anticipo</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-amber-300 font-semibold">
+                  <span className="w-5 h-5 rounded-full bg-amber-500/20 flex items-center justify-center text-xs shrink-0">🎁</span>
+                  <span>Kit de Obsequio: Guía de 10 Mensajes + Certificado de Descuento Especial</span>
+                </div>
+                <div className="flex items-center gap-2.5 text-gray-300 font-semibold">
+                  <span className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-xs shrink-0">🔥</span>
+                  <span>¡No te quedes fuera! Aparta tu lugar · Solo 10 cupos disponibles este mes</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column: Accessible Form directly in Hero */}
+            <div className="hero-form-card lg:col-span-6 w-full relative">
+              <div className="relative rounded-3xl p-1 bg-gradient-to-b from-[#00b4a6]/50 via-white/10 to-[#0069a9]/30 shadow-[0_0_60px_rgba(0,180,166,0.25)]">
+                <ExpressLeadForm />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 2. EL PROBLEMA */}
+        <section className="gsap-section py-16 px-4 sm:px-8 bg-[#0b1c2b] border-y border-white/5">
         <div className="max-w-5xl mx-auto text-center mb-12">
           <h2 className="text-2xl sm:text-4xl font-extrabold text-white mb-4">
             Si no te encuentran en Google, le compran a tu competencia
@@ -243,7 +250,7 @@ export default function PaginaExpressPage() {
       </section>
 
       {/* 4. QUÉ INCLUYE */}
-      <section className="py-16 px-4 sm:px-8 bg-[#0b1c2b] border-y border-white/5">
+      <section id="que-incluye" className="py-16 px-4 sm:px-8 bg-[#0b1c2b] border-y border-white/5">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-2xl sm:text-4xl font-extrabold text-white mb-3">
@@ -493,15 +500,15 @@ export default function PaginaExpressPage() {
 
           <div className="flex justify-center mb-8">
             <WhatsAppButton
-              buttonText="Quiero mi página →"
+              buttonText="Preguntar por WhatsApp y apartar mi lugar 💬"
               locationTag="cierre_primary"
-              presetMessage="Hola, quiero apartar mi lugar de la Página Express"
-              className="py-4 px-10 rounded-2xl bg-[#00b4a6] hover:bg-[#009b8e] text-white text-xl font-extrabold shadow-2xl"
+              presetMessage="Hola Mauricio, quiero preguntar por la Página Express y solicitar mi obsequio 🎁"
+              className="py-4 px-10 rounded-2xl bg-[#00b4a6] hover:bg-[#009b8e] text-white text-lg sm:text-xl font-extrabold shadow-2xl"
             />
           </div>
 
           <p className="text-sm sm:text-base text-gray-300 mb-8">
-            o descarga gratis 10 mensajes para vender más por WhatsApp ↓
+            o completa tus datos para recibir tu Kit de Obsequio de regalo de inmediato ↓
           </p>
         </div>
 
@@ -524,12 +531,13 @@ export default function PaginaExpressPage() {
       {/* 6. STICKY MOBILE BOTTOM BAR */}
       <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#07131e]/95 backdrop-blur-md p-3 border-t border-[#00b4a6]/40 shadow-2xl">
         <WhatsAppButton
-          buttonText="Quiero mi página →"
+          buttonText="Preguntar por WhatsApp 💬"
           locationTag="mobile_sticky_bottom"
-          presetMessage="Hola, quiero mi Página Express 🚀"
+          presetMessage="Hola Mauricio, quiero preguntar por la Página Express y solicitar mi obsequio 🎁"
           className="w-full py-3.5 px-6 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white text-base font-extrabold shadow-lg"
         />
       </div>
     </div>
-  );
+  </ExpressGSAPInitializer>
+);
 }

@@ -63,29 +63,34 @@ model Media {
 }
 
 model ExpressLead {
-  id               String              @id @default(cuid())
-  folio            Int?
-  folioCode        String?
-  nombre           String
-  whatsapp         String
-  nombreNegocio    String
-  dedicacion       String?
-  tienePagina      String?
-  urgencia         String?
-  prioridad        String?
-  socialLink       String?
-  utmSource        String?
-  utmMedium        String?
-  utmCampaign      String?
-  gclid            String?
-  hasDownloadedPdf Boolean             @default(false)
-  downloadedAt     DateTime?
-  certificateId    String?             @unique
-  certificate      ExpressCertificate? @relation(fields: [certificateId], references: [id])
-  createdAt        DateTime            @default(now())
+  id                String              @id @default(cuid())
+  folio             Int?
+  folioCode         String?
+  nombre            String
+  whatsapp          String
+  nombreNegocio     String
+  dedicacion        String?
+  tienePagina       String?
+  urgencia          String?
+  prioridad         String?
+  socialLink        String?
+  utmSource         String?
+  utmMedium         String?
+  utmCampaign       String?
+  gclid             String?
+  hasDownloadedPdf  Boolean             @default(false)
+  downloadedAt      DateTime?
+  hasDownloadedCert Boolean             @default(false)
+  certDownloadedAt  DateTime?
+  isRedeemed        Boolean             @default(false)
+  redeemedAt        DateTime?
+  certificateId     String?             @unique
+  certificate       ExpressCertificate? @relation(fields: [certificateId], references: [id])
+  createdAt         DateTime            @default(now())
 
   @@index([createdAt])
   @@index([urgencia])
+  @@index([isRedeemed])
 }
 
 model ExpressCertificate {
@@ -96,6 +101,8 @@ model ExpressCertificate {
   nombreNegocio String
   whatsapp      String?
   downloadCount Int          @default(1)
+  isRedeemed    Boolean      @default(false)
+  redeemedAt    DateTime?
   issuedAt      DateTime     @default(now())
   validUntil    DateTime
   lead          ExpressLead?
@@ -103,6 +110,18 @@ model ExpressCertificate {
 
   @@index([folioCode])
   @@index([createdAt])
+  @@index([isRedeemed])
 }
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  whatsapp  String?
+  subject   String
+  message   String   @db.Text
+  createdAt DateTime @default(now())
 
+  @@index([createdAt])
+  @@index([email])
+}
 

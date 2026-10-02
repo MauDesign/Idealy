@@ -53,17 +53,30 @@ export async function GET(request: NextRequest) {
           });
         }
 
-        // Always update lead download tracking info
-        await prisma.expressLead.update({
-          where: { id: leadIdParam },
-          data: {
-            folio: certRecord.folio,
-            folioCode: certRecord.folioCode,
-            certificateId: certRecord.id,
-            hasDownloadedPdf: true,
-            downloadedAt: new Date(),
-          },
-        }).catch((err: unknown) => console.error('Error linking lead download state:', err));
+        // Update lead download tracking based on type requested
+        if (typeParam === 'guia' || typeParam === 'mensajes') {
+          await prisma.expressLead.update({
+            where: { id: leadIdParam },
+            data: {
+              folio: certRecord.folio,
+              folioCode: certRecord.folioCode,
+              certificateId: certRecord.id,
+              hasDownloadedPdf: true,
+              downloadedAt: new Date(),
+            },
+          }).catch((err: unknown) => console.error('Error linking PDF download state:', err));
+        } else {
+          await prisma.expressLead.update({
+            where: { id: leadIdParam },
+            data: {
+              folio: certRecord.folio,
+              folioCode: certRecord.folioCode,
+              certificateId: certRecord.id,
+              hasDownloadedCert: true,
+              certDownloadedAt: new Date(),
+            },
+          }).catch((err: unknown) => console.error('Error linking cert download state:', err));
+        }
       }
     }
 

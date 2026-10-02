@@ -1,11 +1,12 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { Download, CheckCircle, Clock, Phone, Search, ExternalLink, Filter, Sparkles } from 'lucide-react';
+import { Download, CheckCircle, Clock, Phone, Search, ExternalLink, Filter, Sparkles, Award, Tag } from 'lucide-react';
+import RedeemStatusToggle from '@/app/ui/admin/RedeemStatusToggle';
 
 export const metadata = {
   title: 'Leads Página Express | Admin Idealy',
-  description: 'Historial de leads, descargas de PDF y seguimiento de clientes de Página Express.',
+  description: 'Historial de leads, descargas de PDF, certificados y redención de clientes de Página Express.',
 };
 
 export default async function ExpressLeadsAdminPage({
@@ -26,8 +27,9 @@ export default async function ExpressLeadsAdminPage({
 
   // KPI Calculations
   const totalLeads = leads.length;
-  const downloadedCount = leads.filter((l) => l.hasDownloadedPdf).length;
-  const downloadRate = totalLeads > 0 ? Math.round((downloadedCount / totalLeads) * 100) : 0;
+  const pdfDownloadedCount = leads.filter((l) => l.hasDownloadedPdf).length;
+  const certDownloadedCount = leads.filter((l) => l.hasDownloadedCert).length;
+  const redeemedCount = leads.filter((l) => l.isRedeemed).length;
   const highPriorityCount = leads.filter((l) => l.urgencia?.toLowerCase().includes('semana')).length;
 
   // Filtering
@@ -42,8 +44,10 @@ export default async function ExpressLeadsAdminPage({
 
     const matchesStatus =
       status === 'all' ||
-      (status === 'downloaded' && lead.hasDownloadedPdf) ||
-      (status === 'pending' && !lead.hasDownloadedPdf);
+      (status === 'pdf_downloaded' && lead.hasDownloadedPdf) ||
+      (status === 'cert_downloaded' && lead.hasDownloadedCert) ||
+      (status === 'redeemed' && lead.isRedeemed) ||
+      (status === 'pending' && !lead.hasDownloadedPdf && !lead.hasDownloadedCert && !lead.isRedeemed);
 
     return matchesSearch && matchesStatus;
   });
@@ -73,9 +77,9 @@ export default async function ExpressLeadsAdminPage({
             <span className="badge badge-primary font-bold text-xs">PÁGINA EXPRESS</span>
             <span className="text-xs text-base-content/60 font-medium">Panel de Control de Leads</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">Historial de Leads y Descargas</h1>
+          <h1 className="text-3xl font-bold tracking-tight">Historial de Leads, Certificados y Redenciones</h1>
           <p className="text-base-content/60 text-sm mt-1">
-            Seguimiento en tiempo real de prospectos, folios asignados y confirmación de descargas de PDF.
+            Seguimiento en tiempo real de prospectos, descargas de PDF Guía, Certificados y control de redención.
           </p>
         </div>
 
@@ -96,6 +100,7 @@ export default async function ExpressLeadsAdminPage({
             <div>
               <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">Total Leads</p>
               <h3 className="text-3xl font-extrabold mt-1">{totalLeads}</h3>
+              <p className="text-xs text-warning font-semibold mt-1">{highPriorityCount} urgentes (esta semana)</p>
             </div>
             <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center font-bold">
               <Sparkles className="w-6 h-6" />
@@ -106,9 +111,11 @@ export default async function ExpressLeadsAdminPage({
         <div className="card bg-base-100 border border-base-300 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">PDFs Descargados</p>
-              <h3 className="text-3xl font-extrabold text-success mt-1">{downloadedCount}</h3>
-              <p className="text-xs text-success font-semibold mt-1">Tasa de descarga: {downloadRate}%</p>
+              <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">PDF Guía Descargados</p>
+              <h3 className="text-3xl font-extrabold text-success mt-1">{pdfDownloadedCount}</h3>
+              <p className="text-xs text-success font-semibold mt-1">
+                {totalLeads > 0 ? Math.round((pdfDownloadedCount / totalLeads) * 100) : 0}% de los leads
+              </p>
             </div>
             <div className="w-12 h-12 rounded-2xl bg-success/10 text-success flex items-center justify-center font-bold">
               <Download className="w-6 h-6" />
@@ -119,12 +126,14 @@ export default async function ExpressLeadsAdminPage({
         <div className="card bg-base-100 border border-base-300 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">Prioridad Alta</p>
-              <h3 className="text-3xl font-extrabold text-warning mt-1">{highPriorityCount}</h3>
-              <p className="text-xs text-base-content/60 mt-1">Quieren su página esta semana</p>
+              <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">Certificados Descargados</p>
+              <h3 className="text-3xl font-extrabold text-info mt-1">{certDownloadedCount}</h3>
+              <p className="text-xs text-info font-semibold mt-1">
+                {totalLeads > 0 ? Math.round((certDownloadedCount / totalLeads) * 100) : 0}% de los leads
+              </p>
             </div>
-            <div className="w-12 h-12 rounded-2xl bg-warning/10 text-warning flex items-center justify-center font-bold">
-              <Clock className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-2xl bg-info/10 text-info flex items-center justify-center font-bold">
+              <Award className="w-6 h-6" />
             </div>
           </div>
         </div>
@@ -132,12 +141,12 @@ export default async function ExpressLeadsAdminPage({
         <div className="card bg-base-100 border border-base-300 rounded-2xl p-5 shadow-xs">
           <div className="flex items-center justify-between">
             <div>
-              <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">Certificados Emitidos</p>
-              <h3 className="text-3xl font-extrabold text-info mt-1">{leads.filter((l) => l.certificateId).length}</h3>
-              <p className="text-xs text-base-content/60 mt-1">$5,000 + IVA congelados</p>
+              <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">Certificados Utilizados</p>
+              <h3 className="text-3xl font-extrabold text-emerald-600 dark:text-emerald-400 mt-1">{redeemedCount}</h3>
+              <p className="text-xs text-emerald-600 font-semibold mt-1">Redimidos / Venta cerrada</p>
             </div>
-            <div className="w-12 h-12 rounded-2xl bg-info/10 text-info flex items-center justify-center font-bold">
-              <CheckCircle className="w-6 h-6" />
+            <div className="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center font-bold">
+              <Tag className="w-6 h-6" />
             </div>
           </div>
         </div>
@@ -162,11 +171,13 @@ export default async function ExpressLeadsAdminPage({
             <select
               name="status"
               defaultValue={status}
-              className="select select-sm select-bordered rounded-xl text-xs"
+              className="select select-sm select-bordered rounded-xl text-xs font-medium"
             >
               <option value="all">Todos los estados</option>
-              <option value="downloaded">✓ PDF Descargado</option>
-              <option value="pending">⏳ Pendiente de descarga</option>
+              <option value="pdf_downloaded">📄 PDF Guía Descargado</option>
+              <option value="cert_downloaded">🎖️ Certificado Descargado</option>
+              <option value="redeemed">✅ Certificado Utilizado / Redimido</option>
+              <option value="pending">⏳ Pendiente general</option>
             </select>
 
             <button type="submit" className="btn btn-sm btn-primary rounded-xl text-xs font-bold gap-1">
@@ -188,7 +199,9 @@ export default async function ExpressLeadsAdminPage({
                 <th className="py-4 px-5">Folio</th>
                 <th className="py-4 px-5">Cliente y Negocio</th>
                 <th className="py-4 px-5">WhatsApp</th>
-                <th className="py-4 px-5">Estado de Descarga</th>
+                <th className="py-4 px-5">PDF Guía</th>
+                <th className="py-4 px-5">Certificado PDF</th>
+                <th className="py-4 px-5">Uso / Redención</th>
                 <th className="py-4 px-5">Urgencia</th>
                 <th className="py-4 px-5">Fecha Registro</th>
                 <th className="py-4 px-5 text-right">Acciones</th>
@@ -197,7 +210,7 @@ export default async function ExpressLeadsAdminPage({
             <tbody className="divide-y divide-base-200 text-sm">
               {filteredLeads.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="py-12 text-center text-base-content/50">
+                  <td colSpan={9} className="py-12 text-center text-base-content/50">
                     No se encontraron leads con los criterios seleccionados.
                   </td>
                 </tr>
@@ -244,29 +257,53 @@ export default async function ExpressLeadsAdminPage({
                         </a>
                       </td>
 
-                      {/* Estado de Descarga */}
+                      {/* PDF Guía */}
                       <td className="py-4 px-5">
                         {lead.hasDownloadedPdf ? (
-                          <div className="space-y-1">
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-600 border border-emerald-500/30">
-                              <CheckCircle className="w-3.5 h-3.5" />
-                              Descargó PDF
+                          <div className="space-y-0.5">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-500/15 text-emerald-600 border border-emerald-500/30">
+                              <CheckCircle className="w-3 h-3" />
+                              Descargado
                             </span>
-                            <div className="text-[11px] text-base-content/50 font-medium">
+                            <div className="text-[10px] text-base-content/50 font-medium">
                               {formatDate(lead.downloadedAt)}
                             </div>
                           </div>
                         ) : (
-                          <div className="space-y-1">
-                            <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-bold bg-amber-500/15 text-amber-600 border border-amber-500/30">
-                              <Clock className="w-3.5 h-3.5" />
-                              Pendiente
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-base-200 text-base-content/50">
+                            <Clock className="w-3 h-3" />
+                            Pendiente
+                          </span>
+                        )}
+                      </td>
+
+                      {/* Certificado PDF */}
+                      <td className="py-4 px-5">
+                        {lead.hasDownloadedCert ? (
+                          <div className="space-y-0.5">
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-info/15 text-info border border-info/30">
+                              <Award className="w-3 h-3" />
+                              Descargado
                             </span>
-                            <div className="text-[11px] text-base-content/40 font-medium">
-                              Sin descarga registrada
+                            <div className="text-[10px] text-base-content/50 font-medium">
+                              {formatDate(lead.certDownloadedAt)}
                             </div>
                           </div>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-base-200 text-base-content/50">
+                            <Clock className="w-3 h-3" />
+                            Pendiente
+                          </span>
                         )}
+                      </td>
+
+                      {/* Certificado Redimido / Marcar Utilizado */}
+                      <td className="py-4 px-5">
+                        <RedeemStatusToggle
+                          leadId={lead.id}
+                          initialIsRedeemed={lead.isRedeemed}
+                          initialRedeemedAt={lead.redeemedAt}
+                        />
                       </td>
 
                       {/* Urgencia */}

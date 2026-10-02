@@ -1,18 +1,21 @@
 import React from 'react';
 import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
-import { Plus, FileText, ChevronRight, Users, Download, Sparkles, CheckCircle, ExternalLink, Phone } from 'lucide-react';
+import { Plus, FileText, ChevronRight, Users, Download, Sparkles, CheckCircle, ExternalLink, Phone, Award, Tag } from 'lucide-react';
+import RedeemStatusToggle from '@/app/ui/admin/RedeemStatusToggle';
 
 export default async function AdminDashboard({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
 
   // Real Database Stats
-  const [totalLeadsCount, downloadedCount, postsCount, recentLeads] = await Promise.all([
+  const [totalLeadsCount, pdfDownloadedCount, certDownloadedCount, redeemedCount, postsCount, recentLeads] = await Promise.all([
     prisma.expressLead.count().catch(() => 0),
     prisma.expressLead.count({ where: { hasDownloadedPdf: true } }).catch(() => 0),
+    prisma.expressLead.count({ where: { hasDownloadedCert: true } }).catch(() => 0),
+    prisma.expressLead.count({ where: { isRedeemed: true } }).catch(() => 0),
     prisma.post.count().catch(() => 0),
     prisma.expressLead.findMany({
-      take: 5,
+      take: 6,
       orderBy: { createdAt: 'desc' },
       include: { certificate: true },
     }).catch(() => []),
@@ -22,18 +25,26 @@ export default async function AdminDashboard({ params }: { params: Promise<{ loc
     {
       label: 'Leads Página Express',
       value: String(totalLeadsCount),
-      subtext: `${downloadedCount} descargaron el PDF`,
+      subtext: `${pdfDownloadedCount} descargaron la guía`,
       icon: Users,
       color: 'text-[#00b4a6]',
       link: `/${locale}/admin/express-leads`,
     },
     {
-      label: 'Descargas PDF',
-      value: String(downloadedCount),
-      subtext: `${totalLeadsCount > 0 ? Math.round((downloadedCount / totalLeadsCount) * 100) : 0}% tasa de conversión`,
-      icon: Download,
+      label: 'Certificados Descargados',
+      value: String(certDownloadedCount),
+      subtext: `${totalLeadsCount > 0 ? Math.round((certDownloadedCount / totalLeadsCount) * 100) : 0}% del total`,
+      icon: Award,
+      color: 'text-info',
+      link: `/${locale}/admin/express-leads?status=cert_downloaded`,
+    },
+    {
+      label: 'Certificados Utilizados',
+      value: String(redeemedCount),
+      subtext: `${totalLeadsCount > 0 ? Math.round((redeemedCount / totalLeadsCount) * 100) : 0}% ventas cerradas`,
+      icon: Tag,
       color: 'text-emerald-500',
-      link: `/${locale}/admin/express-leads?status=downloaded`,
+      link: `/${locale}/admin/express-leads?status=redeemed`,
     },
     {
       label: 'Publicaciones Blog',
@@ -50,7 +61,7 @@ export default async function AdminDashboard({ params }: { params: Promise<{ loc
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold">Dashboard Admin</h1>
-          <p className="text-base-content/60">Bienvenido de nuevo. Monitorea los leads de Página Express y contenido.</p>
+          <p className="text-base-content/60">Bienvenido de nuevo. Monitorea los leads de Página Express y redenciones.</p>
         </div>
         <div className="flex items-center gap-3">
           <Link href={`/${locale}/admin/express-leads`} className="btn btn-primary gap-2 rounded-xl">
@@ -65,24 +76,24 @@ export default async function AdminDashboard({ params }: { params: Promise<{ loc
       </div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {stats.map((stat, i) => (
           <div key={i} className="card bg-base-100 shadow-xs border border-base-300 rounded-2xl overflow-hidden hover:shadow-md transition-shadow">
-            <div className="p-6 flex items-center justify-between">
+            <div className="p-5 flex items-center justify-between">
               <div>
                 <p className="text-xs font-bold text-base-content/50 uppercase tracking-wider">{stat.label}</p>
-                <h3 className="text-4xl font-extrabold mt-1">{stat.value}</h3>
+                <h3 className="text-3xl font-extrabold mt-1">{stat.value}</h3>
                 <p className="text-xs text-base-content/60 mt-1 font-medium">{stat.subtext}</p>
               </div>
-              <div className={`p-4 rounded-2xl bg-base-200 ${stat.color}`}>
-                <stat.icon className="w-8 h-8" />
+              <div className={`p-3.5 rounded-2xl bg-base-200 ${stat.color}`}>
+                <stat.icon className="w-7 h-7" />
               </div>
             </div>
             <Link
               href={stat.link}
-              className="px-6 py-3 bg-base-200/50 flex items-center justify-between text-xs font-bold text-primary hover:bg-base-200 transition-colors"
+              className="px-5 py-2.5 bg-base-200/50 flex items-center justify-between text-xs font-bold text-primary hover:bg-base-200 transition-colors border-t border-base-200"
             >
-              <span>Ver reporte completo</span>
+              <span>Ver reporte</span>
               <ChevronRight className="w-4 h-4" />
             </Link>
           </div>
@@ -113,11 +124,13 @@ export default async function AdminDashboard({ params }: { params: Promise<{ loc
             <table className="table w-full text-left text-xs">
               <thead>
                 <tr className="bg-base-200/50 uppercase tracking-wider text-base-content/60 font-bold">
-                  <th className="py-3 px-5">Folio</th>
-                  <th className="py-3 px-5">Cliente / Negocio</th>
-                  <th className="py-3 px-5">WhatsApp</th>
-                  <th className="py-3 px-5">PDF Descargado</th>
-                  <th className="py-3 px-5 text-right">Acciones</th>
+                  <th className="py-3.5 px-5">Folio</th>
+                  <th className="py-3.5 px-5">Cliente / Negocio</th>
+                  <th className="py-3.5 px-5">WhatsApp</th>
+                  <th className="py-3.5 px-5">Guía PDF</th>
+                  <th className="py-3.5 px-5">Certificado PDF</th>
+                  <th className="py-3.5 px-5">Estado Redención</th>
+                  <th className="py-3.5 px-5 text-right">Acciones</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-base-200 font-medium">
@@ -156,9 +169,28 @@ export default async function AdminDashboard({ params }: { params: Promise<{ loc
                           </span>
                         ) : (
                           <span className="badge badge-ghost badge-sm text-base-content/60 font-semibold">
-                            No aún
+                            No
                           </span>
                         )}
+                      </td>
+                      <td className="py-3.5 px-5">
+                        {lead.hasDownloadedCert ? (
+                          <span className="badge badge-info badge-sm gap-1 font-bold">
+                            <Award className="w-3 h-3" /> Sí
+                          </span>
+                        ) : (
+                          <span className="badge badge-ghost badge-sm text-base-content/60 font-semibold">
+                            No
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3.5 px-5">
+                        <RedeemStatusToggle
+                          leadId={lead.id}
+                          initialIsRedeemed={lead.isRedeemed}
+                          initialRedeemedAt={lead.redeemedAt}
+                          compact={true}
+                        />
                       </td>
                       <td className="py-3.5 px-5 text-right">
                         <Link

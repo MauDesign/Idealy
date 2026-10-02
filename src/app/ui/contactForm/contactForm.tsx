@@ -15,6 +15,7 @@ export default function ContactForm() {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
+        whatsapp: '',
         subject: '',
         message: ''
     });
@@ -48,6 +49,7 @@ export default function ContactForm() {
                 setFormData({
                     name: '',
                     email: '',
+                    whatsapp: '',
                     subject: '',
                     message: ''
                 });
@@ -91,6 +93,21 @@ export default function ContactForm() {
                     onChange={handleChange}
                     className="input input-bordered w-full p-1"
                     placeholder={t("emailholder")}
+                    required
+                />
+            </div>
+            <div className="form-control w-full">
+                <label htmlFor="whatsapp" className="label">
+                    <span className="label-text">{t("whatsapp")}</span>
+                </label>
+                <input
+                    type="tel"
+                    id="whatsapp"
+                    name="whatsapp"
+                    value={formData.whatsapp}
+                    onChange={handleChange}
+                    className="input input-bordered w-full p-1"
+                    placeholder={t("whatsappholder")}
                     required
                 />
             </div>
