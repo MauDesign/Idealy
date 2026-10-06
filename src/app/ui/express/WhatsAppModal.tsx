@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 
 interface WhatsAppModalProps {
   buttonText: string;
@@ -18,6 +19,7 @@ export default function WhatsAppButton({
   presetMessage = 'Hola, quiero mi Página Express 🚀',
 }: WhatsAppModalProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -42,6 +44,21 @@ export default function WhatsAppButton({
     gclid: '',
     referer: '',
   });
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -180,8 +197,8 @@ export default function WhatsAppButton({
       </button>
 
       {/* Interactive WhatsApp Lead Modal */}
-      {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
+      {isOpen && mounted && createPortal(
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
           <div className="bg-[#0b1c2b] border border-[#00b4a6]/40 rounded-3xl p-6 sm:p-8 max-w-md w-full text-left shadow-2xl relative overflow-hidden">
             {/* Top Glow Accent */}
             <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#00b4a6]/20 rounded-full blur-2xl pointer-events-none"></div>
@@ -363,7 +380,8 @@ export default function WhatsAppButton({
               </div>
             )}
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   );
