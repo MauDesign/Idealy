@@ -93,74 +93,76 @@ export default function PaginaExpressPage() {
         </header>
 
         {/* 1. HERO SECTION WITH ACCESSIBLE FORM */}
-        <section className="relative pt-8 pb-16 px-4 sm:px-8 max-w-6xl mx-auto overflow-hidden">
-          {/* High-tech Grid Background Pattern */}
-          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00b4a615_1px,transparent_1px),linear-gradient(to_bottom,#00b4a615_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none"></div>
+        <section className="w-full relative pt-8 pb-16 overflow-hidden">
+          {/* High-tech Grid Background Pattern (Full Width) */}
+          <div className="absolute inset-0 bg-[linear-gradient(to_right,#00b4a615_1px,transparent_1px),linear-gradient(to_bottom,#00b4a615_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none"></div>
 
-          {/* Background glow orbs */}
-          <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[500px] h-[500px] bg-[#00b4a6]/25 rounded-full blur-[140px] pointer-events-none"></div>
-          <div className="absolute top-10 right-0 w-[500px] h-[500px] bg-[#0069a9]/30 rounded-full blur-[140px] pointer-events-none"></div>
+          {/* Background glow orbs (Full Width) */}
+          <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[600px] h-[600px] bg-[#00b4a6]/25 rounded-full blur-[140px] pointer-events-none"></div>
+          <div className="absolute top-10 right-1/4 translate-x-1/2 w-[600px] h-[600px] bg-[#0069a9]/30 rounded-full blur-[140px] pointer-events-none"></div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start relative z-10">
-            {/* Left Column: Offer & Headline */}
-            <div className="lg:col-span-6 flex flex-col items-start pt-2">
-              <div className="hero-badge inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#00b4a6]/20 to-[#0069a9]/20 border border-[#00b4a6]/40 text-[#00b4a6] font-extrabold text-xs tracking-wider uppercase mb-5 shadow-[0_0_20px_rgba(0,180,166,0.2)]">
-                <span className="relative flex h-2.5 w-2.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00b4a6] opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00b4a6]"></span>
-                </span>
-                <span>✨ PREGÚNTANOS POR WHATSAPP Y RECIBE TU OBSEQUIO</span>
+          <div className="max-w-6xl mx-auto px-4 sm:px-8 relative z-10">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
+              {/* Left Column: Offer & Headline */}
+              <div className="lg:col-span-6 flex flex-col items-start pt-2">
+                <div className="hero-badge inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-gradient-to-r from-[#00b4a6]/20 to-[#0069a9]/20 border border-[#00b4a6]/40 text-[#00b4a6] font-extrabold text-xs tracking-wider uppercase mb-5 shadow-[0_0_20px_rgba(0,180,166,0.2)]">
+                  <span className="relative flex h-2.5 w-2.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00b4a6] opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#00b4a6]"></span>
+                  </span>
+                  <span>✨ PREGÚNTANOS POR WHATSAPP Y RECIBE TU OBSEQUIO</span>
+                </div>
+
+                <h1 className="hero-title text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.15] tracking-tight mb-5">
+                  Tu página web lista en 5 días por{' '}
+                  <span className="inline-block px-3.5 py-1 rounded-2xl bg-gradient-to-r from-[#00b4a6] to-[#008075] text-white shadow-[0_0_35px_rgba(0,180,166,0.6)] font-black tracking-tight border border-white/20 transform hover:scale-105 transition-transform">
+                    $6,000
+                  </span>{' '}
+                  <span className="text-xs sm:text-sm text-amber-300 font-bold tracking-wider uppercase align-super">+ IVA</span>
+                </h1>
+
+                <p className="hero-subtitle text-base sm:text-xl text-gray-300 leading-relaxed mb-6 font-normal">
+                  Que tus clientes te encuentren en Google y te escriban directo a WhatsApp. Escríbenos por WhatsApp o completa los 3 datos para recibir tu <strong>Kit de Obsequio de Regalo</strong> al instante.
+                </p>
+
+                <div className="hero-cta flex flex-col sm:flex-row gap-3.5 w-full mb-6">
+                  <WhatsAppButton
+                    buttonText="Preguntar por WhatsApp 💬"
+                    locationTag="hero_primary"
+                    presetMessage="Hola Mauricio, quiero preguntar por la Página Express y solicitar mi obsequio 🎁"
+                    className="w-full sm:w-auto py-4 px-7 rounded-2xl bg-gradient-to-r from-[#00b4a6] to-[#009b8e] hover:from-[#00c7b7] hover:to-[#00b4a6] text-white text-base sm:text-lg font-extrabold shadow-[0_0_30px_rgba(0,180,166,0.35)] hover:shadow-[0_0_40px_rgba(0,180,166,0.5)] transition-all transform hover:-translate-y-0.5"
+                  />
+
+                  <a
+                    href="#que-incluye"
+                    className="w-full sm:w-auto py-4 px-5 rounded-2xl bg-base-200/80 hover:bg-base-200 border border-white/10 text-gray-200 hover:text-white text-sm font-bold text-center transition-all flex items-center justify-center gap-2 hover:border-white/30"
+                  >
+                    <span>Ver lo que incluye</span>
+                    <span className="text-[#00b4a6] font-extrabold">↓</span>
+                  </a>
+                </div>
+
+                <div className="hero-trust space-y-2.5 text-xs sm:text-sm text-gray-300 font-medium bg-[#0b1c2b]/90 border border-white/10 rounded-2xl p-4.5 w-full shadow-lg backdrop-blur-md">
+                  <div className="flex items-center gap-2.5 text-[#00b4a6] font-bold">
+                    <span className="w-5 h-5 rounded-full bg-[#00b4a6]/20 flex items-center justify-center text-xs shrink-0">✓</span>
+                    <span>Entrega en 5 días hábiles o te devolvemos tu anticipo</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-amber-300 font-semibold">
+                    <span className="w-5 h-5 rounded-full bg-amber-500/20 flex items-center justify-center text-xs shrink-0">🎁</span>
+                    <span>Kit de Obsequio: Guía de 10 Mensajes + Certificado de Descuento Especial</span>
+                  </div>
+                  <div className="flex items-center gap-2.5 text-gray-300 font-semibold">
+                    <span className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-xs shrink-0">🔥</span>
+                    <span>¡No te quedes fuera! Aparta tu lugar · Solo 10 cupos disponibles este mes</span>
+                  </div>
+                </div>
               </div>
 
-              <h1 className="hero-title text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.15] tracking-tight mb-5">
-                Tu página web lista en 5 días por{' '}
-                <span className="inline-block px-3.5 py-1 rounded-2xl bg-gradient-to-r from-[#00b4a6] to-[#008075] text-white shadow-[0_0_35px_rgba(0,180,166,0.6)] font-black tracking-tight border border-white/20 transform hover:scale-105 transition-transform">
-                  $6,000
-                </span>{' '}
-                <span className="text-xs sm:text-sm text-amber-300 font-bold tracking-wider uppercase align-super">+ IVA</span>
-              </h1>
-
-              <p className="hero-subtitle text-base sm:text-xl text-gray-300 leading-relaxed mb-6 font-normal">
-                Que tus clientes te encuentren en Google y te escriban directo a WhatsApp. Escríbenos por WhatsApp o completa los 3 datos para recibir tu <strong>Kit de Obsequio de Regalo</strong> al instante.
-              </p>
-
-              <div className="hero-cta flex flex-col sm:flex-row gap-3.5 w-full mb-6">
-                <WhatsAppButton
-                  buttonText="Preguntar por WhatsApp 💬"
-                  locationTag="hero_primary"
-                  presetMessage="Hola Mauricio, quiero preguntar por la Página Express y solicitar mi obsequio 🎁"
-                  className="w-full sm:w-auto py-4 px-7 rounded-2xl bg-gradient-to-r from-[#00b4a6] to-[#009b8e] hover:from-[#00c7b7] hover:to-[#00b4a6] text-white text-base sm:text-lg font-extrabold shadow-[0_0_30px_rgba(0,180,166,0.35)] hover:shadow-[0_0_40px_rgba(0,180,166,0.5)] transition-all transform hover:-translate-y-0.5"
-                />
-
-                <a
-                  href="#que-incluye"
-                  className="w-full sm:w-auto py-4 px-5 rounded-2xl bg-base-200/80 hover:bg-base-200 border border-white/10 text-gray-200 hover:text-white text-sm font-bold text-center transition-all flex items-center justify-center gap-2 hover:border-white/30"
-                >
-                  <span>Ver lo que incluye</span>
-                  <span className="text-[#00b4a6] font-extrabold">↓</span>
-                </a>
-              </div>
-
-              <div className="hero-trust space-y-2.5 text-xs sm:text-sm text-gray-300 font-medium bg-[#0b1c2b]/90 border border-white/10 rounded-2xl p-4.5 w-full shadow-lg backdrop-blur-md">
-                <div className="flex items-center gap-2.5 text-[#00b4a6] font-bold">
-                  <span className="w-5 h-5 rounded-full bg-[#00b4a6]/20 flex items-center justify-center text-xs shrink-0">✓</span>
-                  <span>Entrega en 5 días hábiles o te devolvemos tu anticipo</span>
+              {/* Right Column: Accessible Form directly in Hero */}
+              <div className="hero-form-card lg:col-span-6 w-full relative">
+                <div className="relative rounded-3xl p-1 bg-gradient-to-b from-[#00b4a6]/50 via-white/10 to-[#0069a9]/30 shadow-[0_0_60px_rgba(0,180,166,0.25)]">
+                  <ExpressLeadForm />
                 </div>
-                <div className="flex items-center gap-2.5 text-amber-300 font-semibold">
-                  <span className="w-5 h-5 rounded-full bg-amber-500/20 flex items-center justify-center text-xs shrink-0">🎁</span>
-                  <span>Kit de Obsequio: Guía de 10 Mensajes + Certificado de Descuento Especial</span>
-                </div>
-                <div className="flex items-center gap-2.5 text-gray-300 font-semibold">
-                  <span className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-xs shrink-0">🔥</span>
-                  <span>¡No te quedes fuera! Aparta tu lugar · Solo 10 cupos disponibles este mes</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Right Column: Accessible Form directly in Hero */}
-            <div className="hero-form-card lg:col-span-6 w-full relative">
-              <div className="relative rounded-3xl p-1 bg-gradient-to-b from-[#00b4a6]/50 via-white/10 to-[#0069a9]/30 shadow-[0_0_60px_rgba(0,180,166,0.25)]">
-                <ExpressLeadForm />
               </div>
             </div>
           </div>
