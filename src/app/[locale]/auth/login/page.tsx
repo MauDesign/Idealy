@@ -28,8 +28,7 @@ export default function LoginPage() {
       setError('Credenciales inválidas');
       setLoading(false);
     } else {
-      router.push(`/${locale}/admin`);
-      router.refresh();
+      window.location.href = `/${locale}/admin`;
     }
   };
 
@@ -93,10 +92,11 @@ export default function LoginPage() {
             <div className="form-control mt-6">
               <button 
                 type="submit" 
-                className={`btn btn-primary w-full rounded-xl gap-2 ${loading ? 'loading' : ''}`}
+                className="btn btn-primary w-full rounded-xl gap-2 font-bold text-base"
                 disabled={loading}
               >
-                {loading ? 'Entrando...' : 'Iniciar Sesión'}
+                {loading && <span className="loading loading-spinner loading-sm"></span>}
+                {loading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
               </button>
             </div>
           </form>

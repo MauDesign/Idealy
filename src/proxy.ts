@@ -12,7 +12,8 @@ const authMiddleware = withAuth(
     },
     {
         callbacks: {
-            authorized: ({ token }) => token?.name === "Admin",
+            // Allow access to any authenticated user with a valid JWT token
+            authorized: ({ token }) => !!token,
         },
         pages: {
             signIn: "/auth/login",

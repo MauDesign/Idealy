@@ -12,7 +12,7 @@ interface FAQSectionProps {
 
 export default function FAQSection({ language = 'es' }: FAQSectionProps) {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const faqs = faqData[language];
+  const faqs = (language && faqData[language]) ? faqData[language] : (faqData['es'] || []);
 
   const faqSchema = {
     "@context": "https://schema.org",

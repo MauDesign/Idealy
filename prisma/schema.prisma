@@ -125,3 +125,57 @@ model Contact {
   @@index([email])
 }
 
+model EmailCampaign {
+  id          String              @id @default(cuid())
+  title       String
+  subject     String
+  preheader   String?
+  senderName  String              @default("Leo de Idealy")
+  senderEmail String              @default("hello@idealy.com.mx")
+  htmlContent String              @db.Text
+  status      String              @default("DRAFT") // DRAFT, SENDING, SENT
+  totalSent   Int                 @default(0)
+  totalOpened Int                 @default(0)
+  totalFailed Int                 @default(0)
+  createdAt   DateTime            @default(now())
+  sentAt      DateTime?
+  recipients  CampaignRecipient[]
+
+  @@index([createdAt])
+  @@index([status])
+}
+
+model CampaignRecipient {
+  id           String        @id @default(cuid())
+  campaignId   String
+  campaign     EmailCampaign @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  email        String
+  name         String?
+  status       String        @default("PENDING") // PENDING, SENT, DELIVERED, FAILED
+  openedAt     DateTime?
+  openedCount  Int           @default(0)
+  errorMessage String?
+  sentAt       DateTime?
+
+  @@index([campaignId])
+  @@index([email])
+  @@index([status])
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  username  String   @unique
+  password  String
+  role      String   @default("ADMIN") // SUPER_ADMIN, ADMIN, EDITOR
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([username])
+  @@index([email])
+}
+
+
+

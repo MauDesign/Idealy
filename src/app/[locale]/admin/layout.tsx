@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { LayoutDashboard, FileText, Settings, Home, Users, Mail } from 'lucide-react';
+import { LayoutDashboard, FileText, Settings, Home, Users, Mail, Send } from 'lucide-react';
 import ThemeToggle from '@/app/ui/ThemeToggle';
 import LogoutButton from '@/app/ui/admin/LogoutButton';
 
@@ -17,8 +17,11 @@ export default async function AdminLayout({
   const { locale } = await params;
   const session = await getServerSession(authOptions);
 
+  console.log("👉 ADMIN LAYOUT SESSION CHECK:", session);
+
   // Require authentication for all admin panel routes
   if (!session) {
+    console.log("❌ NO SESSION FOUND, REDIRECTING TO LOGIN");
     redirect(`/${locale}/auth/login`);
   }
 
@@ -44,6 +47,17 @@ export default async function AdminLayout({
           </Link>
 
           <Link
+            href={`/${locale}/admin/boletin`}
+            className="flex items-center justify-between p-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all font-medium text-primary bg-primary/10"
+          >
+            <div className="flex items-center gap-3">
+              <Send className="w-5 h-5" />
+              <span>Boletines y Envíos</span>
+            </div>
+            <span className="badge badge-sm badge-primary font-bold">Nuevo</span>
+          </Link>
+
+          <Link
             href={`/${locale}/admin/contacts`}
             className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all font-medium"
           >
@@ -53,13 +67,12 @@ export default async function AdminLayout({
 
           <Link
             href={`/${locale}/admin/express-leads`}
-            className="flex items-center justify-between p-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all font-medium text-primary bg-primary/5"
+            className="flex items-center justify-between p-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all font-medium"
           >
             <div className="flex items-center gap-3">
               <Users className="w-5 h-5" />
               <span>Leads Express</span>
             </div>
-            <span className="badge badge-sm badge-primary font-bold">Nuevo</span>
           </Link>
 
           <Link
@@ -68,6 +81,14 @@ export default async function AdminLayout({
           >
             <FileText className="w-5 h-5" />
             <span>Publicaciones</span>
+          </Link>
+
+          <Link
+            href={`/${locale}/admin/users`}
+            className="flex items-center gap-3 p-3 rounded-lg hover:bg-primary/10 hover:text-primary transition-all font-medium"
+          >
+            <Users className="w-5 h-5 text-primary" />
+            <span>Usuarios Admin</span>
           </Link>
 
           <Link
