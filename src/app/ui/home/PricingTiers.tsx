@@ -133,11 +133,11 @@ export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
               </ul>
             </div>
             <Link
-              href="/#contacto"
+              href={`/${locale}/sitio-crecimiento`}
               onClick={() => handlePriceClick('crecimiento', 'Más clientes desde internet')}
               className="btn btn-primary rounded-full w-full font-bold text-white shadow-lg shadow-primary/30 normal-case"
             >
-              {isEs ? 'Quiero crecer →' : 'I want to grow →'}
+              {isEs ? 'Ver plan Crecimiento →' : 'See Growth Plan →'}
             </Link>
           </div>
 
@@ -177,11 +177,11 @@ export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
               </ul>
             </div>
             <Link
-              href="/#contacto"
+              href={`/${locale}/services/software-development`}
               onClick={() => handlePriceClick('medida', 'Un sistema a la medida')}
               className="btn btn-outline btn-primary rounded-full w-full font-bold normal-case hover:text-white"
             >
-              {isEs ? 'Cotizar mi sistema →' : 'Quote my system →'}
+              {isEs ? 'Ver desarrollo a la medida →' : 'See Custom Software →'}
             </Link>
           </div>
 

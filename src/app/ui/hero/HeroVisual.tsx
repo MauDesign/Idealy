@@ -63,7 +63,8 @@ export default function HeroVisual({ locale = 'es' }: HeroVisualProps) {
           fill
           priority
           fetchPriority="high"
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          quality={80}
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 500px, 576px"
           className="object-cover object-center group-hover:scale-102 transition-transform duration-700"
         />
 

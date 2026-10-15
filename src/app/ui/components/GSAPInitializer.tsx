@@ -38,9 +38,9 @@ export default function GSAPInitializer({ children }: { children: React.ReactNod
         const el = container.current;
         if (!el) return;
 
-        // ── Animate sections on scroll ───────────────────────────────────────
+        // ── Animate sections on scroll (excluyendo #inicio para proteger LCP inmediato) ──
         const sections = gsap.utils.toArray<HTMLElement>(
-          'section, .w-full.mb-15, #services, #portfolio',
+          'section:not(#inicio), .w-full.mb-15, #services, #portfolio',
           el,
         );
 

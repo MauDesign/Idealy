@@ -21,7 +21,7 @@ export default function NeedsGrid({ locale = 'es' }: NeedsGridProps) {
         ? 'Sitio optimizado + campañas en Google y Meta + SEO para aparecer en Google y en ChatGPT. Medimos cada prospecto.'
         : 'Optimized website + Google & Meta ad campaigns + SEO for Google and ChatGPT. We measure every lead.',
       cta: isEs ? 'Ver cómo crecer →' : 'See how to grow →',
-      href: `/${locale}/services/digital-marketing`,
+      href: `/${locale}/sitio-crecimiento`,
     },
     {
       id: 'express',

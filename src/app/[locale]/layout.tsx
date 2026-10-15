@@ -15,16 +15,19 @@ import WhatsAppFab from "../ui/components/WhatsAppFab";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const sora = Sora({
   variable: "--font-sora",
   subsets: ["latin"],
+  display: "swap",
 });
 
 import { getKeywordsForLocale } from '@/config/keywords';
@@ -98,8 +101,8 @@ export default async function LocaleLayout({ children, params }: Props) {
         <GoogleTagManager gtmId="GTM-WDB3RSDZ" />
         <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <GoogleAnalytics gaId="G-GJBZY50Y93" />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=AW-18107657847" strategy="afterInteractive" />
-        <Script id="google-ads-tag" strategy="afterInteractive">
+        <Script src="https://www.googletagmanager.com/gtag/js?id=AW-18107657847" strategy="lazyOnload" />
+        <Script id="google-ads-tag" strategy="lazyOnload">
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
