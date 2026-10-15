@@ -135,9 +135,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Faltan campos obligatorios o la lista de destinatarios está vacía' }, { status: 400 });
     }
 
-    const cleanSenderEmail = (senderEmail || 'hello@idealy.com.mx').trim();
+    const cleanSenderEmail = (senderEmail || process.env.SMTP_USER || 'hello@idealy.com.mx').trim();
     const cleanSenderName = (senderName || 'Leo de Idealy').trim();
-    const cleanToAddress = (toAddress || 'pymes@idealy.com.mx').trim();
+    const cleanToAddress = (toAddress || cleanSenderEmail).trim();
 
     // Create Campaign record in DB
     const campaign = await prisma.emailCampaign.create({
@@ -180,7 +180,7 @@ export async function POST(req: NextRequest) {
     let sentSuccessCount = 0;
     let failedCount = 0;
 
-    // Dispatch Mode A: CCO (BCC) Batch Mode (Recommended for privacy and Anti-Spam compliance)
+    // Dispatch Mode A: CCO (BCC) Batch Mode
     if (useBcc) {
       const trackingPixel = `<img src="${origin}/api/email-tracker?cid=${campaign.id}&rid=${createdRecipients[0].id}" width="1" height="1" alt="" style="display:none; width:1px; height:1px; border:0;" />`;
       
@@ -203,8 +203,6 @@ export async function POST(req: NextRequest) {
             headers: {
               'List-Unsubscribe': `<mailto:${cleanSenderEmail}?subject=BAJA>, <${origin}/privacidad>`,
               'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-              'Precedence': 'bulk',
-              'X-Mailer': 'Idealy PyME Campaign Engine v1.0',
             },
           });
         }
@@ -231,7 +229,7 @@ export async function POST(req: NextRequest) {
         failedCount = createdRecipients.length;
       }
     } else {
-      // Dispatch Mode B: Individual dispatch per recipient
+      // Dispatch Mode B: Individual dispatch per recipient (Mejor reputación y entregabilidad en Gmail)
       for (const recipient of createdRecipients) {
         const trackingPixel = `<img src="${origin}/api/email-tracker?cid=${campaign.id}&rid=${recipient.id}" width="1" height="1" alt="" style="display:none; width:1px; height:1px; border:0;" />`;
         
@@ -252,8 +250,7 @@ export async function POST(req: NextRequest) {
               html: finalHtml,
               headers: {
                 'List-Unsubscribe': `<mailto:${cleanSenderEmail}?subject=BAJA>, <${origin}/privacidad>`,
-                'Precedence': 'bulk',
-                'X-Mailer': 'Idealy PyME Campaign Engine v1.0',
+                'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
               },
             });
           }
@@ -266,6 +263,9 @@ export async function POST(req: NextRequest) {
             },
           });
           sentSuccessCount++;
+
+          // Pequeña pausa de 100ms entre envíos individuales para no saturar el servidor SMTP
+          await new Promise((resolve) => setTimeout(resolve, 100));
         } catch (err: any) {
           console.error(`Error sending email to ${recipient.email}:`, err);
           await prisma.campaignRecipient.update({

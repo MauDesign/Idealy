@@ -57,6 +57,10 @@
         "home": "Home",
         "about": "About",
         "services": "Services",
+        "cases": "Case Studies",
+        "process": "How We Work",
+        "pricing": "Pricing",
+        "diagnostic": "Free Diagnosis",
         "portfolio": "Portfolio",
         "contact": "Contact",
         "blog": "Blog"
@@ -149,23 +153,23 @@
     "Carousel": {
         "items": {
             "1": {
-                "title": "Wise Facturacion",
-                "description": "Streamlining manufacturing workflows with intelligent AI vision systems.",
+                "title": "Wise Facturación",
+                "description": "CFDI electronic invoicing platform for Mexican SMBs, designed and operated by Idea.ly.",
                 "button": "Case Study"
             },
             "2": {
-                "title": "Orbeo control",
-                "description": "Real-time carbon footprint monitoring for global logistics networks.",
+                "title": "Orbeo",
+                "description": "Livestock traceability platform: each animal's history, from ranch to buyer.",
                 "button": "Explore"
             },
             "3": {
-                "title": "PadelPals Mobile",
-                "description": "The ultimate companion for padel enthusiasts, tracking scores and matches.",
+                "title": "PadelPals",
+                "description": "Mobile app for padel players to track scores and matches.",
                 "button": "View Project"
             },
             "4": {
-                "title": "Mar Holidays B2B",
-                "description": "Hyper-personalized customer relationship management for modern startups.",
+                "title": "Mar Holidays",
+                "description": "B2B travel and booking portal for holiday and transfer management, designed by Idea.ly.",
                 "button": "Live Demo"
             }
         }

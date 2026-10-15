@@ -1,32 +1,28 @@
 export const faqData = {
   es: [
     {
-      question: "¿Idea.ly trabaja con empresas en Estados Unidos?",
-      answer: "Sí. Idea.ly opera como un estudio de software nearshore para clientes en EE.UU., ofreciendo colaboración en tiempo real en horarios comerciales CST/EST, comunicación bilingüe y estándares de ingeniería alineados con el mercado norteamericano, a una fracción del costo de las agencias locales. Nuestro equipo en Puebla, México, trabaja como una extensión fluida de tu equipo interno, sin fricciones por diferencia de horario ni barreras de comunicación."
+      question: "¿Cuánto cuesta un sitio web?",
+      answer: "Una Página Express empieza en $6,000 MXN. Un sitio completo o un sistema a la medida depende del alcance; en el diagnóstico gratuito te damos un precio cerrado."
     },
     {
-      question: "¿Qué es LEO y cómo ayuda a mi proyecto?",
-      answer: "LEO es el sistema de Inteligencia Aplicada de Idea.ly: una capa de consultoría propietaria que combina más de 10 años de experiencia en diseño e ingeniería con modelos avanzados de lenguaje de IA. Antes de escribir una sola línea de código, LEO analiza tu negocio, mapea tus ineficiencias operativas y recomienda la solución técnica más efectiva para tu contexto específico. No es un chatbot; es la columna vertebral estratégica detrás de cada proyecto de Idea.ly."
+      question: "¿En cuánto tiempo está listo?",
+      answer: "Un sitio web se entrega en 21 días o te devolvemos tu dinero. Un sistema a la medida se entrega por etapas, con avances cada semana."
     },
     {
-      question: "¿Cuánto cuesta desarrollar software con Idea.ly?",
-      answer: "La inversión depende del alcance y la complejidad. Una página de destino (landing page) o sitio de marketing de alto rendimiento construido con Next.js comienza en $1,000 USD y se entrega en 21 días. Las aplicaciones web completas, los sistemas personalizados con agentes de IA, las integraciones de backend o la automatización de flujos de trabajo generalmente oscilan entre $5,000 y $20,000 USD. Cada proyecto comienza con una consulta estratégica gratuita para definir el alcance, el cronograma y el precio exacto, sin ningún compromiso."
+      question: "Ya tengo un sistema, pero es viejo. ¿Pueden ayudarme?",
+      answer: "Sí. Lo revisamos, rescatamos tu información y lo migramos a una plataforma web moderna, sin detener tu operación."
     },
     {
-      question: "¿Qué hace a Idea.ly diferente de otras agencias de software en México?",
-      answer: "Tres cosas distinguen a Idea.ly. Primero, nuestro stack: construimos con Next.js y Go, las mismas tecnologías utilizadas por empresas de gran escala como Vercel y Cloudflare, no con plantillas de WordPress o herramientas low-code. Segundo, LEO: cada proyecto está respaldado por una capa de consultoría impulsada por IA que diagnostica tu negocio antes de construir cualquier cosa. Tercero, nuestro modelo nearshore: operamos en horarios comerciales de EE.UU., nos comunicamos en inglés y entregamos con estándares norteamericanos, lo que nos convierte en una verdadera extensión de tu equipo en lugar de un simple proveedor."
+      question: "¿También manejan mis anuncios y redes?",
+      answer: "Sí. Hacemos campañas en Google y Meta, SEO para aparecer en Google y en asistentes como ChatGPT, y te entregamos un reporte mensual con resultados."
     },
     {
-      question: "¿Idea.ly diseña sitios web o solo los desarrolla?",
-      answer: "Ambos, y la distinción importa. En Idea.ly, el diseño y el desarrollo son un único proceso integrado, no dos entregas separadas. Nuestro equipo de UX/UI, respaldado por más de 10 años de experiencia, diseña cada interfaz teniendo en cuenta la psicología de conversión y el comportamiento del usuario antes de que comience el desarrollo. El resultado es un sitio web que no solo se ve premium, sino que está diseñado para reducir la fricción, guiar a los usuarios hacia la acción y funcionar con los estándares técnicos requeridos por el mercado norteamericano. Cada píxel tiene un propósito de negocio."
+      question: "¿Podré actualizar mi sitio yo mismo?",
+      answer: "Sí. Entregamos tu sitio con panel de control intuitivo para que actualices contenidos tú mismo, o si lo prefieres, contamos con paquetes de mantenimiento mensual para encargarnos de todo."
     },
     {
-      question: "¿Idea.ly ofrece servicios de marketing digital o solo desarrollo de software?",
-      answer: "Idea.ly ofrece ambos, y la combinación es intencional. La mayoría de las agencias construyen el producto o lo comercializan; nosotros hacemos ambas cosas porque un producto digital de alto rendimiento sin una estrategia de crecimiento es una inversión incompleta. Nuestros servicios de marketing digital incluyen optimización SEO y GEO (visibilidad en Google, ChatGPT y Perplexity), gestión de campañas de Meta Ads y Google Ads, diseño de embudos de conversión y estrategia de contenido. No realizamos anuncios para un sitio web que no construimos: creamos el sitio web sabiendo exactamente cómo se comercializará."
-    },
-    {
-      question: "¿Por qué Puebla, México, es una ubicación estratégica para el desarrollo de software?",
-      answer: "Puebla es uno de los hubs tecnológicos de más rápido crecimiento en México, hogar de un denso ecosistema de ingenieros, diseñadores y talento digital formados en instituciones como la BUAP, UDLAP e Iberoamericana Puebla. La ciudad opera en el huso horario CST (el mismo que Chicago, Houston y Dallas), lo que hace que la colaboración en tiempo real con equipos de EE.UU. sea natural y sin complicaciones. Idea.ly está basada en Puebla por diseño: combinamos la densidad de talento y la rentabilidad de una ciudad tecnológica mexicana de primer nivel con los estándares de entrega y la fluidez de comunicación que exige el mercado norteamericano."
+      question: "¿Solo trabajan en Puebla?",
+      answer: "Estamos en Puebla y trabajamos con empresas de todo México y Estados Unidos, en tu mismo horario."
     }
   ],
   en: [

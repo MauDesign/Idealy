@@ -4,16 +4,27 @@ import { prisma } from '@/lib/prisma';
 
 export async function POST(request: Request) {
   try {
-    const { name, email, whatsapp = '', subject, message } = await request.json();
+    const body = await request.json();
+    const {
+      name,
+      email,
+      whatsapp = '',
+      necesidad = '',
+      subject,
+      message,
+      utmSource = '',
+      utmMedium = '',
+      utmCampaign = '',
+      source = 'website_home_contact_form',
+    } = body;
 
-    if (!name || !email || !message) {
+    if (!name || (!whatsapp && !email)) {
       return NextResponse.json(
-        { message: 'Nombre, email y mensaje son campos requeridos.' },
+        { message: 'El nombre y al menos un método de contacto (WhatsApp o Email) son requeridos.' },
         { status: 400 }
       );
     }
 
-    const cleanSubject = subject || 'Mensaje de contacto sin asunto';
     const cleanWhatsapp = (whatsapp || '').replace(/\D/g, '');
     let numberFormatted = cleanWhatsapp;
     if (cleanWhatsapp.length === 10) {
@@ -22,14 +33,20 @@ export async function POST(request: Request) {
       numberFormatted = `52${cleanWhatsapp}`;
     }
 
+    const contactEmail = email || `${cleanWhatsapp || 'lead'}@whatsapp.idealy.com.mx`;
+    const cleanSubject = subject || necesidad || 'Diagnóstico gratis';
+    const cleanMessage =
+      message ||
+      `Solicitud de diagnóstico gratis.\nNecesidad: ${necesidad || 'No especificada'}\nWhatsApp: ${whatsapp}\nOrigen: ${source}`;
+
     // 1. Guardar contacto en la Base de Datos Postgres mediante Prisma
     const contactRecord = await prisma.contact.create({
       data: {
         name,
-        email,
+        email: contactEmail,
         whatsapp: whatsapp || null,
         subject: cleanSubject,
-        message,
+        message: cleanMessage,
       },
     });
 
@@ -51,10 +68,14 @@ export async function POST(request: Request) {
             whatsapp: contactRecord.whatsapp,
             whatsappClean: cleanWhatsapp,
             numberFormatted,
+            necesidad,
             subject: contactRecord.subject,
             message: contactRecord.message,
+            utmSource,
+            utmMedium,
+            utmCampaign,
             createdAt: contactRecord.createdAt,
-            source: 'website_home_contact_form',
+            source,
           }),
         });
       } catch (webhookError) {

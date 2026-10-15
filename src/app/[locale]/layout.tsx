@@ -5,12 +5,12 @@ import type { Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
 import { getMessages, setRequestLocale, } from 'next-intl/server';
 import "@/app/globals.css";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Sora } from "next/font/google";
 
 import Navbar from "../ui/navbar/navbar";
 import { ThemeProvider } from "../ui/ThemeProvider";
 import StructuredData from "../ui/StructuredData";
-
+import WhatsAppFab from "../ui/components/WhatsAppFab";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -19,6 +19,11 @@ const geistSans = Geist({
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
+
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
 });
 
@@ -119,7 +124,10 @@ export default async function LocaleLayout({ children, params }: Props) {
           `}
         </Script>
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} bg-background text-foreground transition-colors duration-300`}>
+      <body
+        suppressHydrationWarning
+        className={`${geistSans.variable} ${geistMono.variable} ${sora.variable} bg-background text-foreground transition-colors duration-300`}
+      >
         <StructuredData locale={locale} />
         <noscript>
           <iframe
@@ -139,6 +147,7 @@ export default async function LocaleLayout({ children, params }: Props) {
           >
             <Navbar locale={locale} />
             {children}
+            <WhatsAppFab />
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

@@ -1,94 +1,73 @@
-// ─── Hero — Server Component ─────────────────────────────────────────────────
-// No 'use client' directive: next/image renders the LCP <img> tag directly in
-// the server-streamed HTML, making it immediately discoverable by the browser
-// without waiting for React hydration. This is the fix for:
-//   "LCP request discovery — make the LCP image detectable from HTML immediately"
-//
-// The only interactive child (Typewriter animation) is a separate Client
-// Component imported below.
-import Image from 'next/image';
-import { getTranslations } from 'next-intl/server';
 import Typewriter from './Typewriter';
+import HeroCtas from './HeroCtas';
+import HeroVisual from './HeroVisual';
 
-export default async function Hero() {
-    const t = await getTranslations('Hero');
-    const switcherWords = t('switcher').split(',').map((word) => word.trim());
+interface HeroProps {
+  locale?: string;
+}
 
-    return (
-        <section
-            aria-labelledby="hero-heading"
-            className="hero min-h-screen bg-[#011b27] overflow-hidden"
-        >
-            <div className="hero-content flex-col lg:flex-row w-full max-w-none p-0 gap-0">
+export default function Hero({ locale = 'es' }: HeroProps) {
+  const isEs = locale === 'es';
+  const typewriterWords = isEs
+    ? ['clientes.', 'ventas.', 'prospectos.', 'tiempo libre.']
+    : ['customers.', 'revenue.', 'growth.', 'free time.'];
 
-                {/* LCP Image — Server-rendered, no lazy loading, fetchpriority=high
-                    next/image with priority=true emits:
-                      <img loading="eager" fetchpriority="high" ...>
-                    Combined with the <link rel="preload"> in layout.tsx, the
-                    browser starts fetching this image as the very first resource. */}
-                <div className="relative w-full lg:w-1/2 h-[50vh] lg:h-screen">
-                    <Image
-                        src="/img/idea-transform.webp"
-                        alt=""
-                        aria-hidden="true"
-                        fill
-                        priority
-                        fetchPriority="high"
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                        className="object-cover"
-                    />
-                    <div
-                        className="absolute inset-0 bg-gradient-to-b lg:bg-gradient-to-l from-[#011b27]/40 to-transparent pointer-events-none"
-                        aria-hidden="true"
-                    />
-                </div>
+  return (
+    <section
+      id="inicio"
+      aria-labelledby="hero-heading"
+      className="relative min-h-[90vh] bg-[#011b27] text-white overflow-hidden pt-[104px] pb-20 flex items-center"
+    >
+      {/* Background glow effects */}
+      <div
+        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/15 rounded-full blur-[140px] pointer-events-none"
+        aria-hidden="true"
+      />
+      <div
+        className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"
+        aria-hidden="true"
+      />
 
-                {/* Content */}
-                <div className="w-full lg:w-1/2 flex flex-col justify-center items-center lg:items-start text-center lg:text-left p-8 lg:p-24 z-10">
-                    <h1
-                        id="hero-heading"
-                        className="text-5xl lg:text-7xl font-black text-white leading-tight tracking-tight"
-                    >
-                        {t('title')}
-                    </h1>
-
-                    <div className="min-h-[120px] lg:min-h-[180px] flex items-start justify-center lg:justify-start">
-                        <p className="text-5xl lg:text-7xl font-black text-white leading-tight tracking-tight">
-                            {t('title2')}{' '}
-                            {/* Typewriter is a Client Component — only this subtree hydrates */}
-                            <span className="text-primary">
-                                <Typewriter words={switcherWords} />
-                            </span>
-                        </p>
-                    </div>
-
-                    <p className="py-8 text-lg lg:text-xl text-slate-300 max-w-xl">
-                        {t('description')}
-                    </p>
-
-                    <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                        <button
-                            type="button"
-                            className="btn btn-primary btn-lg px-12 rounded-full shadow-xl hover:shadow-primary/40 transition-all duration-300 transform hover:-translate-y-1"
-                        >
-                            {t('button')}
-                        </button>
-                        <button
-                            type="button"
-                            className="btn btn-ghost btn-lg px-12 rounded-full border border-white/10 hover:bg-white/5 transition-all duration-300"
-                        >
-                            {t('button2')}
-                        </button>
-                    </div>
-
-                    <p className="text-md lg:text-lg text-slate-300 max-w-xl mt-6">
-                        {t('description2')}
-                    </p>
-                    <p className="text-md lg:text-lg text-slate-300 max-w-xl">
-                        {t('description3')}
-                    </p>
-                </div>
+      <div className="w-11/12 max-w-7xl mx-auto relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-14">
+          
+          {/* Columna de Texto (en móvil va arriba) */}
+          <div className="flex flex-col items-start text-left max-w-2xl">
+            {/* Eyebrow */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-primary/10 border border-primary/25 text-primary text-xs sm:text-sm font-semibold tracking-wide uppercase mb-6">
+              <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              {isEs ? 'Estudio de diseño y software · Puebla, México' : 'Design & Software Studio · Puebla, Mexico'}
             </div>
-        </section>
-    );
+
+            {/* H1 con frase rotativa */}
+            <h1
+              id="hero-heading"
+              className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.12] tracking-tight mb-6"
+            >
+              {isEs ? 'Sitios y sistemas que te traen ' : 'Websites and systems that bring you '}
+              <span className="text-primary block sm:inline">
+                <Typewriter words={typewriterWords} />
+              </span>
+            </h1>
+
+            {/* Subtítulo */}
+            <p className="text-lg sm:text-xl text-slate-300 leading-relaxed mb-8">
+              {isEs
+                ? 'Diseñamos, construimos y promocionamos tu sitio web o software a la medida. Un solo equipo, de la idea a las ventas.'
+                : 'We design, build, and market your custom website or software. One single team, from idea to revenue.'}
+            </p>
+
+            {/* Botones y microtextos */}
+            <HeroCtas locale={locale} />
+          </div>
+
+          {/* Columna Visual de Alto Impacto con Movimiento 3D y Tarjetas Flotantes */}
+          <div className="w-full flex items-center justify-center">
+            <HeroVisual locale={locale} />
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
 }

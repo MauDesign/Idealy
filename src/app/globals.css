@@ -57,8 +57,97 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-sora: var(--font-sora);
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(0.4deg);
+  }
+}
+
+@keyframes floatBadge1 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(-8px) translateX(3px);
+  }
+}
+
+@keyframes floatBadge2 {
+  0%, 100% {
+    transform: translateY(0px) translateX(0px);
+  }
+  50% {
+    transform: translateY(9px) translateX(-3px);
+  }
+}
+
+@keyframes pulseAura {
+  0%, 100% {
+    opacity: 0.35;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.65;
+    transform: scale(1.08);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-float-badge-1 {
+  animation: floatBadge1 4.5s ease-in-out infinite;
+}
+
+.animate-float-badge-2 {
+  animation: floatBadge2 5.2s ease-in-out infinite 0.8s;
+}
+
+.animate-pulse-aura {
+  animation: pulseAura 7s ease-in-out infinite;
+}
+
+/* Liquid Glass Frosted Effect */
+.liquid-glass-frosted {
+  background: rgba(4, 25, 38, 0.45);
+  backdrop-filter: blur(20px) saturate(190%);
+  -webkit-backdrop-filter: blur(20px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 
+    0 20px 40px -15px rgba(0, 0, 0, 0.7),
+    inset 0 1px 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 0 20px 0 rgba(255, 255, 255, 0.03);
+}
+
+.liquid-glass-frosted:hover {
+  background: rgba(6, 32, 48, 0.6);
+  border-color: rgba(0, 180, 166, 0.5);
+  box-shadow: 
+    0 25px 50px -12px rgba(0, 180, 166, 0.25),
+    0 20px 40px -15px rgba(0, 0, 0, 0.8),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.5),
+    inset 0 0 25px 0 rgba(0, 180, 166, 0.1);
+}
+
+.liquid-glass-frosted-active {
+  background: rgba(4, 38, 54, 0.65);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1.5px solid #00b4a6;
+  box-shadow: 
+    0 25px 50px -10px rgba(0, 180, 166, 0.35),
+    0 20px 40px -15px rgba(0, 0, 0, 0.8),
+    inset 0 1px 2px 0 rgba(255, 255, 255, 0.6),
+    inset 0 0 30px 0 rgba(0, 180, 166, 0.15);
 }

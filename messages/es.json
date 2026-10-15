@@ -1,8 +1,8 @@
 {
     "Home": {
         "frase": "De la Idea a la Realidad",
-        "hero-subtitle": "Agencia nearshore de desarrollo de software en Puebla, México | Automatización con IA e ingeniería a medida",
-        "About-us": "En Idealy.ly, fusionamos tecnología y creatividad para desarrollar software que convierte desafíos en oportunidades. Somos un equipo apasionado por la innovación, comprometido con simplificar procesos, optimizar experiencias y construir herramientas que marcan la diferencia.",
+        "hero-subtitle": "Agencia de diseño web y desarrollo de software en Puebla, México.",
+        "About-us": "En Idea.ly, fusionamos tecnología y creatividad para desarrollar software que convierte desafíos en oportunidades. Somos un equipo apasionado por la innovación, comprometido con simplificar procesos, optimizar experiencias y construir herramientas que marcan la diferencia.",
         "About-us2": "Creemos en el poder de la tecnología para mejorar vidas y potenciar negocios. Por eso, diseñamos soluciones a medida —desde aplicaciones intuitivas hasta plataformas escalables— siempre con un enfoque centrado en el ser humano y un propósito claro: hacer lo complejo simple y lo innovador accesible.",
         "About-us3": "¿Listo para dar vida a tus ideas? Juntos, podemos crear el cambio.",
         "title-services": "The Reality Check",
@@ -57,6 +57,10 @@
         "home": "Inicio",
         "about": "Nosotros",
         "services": "Servicios",
+        "cases": "Casos",
+        "process": "Cómo trabajamos",
+        "pricing": "Precios",
+        "diagnostic": "Diagnóstico gratis",
         "portfolio": "Portafolio",
         "contact": "Contacto",
         "blog": "Blog"
@@ -150,22 +154,22 @@
         "items": {
             "1": {
                 "title": "Wise Facturación",
-                "description": "Optimización de flujos de trabajo de fabricación con sistemas de visión de IA inteligente.",
+                "description": "Plataforma de facturación electrónica CFDI para PyMEs mexicanas, diseñada y operada por Idea.ly.",
                 "button": "Caso de Estudio"
             },
             "2": {
-                "title": "Orbeo Control",
-                "description": "Monitoreo de la huella de carbono en tiempo real para redes logísticas globales.",
+                "title": "Orbeo",
+                "description": "Plataforma de trazabilidad ganadera: el historial de cada animal, del rancho al comprador.",
                 "button": "Explorar"
             },
             "3": {
-                "title": "PadelPals Mobile",
-                "description": "El compañero definitivo para entusiastas del pádel, registrando puntuaciones y partidos.",
+                "title": "PadelPals",
+                "description": "App móvil para jugadores de pádel que lleva el registro de partidos y puntuaciones.",
                 "button": "Ver Proyecto"
             },
             "4": {
-                "title": "Mar Holidays B2B",
-                "description": "Gestión de relaciones con clientes hiper-personalizada para startups modernas.",
+                "title": "Mar Holidays",
+                "description": "Portal web de reservaciones B2B y gestión hotelera y traslados turísticos.",
                 "button": "Demo en Vivo"
             }
         }
