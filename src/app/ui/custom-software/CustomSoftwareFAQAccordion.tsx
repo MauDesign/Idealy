@@ -3,7 +3,11 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
-const SOFTWARE_FAQS = [
+interface CustomSoftwareFAQAccordionProps {
+  locale?: string;
+}
+
+const SOFTWARE_FAQS_ES = [
   {
     q: '¿A partir de qué costo se desarrolla un sistema de software a la medida?',
     a: 'Nuestros desarrollos de software a la medida inician desde $25,000 MXN más IVA para herramientas especializadas como cotizadores web, portales de acceso para clientes o paneles de control de inventario básico. El costo final se determina con base en el alcance funcional que definimos juntos en el diagnóstico sin costo.',
@@ -34,7 +38,40 @@ const SOFTWARE_FAQS = [
   },
 ];
 
-export default function CustomSoftwareFAQAccordion() {
+const SOFTWARE_FAQS_EN = [
+  {
+    q: 'What is the starting cost for custom software development?',
+    a: 'Our custom software engineering projects start at $25,000 MXN (~$1,500 USD) for specialized tools like web quoters, customer portals, or inventory management dashboards. Final pricing depends on technical scope defined collaboratively during our free diagnosis.',
+  },
+  {
+    q: 'Do we own 100% of the code and intellectual property?',
+    a: 'Yes, completely. Source code, databases, design assets, and architectural blueprints belong entirely to your company. We charge zero per-user monthly license fees and never lock you into proprietary vendor traps.',
+  },
+  {
+    q: 'What technologies do you use to build the software?',
+    a: 'We engineer with high-performance modern stacks: Next.js (React), TypeScript, Node.js / Go, PostgreSQL databases, and serverless edge deployment on AWS / Vercel. This guarantees sub-second responsiveness and bank-grade security.',
+  },
+  {
+    q: 'Can you migrate our legacy Excel or outdated software data?',
+    a: 'Yes. Data migration and sanitization is one of our core specialties. We build automated scripts to transfer customer, transactional, and inventory history safely into your new modern cloud system.',
+  },
+  {
+    q: 'What is the typical delivery timeline for custom systems?',
+    a: 'Initial operational portals and quoting engines typically ship within 3 to 5 weeks. Larger enterprise platforms follow bi-weekly agile sprints with interactive staging environments you can test continuously.',
+  },
+  {
+    q: 'What warranty and maintenance do you offer after launch?',
+    a: 'All deliverables include post-launch bug warranty. We also offer monthly maintenance, automated encrypted backups, security patches, and iterative feature development.',
+  },
+  {
+    q: 'Do you issue formal tax invoices (CFDI / US W-8BEN)?',
+    a: 'Yes, we provide full formal CFDI tax invoicing for Mexico as well as US / international invoicing compliance.',
+  },
+];
+
+export default function CustomSoftwareFAQAccordion({ locale = 'es' }: CustomSoftwareFAQAccordionProps) {
+  const isEs = locale === 'es';
+  const faqs = isEs ? SOFTWARE_FAQS_ES : SOFTWARE_FAQS_EN;
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggle = (idx: number) => {
@@ -43,7 +80,7 @@ export default function CustomSoftwareFAQAccordion() {
 
   return (
     <div className="space-y-4">
-      {SOFTWARE_FAQS.map((item, idx) => {
+      {faqs.map((item, idx) => {
         const isOpen = openIndex === idx;
         return (
           <div

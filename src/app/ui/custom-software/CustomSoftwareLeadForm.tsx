@@ -3,7 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-export default function CustomSoftwareLeadForm() {
+interface CustomSoftwareLeadFormProps {
+  locale?: string;
+}
+
+export default function CustomSoftwareLeadForm({ locale = 'es' }: CustomSoftwareLeadFormProps) {
+  const isEs = locale === 'es';
   const [step, setStep] = useState<1 | 2>(1);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -14,8 +19,12 @@ export default function CustomSoftwareLeadForm() {
   const [whatsapp, setWhatsapp] = useState('');
   const [email, setEmail] = useState('');
   const [nombreNegocio, setNombreNegocio] = useState('');
-  const [tipoSistema, setTipoSistema] = useState('Portal de clientes / gestión web');
-  const [situacionActual, setSituacionActual] = useState('Excel / hojas de cálculo');
+  const [tipoSistema, setTipoSistema] = useState(
+    isEs ? 'Portal de clientes / gestión web' : 'Client portal / web dashboard'
+  );
+  const [situacionActual, setSituacionActual] = useState(
+    isEs ? 'Excel / hojas de cálculo' : 'Excel / spreadsheets'
+  );
   const [usuariosAprox, setUsuariosAprox] = useState('1 - 10 usuarios');
   const [descripcionProyecto, setDescripcionProyecto] = useState('');
 
@@ -116,12 +125,23 @@ export default function CustomSoftwareLeadForm() {
         <div className="w-16 h-16 bg-[#00b4a6]/20 border border-[#00b4a6]/50 rounded-full flex items-center justify-center mx-auto mb-5 text-[#00b4a6]">
           <span className="text-2xl font-bold">✓</span>
         </div>
-        <h3 className="text-2xl font-black text-white mb-3">¡Diagnóstico técnico solicitado!</h3>
+        <h3 className="text-2xl font-black text-white mb-3">
+          {isEs ? '¡Diagnóstico técnico solicitado!' : 'Technical Diagnosis Requested!'}
+        </h3>
         <p className="text-slate-300 text-sm sm:text-base leading-relaxed mb-6">
-          Gracias <strong className="text-white">{nombre}</strong>. Un ingeniero senior revisará la viabilidad de tu sistema y te contactará por WhatsApp para afinar los requerimientos y alcances.
+          {isEs ? (
+            <>
+              Gracias <strong className="text-white">{nombre}</strong>. Un ingeniero senior revisará la viabilidad de tu sistema y te contactará por WhatsApp para afinar los requerimientos y alcances.
+            </>
+          ) : (
+            <>
+              Thank you <strong className="text-white">{nombre}</strong>. A senior engineer will review your system requirements and contact you on WhatsApp to discuss technical scope and pricing.
+            </>
+          )}
         </p>
         <div className="p-4 rounded-2xl bg-white/5 border border-white/10 text-xs sm:text-sm text-slate-300">
-          ⏱️ Tiempo de respuesta: <strong>Menos de 2 horas hábiles</strong>.
+          ⏱️ {isEs ? 'Tiempo de respuesta estimado:' : 'Estimated response time:'}{' '}
+          <strong>{isEs ? 'Menos de 2 horas hábiles' : 'Under 2 business hours'}</strong>.
         </div>
       </div>
     );
@@ -132,7 +152,7 @@ export default function CustomSoftwareLeadForm() {
       <div className="mb-5 pb-3 border-b border-white/10">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-bold text-[#00b4a6] uppercase tracking-wider bg-[#00b4a6]/15 px-3 py-1 rounded-full border border-[#00b4a6]/30">
-            💻 Diagnóstico de Arquitectura Gratis
+            💻 {isEs ? 'Diagnóstico de Arquitectura Gratis' : 'Free Technical Diagnosis'}
           </span>
           {step === 2 && (
             <button
@@ -140,17 +160,19 @@ export default function CustomSoftwareLeadForm() {
               onClick={() => setStep(1)}
               className="text-xs text-slate-400 hover:text-white transition-colors"
             >
-              ← Paso 1
+              ← {isEs ? 'Paso 1' : 'Step 1'}
             </button>
           )}
         </div>
         <h3 className="text-xl sm:text-2xl font-extrabold text-white">
-          {step === 1 ? 'Paso 1: Datos de contacto' : 'Paso 2: ¿Qué sistema necesitas?'}
+          {step === 1
+            ? isEs ? 'Paso 1: Datos de contacto' : 'Step 1: Contact Information'
+            : isEs ? 'Paso 2: ¿Qué sistema necesitas?' : 'Step 2: Project Specifications'}
         </h3>
         <p className="text-xs sm:text-sm text-slate-300">
           {step === 1
-            ? 'Platica directo con ingenieros de software, sin intermediarios.'
-            : 'Te presentaremos una propuesta técnica y cotización clara.'}
+            ? isEs ? 'Platica directo con ingenieros de software, sin intermediarios.' : 'Speak directly with senior engineers, zero sales friction.'
+            : isEs ? 'Te presentaremos una propuesta técnica y cotización clara.' : 'We will prepare a clear technical proposal and architecture plan.'}
         </p>
       </div>
 
@@ -164,12 +186,12 @@ export default function CustomSoftwareLeadForm() {
         <form onSubmit={handleNextStep} className="space-y-4">
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Tu nombre completo <span className="text-red-400">*</span>
+              {isEs ? 'Tu nombre completo' : 'Full name'} <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
               required
-              placeholder="Ej. Ing. Carlos Mendoza"
+              placeholder={isEs ? 'Ej. Ing. Carlos Mendoza' : 'e.g. Michael Jordan'}
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
@@ -178,29 +200,29 @@ export default function CustomSoftwareLeadForm() {
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Tu WhatsApp a 10 dígitos <span className="text-red-400">*</span>
+              {isEs ? 'Tu WhatsApp o teléfono directo' : 'WhatsApp or direct phone'} <span className="text-red-400">*</span>
             </label>
             <input
               type="tel"
               required
               maxLength={10}
-              placeholder="Ej. 2221234567"
+              placeholder={isEs ? 'Ej. 2221234567' : 'e.g. 5551234567'}
               value={whatsapp}
               onChange={(e) => setWhatsapp(e.target.value)}
               className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
             />
             <p className="text-[11px] text-gray-400 mt-1">
-              Te contactaremos por WhatsApp para coordinar la llamada técnica.
+              {isEs ? 'Te contactaremos por WhatsApp para coordinar la llamada técnica.' : 'We will reach out on WhatsApp to schedule our engineering call.'}
             </p>
           </div>
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Correo empresarial <span className="text-gray-400 text-xs font-normal">(opcional)</span>
+              {isEs ? 'Correo empresarial' : 'Work email'} <span className="text-gray-400 text-xs font-normal">({isEs ? 'opcional' : 'optional'})</span>
             </label>
             <input
               type="email"
-              placeholder="carlos@miempresa.com"
+              placeholder={isEs ? 'carlos@miempresa.com' : 'michael@company.com'}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
@@ -211,23 +233,23 @@ export default function CustomSoftwareLeadForm() {
             type="submit"
             className="w-full min-h-[52px] rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-bold text-base flex items-center justify-center gap-2 transition-transform transform active:scale-98 shadow-lg cursor-pointer"
           >
-            <span>Continuar a paso 2</span>
+            <span>{isEs ? 'Continuar a paso 2' : 'Continue to Step 2'}</span>
             <span>→</span>
           </button>
 
           <p className="text-center text-xs text-gray-400">
-            🔒 Información confidencial bajo estricta privacidad.
+            🔒 {isEs ? 'Información confidencial bajo estricta privacidad.' : 'Strictly confidential and NDA compliant.'}
           </p>
         </form>
       ) : (
         <form onSubmit={handleSubmitFinal} className="space-y-4">
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Nombre de tu empresa o negocio
+              {isEs ? 'Nombre de tu empresa o negocio' : 'Company or brand name'}
             </label>
             <input
               type="text"
-              placeholder="Ej. Logística y Distribución del Centro"
+              placeholder={isEs ? 'Ej. Logística y Distribución del Centro' : 'e.g. Apex Global Logistics'}
               value={nombreNegocio}
               onChange={(e) => setNombreNegocio(e.target.value)}
               className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
@@ -236,14 +258,14 @@ export default function CustomSoftwareLeadForm() {
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              ¿Qué tipo de software necesitas construir?
+              {isEs ? '¿Qué tipo de software necesitas construir?' : 'What kind of custom system do you need?'}
             </label>
             <div className="grid grid-cols-1 gap-2">
               {[
-                'Portal de clientes / gestión web',
-                'Cotizador o sistema de inventario / pedidos',
-                'Migración o reemplazo de software obsoleto',
-                'Plataforma SaaS o aplicación móvil a la medida',
+                isEs ? 'Portal de clientes / gestión web' : 'Client portal / web dashboard',
+                isEs ? 'Cotizador o sistema de inventario / pedidos' : 'Quoting tool / inventory & orders',
+                isEs ? 'Migración o reemplazo de software obsoleto' : 'Legacy migration / system replacement',
+                isEs ? 'Plataforma SaaS o aplicación móvil a la medida' : 'Custom SaaS platform / mobile app',
               ].map((tipo) => (
                 <button
                   type="button"
@@ -263,14 +285,14 @@ export default function CustomSoftwareLeadForm() {
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              ¿Dónde se gestiona este proceso actualmente?
+              {isEs ? '¿Dónde se gestiona este proceso actualmente?' : 'Where does this process live today?'}
             </label>
             <div className="grid grid-cols-2 gap-2">
               {[
-                'Excel / hojas de cálculo',
-                'Papel y notas físicas',
-                'Sistema viejo / obsoleto',
-                'Proyecto nuevo desde cero',
+                isEs ? 'Excel / hojas de cálculo' : 'Excel / spreadsheets',
+                isEs ? 'Papel y notas físicas' : 'Paper & physical files',
+                isEs ? 'Sistema viejo / obsoleto' : 'Outdated legacy software',
+                isEs ? 'Proyecto nuevo desde cero' : 'Brand new greenfield project',
               ].map((sit) => (
                 <button
                   type="button"
@@ -290,11 +312,16 @@ export default function CustomSoftwareLeadForm() {
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Platícanos brevemente tu necesidad principal <span className="text-gray-400 text-xs font-normal">(opcional)</span>
+              {isEs ? 'Platícanos brevemente tu necesidad principal' : 'Briefly describe your core requirement'}{' '}
+              <span className="text-gray-400 text-xs font-normal">({isEs ? 'opcional' : 'optional'})</span>
             </label>
             <textarea
               rows={2}
-              placeholder="Ej. Queremos que los clientes consulten sus facturas y estatus de pedido en tiempo real sin saturar nuestro WhatsApp."
+              placeholder={
+                isEs
+                  ? 'Ej. Queremos que los clientes consulten sus facturas y estatus de pedido en tiempo real sin saturar nuestro WhatsApp.'
+                  : 'e.g. We want customers to check invoices and order tracking in real-time without overwhelming support staff.'
+              }
               value={descripcionProyecto}
               onChange={(e) => setDescripcionProyecto(e.target.value)}
               className="w-full px-4 py-2.5 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-xs sm:text-sm resize-none"
@@ -307,14 +334,16 @@ export default function CustomSoftwareLeadForm() {
               onClick={() => setStep(1)}
               className="w-1/3 min-h-[52px] rounded-xl bg-base-200 hover:bg-base-300 text-gray-300 font-semibold text-sm transition-colors cursor-pointer"
             >
-              ← Regresar
+              ← {isEs ? 'Regresar' : 'Back'}
             </button>
             <button
               type="submit"
               disabled={submitting}
               className="w-2/3 min-h-[52px] rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-transform transform active:scale-98 shadow-lg cursor-pointer disabled:opacity-50"
             >
-              {submitting ? 'Enviando...' : '¡Cotizar y recibir diagnóstico! 🚀'}
+              {submitting
+                ? isEs ? 'Enviando...' : 'Submitting...'
+                : isEs ? '¡Cotizar y recibir diagnóstico! 🚀' : 'Request Proposal & Diagnosis! 🚀'}
             </button>
           </div>
 
@@ -323,7 +352,7 @@ export default function CustomSoftwareLeadForm() {
               href="/privacy-policy"
               className="text-xs text-[#00b4a6] hover:underline inline-block"
             >
-              Aviso de Privacidad
+              {isEs ? 'Aviso de Privacidad' : 'Privacy Policy'}
             </Link>
           </div>
         </form>

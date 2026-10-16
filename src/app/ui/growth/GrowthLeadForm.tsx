@@ -3,7 +3,12 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 
-export default function GrowthLeadForm() {
+interface GrowthLeadFormProps {
+  locale?: string;
+}
+
+export default function GrowthLeadForm({ locale = 'es' }: GrowthLeadFormProps) {
+  const isEs = locale === 'es';
   const [step, setStep] = useState<1 | 2>(1);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
@@ -14,10 +19,14 @@ export default function GrowthLeadForm() {
   const [whatsapp, setWhatsapp] = useState('');
   const [email, setEmail] = useState('');
   const [nombreNegocio, setNombreNegocio] = useState('');
-  const [objetivoPrincipal, setObjetivoPrincipal] = useState('Más prospectos calificados');
-  const [inversionAds, setInversionAds] = useState('$5,000 - $15,000 MXN / mes');
+  const [objetivoPrincipal, setObjetivoPrincipal] = useState(
+    isEs ? 'Más prospectos calificados' : 'More qualified leads'
+  );
+  const [inversionAds, setInversionAds] = useState(
+    isEs ? '$5,000 - $15,000 MXN / mes' : '$500 - $1,500 USD / mo'
+  );
   const [sitioActual, setSitioActual] = useState('');
-  const [urgencia, setUrgencia] = useState('Este mes');
+  const [urgencia, setUrgencia] = useState(isEs ? 'Este mes' : 'This month');
 
   // UTM tracking params state
   const [utmParams, setUtmParams] = useState({
@@ -164,12 +173,12 @@ export default function GrowthLeadForm() {
         <form onSubmit={handleNextStep} className="space-y-4">
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Tu nombre completo <span className="text-red-400">*</span>
+              {isEs ? 'Tu nombre completo' : 'Full name'} <span className="text-red-400">*</span>
             </label>
             <input
               type="text"
               required
-              placeholder="Ej. Roberto Sánchez"
+              placeholder={isEs ? 'Ej. Roberto Sánchez' : 'e.g. Robert Smith'}
               value={nombre}
               onChange={(e) => setNombre(e.target.value)}
               className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
@@ -178,29 +187,29 @@ export default function GrowthLeadForm() {
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Tu WhatsApp a 10 dígitos <span className="text-red-400">*</span>
+              {isEs ? 'Tu WhatsApp o teléfono directo' : 'WhatsApp or direct phone'} <span className="text-red-400">*</span>
             </label>
             <input
               type="tel"
               required
               maxLength={10}
-              placeholder="Ej. 2221234567"
+              placeholder={isEs ? 'Ej. 2221234567' : 'e.g. 5551234567'}
               value={whatsapp}
               onChange={(e) => setWhatsapp(e.target.value)}
               className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
             />
             <p className="text-[11px] text-gray-400 mt-1">
-              Te contactaremos por WhatsApp para enviarte el diagnóstico preliminar.
+              {isEs ? 'Te contactaremos por WhatsApp para enviarte el diagnóstico preliminar.' : 'We will reach out on WhatsApp with your preliminary growth plan.'}
             </p>
           </div>
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Correo electrónico <span className="text-gray-400 text-xs font-normal">(opcional)</span>
+              {isEs ? 'Correo electrónico' : 'Work email'} <span className="text-gray-400 text-xs font-normal">({isEs ? 'opcional' : 'optional'})</span>
             </label>
             <input
               type="email"
-              placeholder="roberto@miempresa.com"
+              placeholder={isEs ? 'roberto@miempresa.com' : 'robert@company.com'}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
@@ -211,23 +220,23 @@ export default function GrowthLeadForm() {
             type="submit"
             className="w-full min-h-[52px] rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-bold text-base flex items-center justify-center gap-2 transition-transform transform active:scale-98 shadow-lg cursor-pointer"
           >
-            <span>Continuar a paso 2</span>
+            <span>{isEs ? 'Continuar a paso 2' : 'Continue to Step 2'}</span>
             <span>→</span>
           </button>
 
           <p className="text-center text-xs text-gray-400">
-            🔒 Respetamos tu privacidad. Cero spam.
+            🔒 {isEs ? 'Respetamos tu privacidad. Cero spam.' : 'Strictly confidential. Zero spam.'}
           </p>
         </form>
       ) : (
         <form onSubmit={handleSubmitFinal} className="space-y-4">
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Nombre de tu empresa o marca
+              {isEs ? 'Nombre de tu empresa o marca' : 'Company or brand name'}
             </label>
             <input
               type="text"
-              placeholder="Ej. Clínica Dental Sonrisas / Distribuidora Ramos"
+              placeholder={isEs ? 'Ej. Clínica Dental Sonrisas / Distribuidora Ramos' : 'e.g. Acme Health Clinic / Global Trade'}
               value={nombreNegocio}
               onChange={(e) => setNombreNegocio(e.target.value)}
               className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
@@ -236,13 +245,13 @@ export default function GrowthLeadForm() {
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              ¿Cuál es tu objetivo comercial principal?
+              {isEs ? '¿Cuál es tu objetivo comercial principal?' : 'What is your primary commercial goal?'}
             </label>
             <div className="grid grid-cols-1 gap-2">
               {[
-                'Más prospectos calificados en WhatsApp/Email',
-                'Superar a competidores en Google Ads / SEO',
-                'Vender servicios de alto valor (B2B o Ticket Alto)',
+                isEs ? 'Más prospectos calificados en WhatsApp/Email' : 'More qualified inbound leads (WhatsApp/Email)',
+                isEs ? 'Superar a competidores en Google Ads / SEO' : 'Outrank key competitors on Google Ads & SEO',
+                isEs ? 'Vender servicios de alto valor (B2B o Ticket Alto)' : 'Sell high-ticket services (B2B or High-Value)',
               ].map((obj) => (
                 <button
                   type="button"
@@ -262,14 +271,14 @@ export default function GrowthLeadForm() {
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Presupuesto mensual estimado en pauta (Google / Meta)
+              {isEs ? 'Presupuesto mensual estimado en pauta (Google / Meta)' : 'Estimated monthly ad budget (Google / Meta)'}
             </label>
             <div className="grid grid-cols-2 gap-2">
               {[
-                '$3,000 - $6,000 MXN',
-                '$6,000 - $15,000 MXN',
-                '$15,000 - $35,000 MXN',
-                'Más de $35,000 MXN',
+                isEs ? '$3,000 - $6,000 MXN' : '$300 - $600 USD',
+                isEs ? '$6,000 - $15,000 MXN' : '$600 - $1,500 USD',
+                isEs ? '$15,000 - $35,000 MXN' : '$1,500 - $3,500 USD',
+                isEs ? 'Más de $35,000 MXN' : 'Over $3,500 USD',
               ].map((pres) => (
                 <button
                   type="button"
@@ -289,11 +298,12 @@ export default function GrowthLeadForm() {
 
           <div>
             <label className="block text-sm font-bold text-gray-200 mb-1">
-              Página web o redes actuales <span className="text-gray-400 text-xs font-normal">(opcional)</span>
+              {isEs ? 'Página web o redes actuales' : 'Current website or social profile'}{' '}
+              <span className="text-gray-400 text-xs font-normal">({isEs ? 'opcional' : 'optional'})</span>
             </label>
             <input
               type="text"
-              placeholder="ej. www.minegocio.com o instagram.com/negocio"
+              placeholder={isEs ? 'ej. www.minegocio.com o instagram.com/negocio' : 'e.g. www.mybrand.com'}
               value={sitioActual}
               onChange={(e) => setSitioActual(e.target.value)}
               className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
@@ -306,14 +316,16 @@ export default function GrowthLeadForm() {
               onClick={() => setStep(1)}
               className="w-1/3 min-h-[52px] rounded-xl bg-base-200 hover:bg-base-300 text-gray-300 font-semibold text-sm transition-colors cursor-pointer"
             >
-              ← Regresar
+              ← {isEs ? 'Regresar' : 'Back'}
             </button>
             <button
               type="submit"
               disabled={submitting}
               className="w-2/3 min-h-[52px] rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 transition-transform transform active:scale-98 shadow-lg cursor-pointer disabled:opacity-50"
             >
-              {submitting ? 'Analizando...' : '¡Solicitar mi plan y auditoría! 🚀'}
+              {submitting
+                ? isEs ? 'Analizando...' : 'Analyzing...'
+                : isEs ? '¡Solicitar mi plan y auditoría! 🚀' : 'Get My Strategy & Audit! 🚀'}
             </button>
           </div>
 
@@ -322,7 +334,7 @@ export default function GrowthLeadForm() {
               href="/privacy-policy"
               className="text-xs text-[#00b4a6] hover:underline inline-block"
             >
-              Aviso de Privacidad
+              {isEs ? 'Aviso de Privacidad' : 'Privacy Policy'}
             </Link>
           </div>
         </form>

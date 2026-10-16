@@ -3,7 +3,11 @@
 import React, { useState } from 'react';
 import { ChevronDown } from 'lucide-react';
 
-const GROWTH_FAQS = [
+interface GrowthFAQAccordionProps {
+  locale?: string;
+}
+
+const GROWTH_FAQS_ES = [
   {
     q: '¿Qué incluye el plan de Sitio + Crecimiento por $8,500 MXN / mes?',
     a: 'Incluye el diseño e ingeniería completa de tu sitio web a la medida (optimizada para máxima conversión y velocidad), configuración y gestión continua de campañas en Google Ads y Meta Ads, optimización de SEO para Google y buscadores de Inteligencia Artificial (ChatGPT, Perplexity), seguimiento de conversiones y reporte ejecutivo mensual con análisis de prospectos obtenidos.',
@@ -38,7 +42,44 @@ const GROWTH_FAQS = [
   },
 ];
 
-export default function GrowthFAQAccordion() {
+const GROWTH_FAQS_EN = [
+  {
+    q: 'What is included in the Website + Growth plan for $8,500 MXN / mo (~$500 USD)?',
+    a: 'It includes custom high-velocity web design and engineering (Next.js), active setup & weekly optimization of Google Search & Meta ad campaigns, SEO targeting traditional search engines and AI generative engines (ChatGPT, Perplexity), custom conversion tracking, and monthly executive lead performance reporting.',
+  },
+  {
+    q: 'Is Google and Meta ad spend included in the $8,500 fee?',
+    a: 'No. The $8,500 MXN fee covers full technical development, ongoing funnel strategy, copy engineering, creative ad production, and weekly optimization. Ad budget is billed directly by Google and Meta to your own business payment card.',
+  },
+  {
+    q: 'How fast can we expect qualified incoming leads?',
+    a: 'Google and Meta ad funnels typically start delivering initial customer leads within 7 to 14 business days after launch and campaign activation. SEO authority and AI search presence compounds month over month.',
+  },
+  {
+    q: 'Do we own the website and advertising accounts?',
+    a: 'Yes, 100%. Unlike agencies or rental platforms that hold your assets hostage, with Idea.ly your source code, domain, ad accounts, and tracking pixels remain your exclusive property.',
+  },
+  {
+    q: 'Is there a mandatory long-term lock-in contract?',
+    a: 'We recommend an initial 3-month cycle to allow machine learning bid algorithms to mature and reach lowest Cost-Per-Acquisition (CPA). However, we have zero hidden cancellation penalties.',
+  },
+  {
+    q: 'How do you measure campaign performance and ROI?',
+    a: 'We instrument Google Tag Manager, GA4, Meta Conversions API, and custom event handlers on WhatsApp clicks, calls, and forms. You will see exactly where each prospect came from.',
+  },
+  {
+    q: 'What is the difference between this plan and Express Page?',
+    a: 'Express Page is a 5-day rapid launch website with zero monthly management. The Website + Growth plan is an integrated continuous revenue engine combining ongoing digital marketing, ad optimization, and technical enhancements.',
+  },
+  {
+    q: 'Do you issue formal business invoices?',
+    a: 'Yes, we provide official tax CFDI invoices for Mexico and international invoicing for US / foreign corporate clients.',
+  },
+];
+
+export default function GrowthFAQAccordion({ locale = 'es' }: GrowthFAQAccordionProps) {
+  const isEs = locale === 'es';
+  const faqs = isEs ? GROWTH_FAQS_ES : GROWTH_FAQS_EN;
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggle = (idx: number) => {
@@ -47,7 +88,7 @@ export default function GrowthFAQAccordion() {
 
   return (
     <div className="space-y-4">
-      {GROWTH_FAQS.map((item, idx) => {
+      {faqs.map((item, idx) => {
         const isOpen = openIndex === idx;
         return (
           <div
