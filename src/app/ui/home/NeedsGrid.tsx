@@ -51,7 +51,7 @@ export default function NeedsGrid({ locale = 'es' }: NeedsGridProps) {
         ? 'Software a la medida: portales de clientes, inventarios, cotizadores o migrar ese sistema viejo a uno moderno.'
         : 'Custom software: client portals, inventory management, quoting tools, or migrating legacy software.',
       cta: isEs ? 'Ver software a la medida →' : 'See custom software →',
-      href: `/${locale}/services/software-development`,
+      href: `/${locale}/desarrollo-a-la-medida`,
     },
   ];
 

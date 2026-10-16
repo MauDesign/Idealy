@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
  */
 const Typewriter = ({ words }: { words: string[] }) => {
     const [currentWordIndex, setCurrentWordIndex] = useState(0);
-    const [currentText, setCurrentText] = useState('');
+    const [currentText, setCurrentText] = useState(words[0] || '');
     const [isDeleting, setIsDeleting] = useState(false);
     const [speed, setSpeed] = useState(150);
 

@@ -48,9 +48,11 @@ export default function HeroVisual({ locale = 'es' }: HeroVisualProps) {
       {/* Contenedor principal con efecto Tilt 3D */}
       <div
         className="relative w-full h-full rounded-2xl overflow-hidden shadow-2xl shadow-primary/20 border border-white/15 bg-[#011b27] transition-transform duration-300 ease-out"
-        style={{
-          transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
-        }}
+        style={
+          tilt.x !== 0 || tilt.y !== 0
+            ? { transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)` }
+            : undefined
+        }
       >
         {/* Imagen principal (mockup laptop + smartphone) */}
         <Image

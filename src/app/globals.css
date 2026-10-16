@@ -75,47 +75,51 @@ html {
 
 @keyframes floatBadge1 {
   0%, 100% {
-    transform: translateY(0px) translateX(0px);
+    transform: translate3d(0px, 0px, 0);
   }
   50% {
-    transform: translateY(-8px) translateX(3px);
+    transform: translate3d(3px, -8px, 0);
   }
 }
 
 @keyframes floatBadge2 {
   0%, 100% {
-    transform: translateY(0px) translateX(0px);
+    transform: translate3d(0px, 0px, 0);
   }
   50% {
-    transform: translateY(9px) translateX(-3px);
+    transform: translate3d(-3px, 9px, 0);
   }
 }
 
 @keyframes pulseAura {
   0%, 100% {
     opacity: 0.35;
-    transform: scale(1);
+    transform: translate3d(0, 0, 0) scale(1);
   }
   50% {
     opacity: 0.65;
-    transform: scale(1.08);
+    transform: translate3d(0, 0, 0) scale(1.08);
   }
 }
 
 .animate-float-slow {
   animation: floatSlow 6s ease-in-out infinite;
+  will-change: transform;
 }
 
 .animate-float-badge-1 {
   animation: floatBadge1 4.5s ease-in-out infinite;
+  will-change: transform;
 }
 
 .animate-float-badge-2 {
   animation: floatBadge2 5.2s ease-in-out infinite 0.8s;
+  will-change: transform;
 }
 
 .animate-pulse-aura {
   animation: pulseAura 7s ease-in-out infinite;
+  will-change: transform, opacity;
 }
 
 /* Liquid Glass Frosted Effect */

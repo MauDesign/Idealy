@@ -177,7 +177,7 @@ export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
               </ul>
             </div>
             <Link
-              href={`/${locale}/services/software-development`}
+              href={`/${locale}/desarrollo-a-la-medida`}
               onClick={() => handlePriceClick('medida', 'Un sistema a la medida')}
               className="btn btn-outline btn-primary rounded-full w-full font-bold normal-case hover:text-white"
             >

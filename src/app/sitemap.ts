@@ -39,6 +39,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'weekly',
       priority: 0.95,
     },
+    {
+      url: `${baseUrl}/desarrollo-a-la-medida`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.95,
+    },
   ];
 
   // Localized blog list pages
