@@ -22,7 +22,12 @@ import WhatsAppButton from '@/app/ui/express/WhatsAppModal';
 import ExpressGSAPInitializer from '@/app/ui/express/ExpressGSAPInitializer';
 import CustomSoftwareLeadForm from '@/app/ui/custom-software/CustomSoftwareLeadForm';
 import CustomSoftwareFAQAccordion from '@/app/ui/custom-software/CustomSoftwareFAQAccordion';
-import type { locales } from '../../../i18n/routing';
+import { setRequestLocale } from 'next-intl/server';
+import { locales } from '../../../i18n/routing';
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 type Props = {
   params: Promise<{ locale: typeof locales[number] }>;
@@ -34,6 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const baseUrl = 'https://www.idealy.com.mx';
 
   return {
+    metadataBase: new URL(baseUrl),
     title: isEn
       ? 'Custom Software Development from $25,000 MXN (~$1,500 USD) | Idealy Studio'
       : 'Desarrollo de Software a la Medida desde $25,000 MXN | Idealy Studio',
@@ -73,11 +79,77 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function DesarrolloALaMedidaPage({ params }: Props) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const isEn = locale === 'en';
+
+  const softwareFaqs = isEn
+    ? [
+        {
+          q: 'What is the starting cost for custom software development?',
+          a: 'Our custom software engineering projects start at $25,000 MXN (~$1,500 USD) for specialized tools like web quoters, customer portals, or inventory management dashboards. Final pricing depends on technical scope defined collaboratively during our free diagnosis.',
+        },
+        {
+          q: 'Do we own 100% of the code and intellectual property?',
+          a: 'Yes, completely. Source code, databases, design assets, and architectural blueprints belong entirely to your company. We charge zero per-user monthly license fees and never lock you into proprietary vendor traps.',
+        },
+        {
+          q: 'What technologies do you use to build custom software?',
+          a: 'We build with the fastest and most scalable stack available: Next.js (React), TypeScript, Node.js / Go, PostgreSQL databases, and serverless edge deployments on Vercel or AWS.',
+        },
+        {
+          q: 'Can you migrate data currently living in spreadsheets or legacy software?',
+          a: 'Yes. We build custom data extraction and normalization scripts to safely transition all your legacy databases, transactions, and client records into the new cloud platform with zero operational interruption.',
+        },
+        {
+          q: 'How long does development take?',
+          a: 'Initial operational portals and quoter modules are typically delivered in 3 to 5 weeks. More complex systems are executed in 2-week agile sprints with testable progress delivered continuously.',
+        },
+      ]
+    : [
+        {
+          q: '¿A partir de qué costo se desarrolla un sistema de software a la medida?',
+          a: 'Nuestros desarrollos de software a la medida inician desde $25,000 MXN más IVA para herramientas especializadas como cotizadores web, portales de acceso para clientes o paneles de control de inventario básico. El costo final se determina con base en el alcance funcional que definimos juntos en el diagnóstico sin costo.',
+        },
+        {
+          q: '¿El software y el código fuente nos pertenecen al 100%?',
+          a: 'Sí, totalmente. El código fuente, la propiedad intelectual, las bases de datos y la arquitectura técnica se entregan a tu empresa. No cobramos rentas obligatorias de licencia por usuario ni te atamos a contratos de permanencia tecnológica.',
+        },
+        {
+          q: '¿Qué tecnologías utilizan para construir el software?',
+          a: 'Trabajamos con el stack tecnológico más moderno, escalable y rápido del mercado: Next.js (React), TypeScript, Node.js / Go, bases de datos PostgreSQL y despliegues serverless en Vercel o AWS. Esto garantiza tiempos de respuesta instantáneos y máxima seguridad.',
+        },
+        {
+          q: '¿Podemos migrar datos que hoy tenemos en Excel o en un sistema viejo?',
+          a: 'Sí. Es uno de nuestros servicios más solicitados. Diseñamos scripts de migración y limpieza de datos para que tu información histórica de clientes, productos o transacciones pase sin pérdidas a la nueva plataforma web.',
+        },
+        {
+          q: '¿En cuánto tiempo se entrega un sistema a la medida?',
+          a: 'Los módulos y cotizadores iniciales suelen entregarse en periodos de 3 a 5 semanas. Proyectos más complejos con múltiples roles, integraciones de facturación o pagos se planifican en sprints quincenales con entregas continuas que puedes ir probando.',
+        },
+      ];
 
   return (
     <ExpressGSAPInitializer>
       <div className="w-full bg-[#07131e] text-gray-100 min-h-screen font-sans selection:bg-[#00b4a6] selection:text-white pb-20 lg:pb-0 overflow-x-hidden">
+        {/* Schema.org FAQPage */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              '@id': `https://www.idealy.com.mx/${locale}/desarrollo-a-la-medida#faq`,
+              mainEntity: softwareFaqs.map((faq) => ({
+                '@type': 'Question',
+                name: faq.q,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.a,
+                },
+              })),
+            }),
+          }}
+        />
         {/* Schema.org Structured Data */}
         <script
           type="application/ld+json"

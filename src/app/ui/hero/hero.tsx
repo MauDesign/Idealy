@@ -39,16 +39,26 @@ export default function Hero({ locale = 'es' }: HeroProps) {
               {isEs ? 'Estudio de diseño y software · Puebla, México' : 'Design & Software Studio · Puebla, Mexico'}
             </div>
 
-            {/* H1 con frase rotativa */}
+            {/* H1 estático con la keyword exacta solicitada */}
             <h1
               id="hero-heading"
-              className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.12] tracking-tight mb-6"
+              className="text-4xl sm:text-5xl lg:text-6xl font-black text-white leading-[1.12] tracking-tight mb-4"
+            >
+              {isEs
+                ? 'Diseño web y software a la medida en Puebla'
+                : 'Web design & custom software in Puebla'}
+            </h1>
+
+            {/* Texto animado de impacto marcado con aria-hidden */}
+            <div
+              aria-hidden="true"
+              className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-slate-200 mb-6"
             >
               {isEs ? 'Sitios y sistemas que te traen ' : 'Websites and systems that bring you '}
               <span className="text-primary block sm:inline">
                 <Typewriter words={typewriterWords} />
               </span>
-            </h1>
+            </div>
 
             {/* Subtítulo */}
             <p className="text-lg sm:text-xl text-slate-300 leading-relaxed mb-8">

@@ -22,7 +22,12 @@ import WhatsAppButton from '@/app/ui/express/WhatsAppModal';
 import ExpressGSAPInitializer from '@/app/ui/express/ExpressGSAPInitializer';
 import GrowthLeadForm from '@/app/ui/growth/GrowthLeadForm';
 import GrowthFAQAccordion from '@/app/ui/growth/GrowthFAQAccordion';
-import type { locales } from '../../../i18n/routing';
+import { setRequestLocale } from 'next-intl/server';
+import { locales } from '../../../i18n/routing';
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 type Props = {
   params: Promise<{ locale: typeof locales[number] }>;
@@ -34,6 +39,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const baseUrl = 'https://www.idealy.com.mx';
 
   return {
+    metadataBase: new URL(baseUrl),
     title: isEn
       ? 'Website + Growth: More Customers Every Month for $8,500 MXN / mo (~$500 USD) | Idealy Studio'
       : 'Sitio + Crecimiento: Más Clientes Cada Mes por $8,500/mes | Idealy Studio',
@@ -73,11 +79,77 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function SitioCrecimientoPage({ params }: Props) {
   const { locale } = await params;
+  setRequestLocale(locale);
   const isEn = locale === 'en';
+
+  const growthFaqs = isEn
+    ? [
+        {
+          q: 'What is included in the Website + Growth plan for $8,500 MXN / mo (~$500 USD)?',
+          a: 'It includes custom high-velocity web design and engineering (Next.js), active setup & weekly optimization of Google Search & Meta ad campaigns, SEO targeting traditional search engines and AI generative engines (ChatGPT, Perplexity), custom conversion tracking, and monthly executive lead performance reporting.',
+        },
+        {
+          q: 'Are ad spend budgets for Google & Meta included in the $8,500 monthly fee?',
+          a: 'No. The $8,500 MXN fee covers website development, ad copywriting, technical optimization, daily campaign monitoring, and reporting. Ad spend is billed directly from your ad account to Google and Meta.',
+        },
+        {
+          q: 'How fast can we expect qualified leads?',
+          a: 'Paid Google and Meta campaigns can generate inbound inquiries within the first 7 to 14 days following launch. Organic SEO and AI search visibility build cumulative authority month over month.',
+        },
+        {
+          q: 'Do we own the website and assets 100%?',
+          a: 'Yes, 100%. Unlike agencies or rental platforms that hold your assets hostage, with Idea.ly your source code, domain, ad accounts, and tracking pixels remain your exclusive property.',
+        },
+        {
+          q: 'Is there a long-term contract or lock-in period?',
+          a: 'We recommend an initial 3-month cycle to give ad bidding algorithms enough telemetry to lower your cost-per-acquisition (CPA), but we enforce no lock-ins. We earn your business with tangible results every month.',
+        },
+      ]
+    : [
+        {
+          q: '¿Qué incluye el plan de Sitio + Crecimiento por $8,500 MXN / mes?',
+          a: 'Incluye el diseño e ingeniería completa de tu sitio web a la medida (optimizada para máxima conversión y velocidad), configuración y gestión continua de campañas en Google Ads y Meta Ads, optimización de SEO para Google y buscadores de Inteligencia Artificial (ChatGPT, Perplexity), seguimiento de conversiones y reporte ejecutivo mensual con análisis de prospectos obtenidos.',
+        },
+        {
+          q: '¿El presupuesto de pauta de Google y Facebook está incluido en los $8,500?',
+          a: 'No. Los $8,500 MXN cubren el desarrollo del sitio, la estrategia, copywriting comercial, optimización técnica, monitoreo diario, creación de anuncios y reportes. La inversión publicitaria se paga directamente desde tu cuenta publicitaria a Google y Meta (recomendamos a partir de $4,000 a $6,000 MXN al mes según tu mercado).',
+        },
+        {
+          q: '¿Cuánto tiempo tarda en comenzar a generar prospectos calificados?',
+          a: 'Las campañas de Google Ads y Meta pueden comenzar a generar prospectos desde los primeros 7 a 14 días posteriores al lanzamiento del sitio y las cuentas publicitarias. El SEO orgánico y el posicionamiento en IA va madurando acumulando autoridad mes con mes.',
+        },
+        {
+          q: '¿El sitio web es de mi propiedad?',
+          a: 'Sí, totalmente. A diferencia de agencias o plataformas de suscripción que bloquean tu código o retienen tu dominio, en Idea.ly el sitio, diseño, contenidos y cuentas publicitarias te pertenecen al 100%.',
+        },
+        {
+          q: '¿Existe algún plazo forzoso o contrato de permanencia?',
+          a: 'Recomendamos un periodo inicial de 3 meses para optimizar los algoritmos de puja y lograr el costo por adquisición (CPA) más bajo posible, pero no hay penalizaciones abusivas ni cláusulas ocultas. Trabajamos por resultados.',
+        },
+      ];
 
   return (
     <ExpressGSAPInitializer>
       <div className="w-full bg-[#07131e] text-gray-100 min-h-screen font-sans selection:bg-[#00b4a6] selection:text-white pb-20 lg:pb-0 overflow-x-hidden">
+        {/* Schema.org FAQPage */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              '@id': `https://www.idealy.com.mx/${locale}/sitio-crecimiento#faq`,
+              mainEntity: growthFaqs.map((faq) => ({
+                '@type': 'Question',
+                name: faq.q,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.a,
+                },
+              })),
+            }),
+          }}
+        />
         {/* Schema.org Structured Data */}
         <script
           type="application/ld+json"

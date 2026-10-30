@@ -18,8 +18,13 @@ import Testimonials from '@/app/ui/home/Testimonials';
 import FAQSection from '@/app/ui/FAQsection/FAQSection';
 import Contact from '@/app/ui/contact/contact';
 import Footer from '@/app/ui/Footer/Footer';
+import { faqData } from '@/app/ui/FAQsection/faqData';
+import { locales } from '../../i18n/routing';
 
-import type { locales } from '../../i18n/routing';
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
 type Props = { params: Promise<{ locale: typeof locales[number] }> };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -43,7 +48,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       : 'Diseño web y software a la medida en Puebla | Idea.ly',
     description: isEn
       ? 'Scale your business with Next.js & Go software. Experts in custom AI agents, workflow automation & high-impact UX for US & MX markets.'
-      : 'Sitios web, sistemas a la medida y automatización con IA para PyMEs. Diseñamos, construimos y promocionamos tu proyecto. Landing desde $5,000 MXN.',
+      : 'Sitios web, sistemas a la medida y automatización con IA para PyMEs. Diseñamos, construimos y promocionamos tu proyecto. Landing desde $6,000 MXN.',
     keywords: isEn
       ? [...keywordsByPage['home-en']]
       : [
@@ -94,6 +99,25 @@ export default async function Home({ params }: Props) {
 
   return (
     <GSAPInitializer>
+      {/* Schema FAQPage específico de la Home */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            '@id': `https://www.idealy.com.mx/${locale}#faq`,
+            mainEntity: (faqData[isEn ? 'en' : 'es'] || faqData.es).map((item) => ({
+              '@type': 'Question',
+              name: item.question,
+              acceptedAnswer: {
+                '@type': 'Answer',
+                text: item.answer,
+              },
+            })),
+          }),
+        }}
+      />
       <div className="w-full flex flex-col min-h-screen">
         <main className="w-full flex flex-col">
           {/* 1. Hero (#inicio) */}

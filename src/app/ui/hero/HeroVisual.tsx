@@ -92,8 +92,8 @@ export default function HeroVisual({ locale = 'es' }: HeroVisualProps) {
               </span>
               <span className="text-xs sm:text-sm font-black text-white flex items-center gap-1">
                 +$18,500 MXN{' '}
-                <span className="text-[10px] font-normal text-emerald-400">
-                  {isEs ? '· En vivo' : '· Live'}
+                <span className="text-[10px] font-normal text-slate-400">
+                  {isEs ? '· Ejemplo' : '· Demo'}
                 </span>
               </span>
             </div>

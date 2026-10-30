@@ -4,6 +4,11 @@ import Script from 'next/script';
 import type { Metadata } from 'next';
 import LeoClient from '@/app/ui/leo/LeoClient';
 import Footer from '@/app/ui/Footer/Footer';
+import { locales } from '../../../i18n/routing';
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 export async function generateMetadata({
   params,

@@ -1,7 +1,7 @@
 import { withAuth } from "next-auth/middleware";
 import createMiddleware from 'next-intl/middleware';
 import { locales, routing } from './i18n/routing';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -22,6 +22,16 @@ const authMiddleware = withAuth(
 );
 
 export default function proxy(req: NextRequest) {
+    // Redirección 301 de idealy.com.mx (sin www) a www.idealy.com.mx
+    const host = req.headers.get('host')?.toLowerCase() || '';
+    if (host === 'idealy.com.mx') {
+        const url = req.nextUrl.clone();
+        url.host = 'www.idealy.com.mx';
+        url.protocol = 'https:';
+        url.port = '';
+        return NextResponse.redirect(url, 301);
+    }
+
     const adminPattern = RegExp(`^(/(${locales.join('|')}))?/admin(/.*)?$`, 'i');
     const isProtectedPage = adminPattern.test(req.nextUrl.pathname);
 

@@ -80,7 +80,7 @@ export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
                 </li>
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
-                  <span>{isEs ? 'Entrega en 5 días' : 'Delivery in 5 business days'}</span>
+                  <span>{isEs ? 'Entrega en 5 días hábiles garantizada' : 'Guaranteed 5 business days delivery'}</span>
                 </li>
               </ul>
             </div>
@@ -129,6 +129,10 @@ export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
                 <li className="flex items-start gap-2.5">
                   <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
                   <span>{isEs ? 'Reporte mensual de prospectos' : 'Monthly lead generation reports'}</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                  <span>{isEs ? 'Entrega en 21 días garantizada' : 'Guaranteed 21 days delivery'}</span>
                 </li>
               </ul>
             </div>
@@ -192,8 +196,8 @@ export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
           <ShieldCheck className="w-6 h-6 text-emerald-600 dark:text-emerald-400 shrink-0" aria-hidden="true" />
           <p className="text-sm sm:text-base font-semibold">
             {isEs
-              ? 'Garantía de entrega: si tu sitio no está listo en 21 días, te devolvemos tu dinero.'
-              : 'Delivery guarantee: if your website is not ready in 21 days, we refund 100% of your investment.'}
+              ? 'Garantía de entrega: Página Express en 5 días hábiles o Sitio Web en 21 días. Si no cumplimos en la fecha prometida, te devolvemos el 100% de tu anticipo sin preguntas.'
+              : 'Delivery guarantee: Express Page in 5 business days, full Website in 21 days. If we miss the deadline, 100% full refund with no questions asked.'}
           </p>
         </div>
 

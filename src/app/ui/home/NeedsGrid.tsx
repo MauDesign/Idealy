@@ -28,8 +28,8 @@ export default function NeedsGrid({ locale = 'es' }: NeedsGridProps) {
       icon: Monitor,
       title: isEs ? 'Necesito un sitio profesional, rápido' : 'I need a professional website, fast',
       description: isEs
-        ? 'Página Express: diseño a tu marca, rápida en celular y lista para recibir clientes por WhatsApp. Desde $5,000 MXN.'
-        : 'Express Page: branded design, ultra-fast on mobile, ready to receive WhatsApp leads. Starting at $5,000 MXN.',
+        ? 'Página Express: diseño a tu marca, rápida en celular y lista para recibir clientes por WhatsApp. Desde $6,000 MXN.'
+        : 'Express Page: branded design, ultra-fast on mobile, ready to receive WhatsApp leads. Starting at $6,000 MXN.',
       cta: isEs ? 'Ver Página Express →' : 'See Express Page →',
       href: `/${locale}/pagina-express`,
     },

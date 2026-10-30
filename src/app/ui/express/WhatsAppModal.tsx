@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { trackEvent } from '@/lib/gtag';
 
 interface WhatsAppModalProps {
   buttonText: string;
@@ -142,12 +143,12 @@ export default function WhatsAppButton({
         setFolioCode(assignedFolio);
         setDownloadUrl(assignedDownloadUrl);
 
-        // Analytics tracking
-        if (typeof window !== 'undefined' && window.gtag) {
-          window.gtag('event', 'generate_lead', {
+        // Analytics tracking unificado (GA4, Meta Pixel, Clarity, GTM)
+        if (typeof window !== 'undefined') {
+          trackEvent('generate_lead', {
             event_category: 'conversion',
             event_label: `WhatsApp Lead (${locationTag})`,
-            value: 5000.0,
+            value: 6000.0,
             currency: 'MXN',
           });
           if (typeof window.gtag_report_conversion === 'function') {

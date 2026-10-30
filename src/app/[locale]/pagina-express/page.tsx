@@ -2,41 +2,118 @@ import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Metadata } from 'next';
+import { setRequestLocale } from 'next-intl/server';
 import WhatsAppButton from '@/app/ui/express/WhatsAppModal';
 import ExpressLeadForm from '@/app/ui/express/ExpressLeadForm';
 import ExpressGSAPInitializer from '@/app/ui/express/ExpressGSAPInitializer';
 import FAQAccordion from './FAQAccordion';
+import { locales } from '../../../i18n/routing';
 
-export const metadata: Metadata = {
-  title: 'Tu página web lista en 5 días por $6,000 + IVA | Idealy Página Express',
-  description:
-    'Que tus clientes te encuentren en Google y te escriban directo a WhatsApp. Sin plantillas, sin rentas mensuales. Entrega en 5 días o te devolvemos tu anticipo. Precios más IVA.',
-  alternates: {
-    canonical: 'https://www.idealy.com.mx/pagina-express',
-  },
-  openGraph: {
-    title: 'Tu página web lista en 5 días por $6,000 + IVA | Idealy Página Express',
-    description:
-      'Página web profesional a la medida para tu negocio. Incluye hosting, dominio, textos que venden y botón de WhatsApp. Precios más IVA.',
-    url: 'https://www.idealy.com.mx/pagina-express',
-    siteName: 'Idealy',
-    images: [
-      {
-        url: 'https://www.idealy.com.mx/img/express/express_panaderia.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Idealy Página Express $6,000 + IVA',
-      },
-    ],
-    locale: 'es_MX',
-    type: 'website',
-  },
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
+
+type Props = {
+  params: Promise<{ locale: typeof locales[number] }>;
 };
 
-export default function PaginaExpressPage() {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const isEn = locale === 'en';
+  const baseUrl = 'https://www.idealy.com.mx';
+
+  return {
+    metadataBase: new URL(baseUrl),
+    title: isEn
+      ? 'Express Website ready in 5 days for $6,000 MXN + VAT | Idealy'
+      : 'Tu página web lista en 5 días por $6,000 + IVA | Idealy Página Express',
+    description: isEn
+      ? 'Get found on Google and receive WhatsApp messages directly. No templates, no monthly fees. Delivered in 5 business days or full advance refund.'
+      : 'Que tus clientes te encuentren en Google y te escriban directo a WhatsApp. Sin plantillas, sin rentas mensuales. Entrega en 5 días hábiles o te devolvemos tu anticipo completo.',
+    alternates: {
+      canonical: `${baseUrl}/${locale}/pagina-express`,
+      languages: {
+        en: `${baseUrl}/en/pagina-express`,
+        es: `${baseUrl}/es/pagina-express`,
+        'x-default': `${baseUrl}/es/pagina-express`,
+      },
+    },
+    openGraph: {
+      title: isEn
+        ? 'Express Website ready in 5 days for $6,000 MXN + VAT | Idealy'
+        : 'Tu página web lista en 5 días por $6,000 + IVA | Idealy Página Express',
+      description: isEn
+        ? 'Custom professional website for your business. Includes hosting, domain, copywriting, and WhatsApp button.'
+        : 'Página web profesional a la medida para tu negocio. Incluye hosting, dominio, textos que venden y botón de WhatsApp. Precios más IVA.',
+      url: `${baseUrl}/${locale}/pagina-express`,
+      siteName: 'Idealy',
+      images: [
+        {
+          url: 'https://www.idealy.com.mx/img/express/express_panaderia.jpg',
+          width: 1200,
+          height: 630,
+          alt: 'Idealy Página Express $6,000 + IVA',
+        },
+      ],
+      locale: isEn ? 'en_US' : 'es_MX',
+      type: 'website',
+    },
+  };
+}
+
+export default async function PaginaExpressPage({ params }: Props) {
+  const { locale } = await params;
+  setRequestLocale(locale);
+
+  const expressFaqs = [
+    {
+      q: '¿Cuánto cuesta una página web para mi negocio con Idea.ly?',
+      a: 'La Página Express de Idea.ly cuesta $6,000 MXN más IVA ($6,960 con IVA incluido). Incluye diseño a la medida, textos, botón de WhatsApp, hosting por 1 año y dominio .com por 1 año. Se paga 50% al iniciar y 50% al entregar.',
+    },
+    {
+      q: '¿En cuánto tiempo está lista mi página web?',
+      a: 'En 5 días hábiles a partir de que Idea.ly recibe tu logo, tus fotos y el cuestionario de 10 minutos. Si no está lista en ese plazo, te devolvemos tu anticipo completo.',
+    },
+    {
+      q: '¿Idea.ly emite factura?',
+      a: 'Sí. Idea.ly emite factura (CFDI) por el total del servicio. El precio de la Página Express es de $6,000 MXN más IVA.',
+    },
+    {
+      q: '¿El dominio está incluido en la Página Express?',
+      a: 'Sí, se incluye un dominio con terminación .com por 1 año, registrado a nombre de tu negocio.',
+    },
+    {
+      q: '¿Qué necesito para empezar mi página web?',
+      a: 'Tu logo, algunas fotos de tu negocio y responder un cuestionario de 10 minutos. Con eso Idea.ly escribe los textos y diseña tu página.',
+    },
+    {
+      q: '¿La página web es mía?',
+      a: 'Sí. El dominio se registra a nombre de tu negocio y el contenido de la página es tuyo.',
+    },
+  ];
+
   return (
     <ExpressGSAPInitializer>
       <div className="w-full bg-[#07131e] text-gray-100 min-h-screen font-sans selection:bg-[#00b4a6] selection:text-white pb-20 lg:pb-0 overflow-x-hidden">
+        {/* Dynamic Schema.org FAQPage */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'FAQPage',
+              '@id': `https://www.idealy.com.mx/${locale}/pagina-express#faq`,
+              mainEntity: expressFaqs.map((faq) => ({
+                '@type': 'Question',
+                name: faq.q,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: faq.a,
+                },
+              })),
+            }),
+          }}
+        />
         {/* Dynamic Schema.org Structured Data */}
         <script
           type="application/ld+json"

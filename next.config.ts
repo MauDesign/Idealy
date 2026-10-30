@@ -20,6 +20,37 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'idealy.com.mx',
+          },
+        ],
+        destination: 'https://www.idealy.com.mx/:path*',
+        permanent: true,
+      },
+      {
+        source: '/:locale/services/software-development',
+        destination: '/:locale/desarrollo-a-la-medida',
+        permanent: true,
+      },
+      {
+        source: '/:locale/services/digital-marketing',
+        destination: '/:locale/sitio-crecimiento',
+        permanent: true,
+      },
+      {
+        source: '/services/software-development',
+        destination: '/es/desarrollo-a-la-medida',
+        permanent: true,
+      },
+      {
+        source: '/services/digital-marketing',
+        destination: '/es/sitio-crecimiento',
+        permanent: true,
+      },
+      {
         source:
           '/en/blog/tema-titulo-sugeridopalabras-clave-keywordspor-que-funciona-seo-2026nearshoring-to-mexico-2026-the-new-standard-for-high-velocity-teams',
         destination:

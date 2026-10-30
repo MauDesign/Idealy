@@ -10,6 +10,8 @@ export const routing = defineRouting({
   defaultLocale: 'es',
 
   // Detects the browser's preferred language automatically (true by default)
-  localeDetection: true
-})
+  localeDetection: true,
 
+  // Deshabilita la inyección automática de Link headers alternativos por next-intl
+  alternateLinks: false,
+});

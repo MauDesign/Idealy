@@ -9,7 +9,7 @@ import GSAPInitializer from "@/app/ui/components/GSAPInitializer";
 import PageSchema from "@/app/ui/PageSchema";
 import type { Metadata } from 'next';
 import { keywordsByPage } from '@/config/keywords';
-import type { locales } from '../../../../i18n/routing';
+import { locales } from '../../../../i18n/routing';
 
 const validSlugs = [
   'software-development',

@@ -9,7 +9,11 @@ import GSAPInitializer from "@/app/ui/components/GSAPInitializer";
 import PageSchema from "@/app/ui/PageSchema";
 import type { Metadata } from 'next';
 import { keywordsByPage } from '@/config/keywords';
-import type { locales } from '../../../i18n/routing';
+import { locales } from '../../../i18n/routing';
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 type Props = { params: Promise<{ locale: typeof locales[number] }> };
 

@@ -3,7 +3,7 @@ import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import type { Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages, setRequestLocale, } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import "@/app/globals.css";
 import { Geist, Geist_Mono, Sora } from "next/font/google";
 
@@ -11,6 +11,12 @@ import Navbar from "../ui/navbar/navbar";
 import { ThemeProvider } from "../ui/ThemeProvider";
 import StructuredData from "../ui/StructuredData";
 import WhatsAppFab from "../ui/components/WhatsAppFab";
+import { getKeywordsForLocale } from '@/config/keywords';
+import { locales } from '@/i18n/routing';
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,8 +35,6 @@ const sora = Sora({
   subsets: ["latin"],
   display: "swap",
 });
-
-import { getKeywordsForLocale } from '@/config/keywords';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
@@ -89,11 +93,13 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
-
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
   setRequestLocale(locale);
   const messages = await getMessages();
+
+  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -126,6 +132,37 @@ export default async function LocaleLayout({ children, params }: Props) {
             }
           `}
         </Script>
+
+        {/* Microsoft Clarity */}
+        {clarityId && (
+          <Script id="microsoft-clarity" strategy="afterInteractive">
+            {`
+              (function(c,l,a,r,i,t,y){
+                  c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                  t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                  y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "${clarityId}");
+            `}
+          </Script>
+        )}
+
+        {/* Meta Pixel (Facebook) */}
+        {metaPixelId && (
+          <Script id="meta-pixel" strategy="afterInteractive">
+            {`
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '${metaPixelId}');
+              fbq('track', 'PageView');
+            `}
+          </Script>
+        )}
       </head>
       <body
         suppressHydrationWarning
@@ -140,6 +177,17 @@ export default async function LocaleLayout({ children, params }: Props) {
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
+        {metaPixelId && (
+          <noscript>
+            <img
+              height="1"
+              width="1"
+              style={{ display: "none" }}
+              src={`https://www.facebook.com/tr?id=${metaPixelId}&ev=PageView&noscript=1`}
+              alt=""
+            />
+          </noscript>
+        )}
         <NextIntlClientProvider locale={locale} messages={messages}>
           <ThemeProvider
             attribute="data-theme"

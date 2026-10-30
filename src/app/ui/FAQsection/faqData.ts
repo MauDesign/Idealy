@@ -5,8 +5,8 @@ export const faqData = {
       answer: "Una Página Express empieza en $6,000 MXN. Un sitio completo o un sistema a la medida depende del alcance; en el diagnóstico gratuito te damos un precio cerrado."
     },
     {
-      question: "¿En cuánto tiempo está listo?",
-      answer: "Un sitio web se entrega en 21 días o te devolvemos tu dinero. Un sistema a la medida se entrega por etapas, con avances cada semana."
+      question: "¿En cuánto tiempo está listo y cuál es la garantía?",
+      answer: "La Página Express se entrega en 5 días hábiles garantizados. Un sitio web completo se entrega en 21 días hábiles. Si no cumplimos la fecha pactada, te devolvemos el 100% de tu anticipo o inversión sin preguntas. Los sistemas de software a la medida se entregan por etapas con avances semanales."
     },
     {
       question: "Ya tengo un sistema, pero es viejo. ¿Pueden ayudarme?",

@@ -1,7 +1,20 @@
 import { setRequestLocale } from 'next-intl/server';
 import { prisma } from '@/lib/prisma';
 
-export const dynamic = 'force-dynamic';
+export async function generateStaticParams() {
+  try {
+    const posts = await prisma.post.findMany({
+      where: { published: true },
+      select: { slug: true, locale: true },
+    });
+    return posts.map((post: any) => ({
+      locale: post.locale,
+      slug: post.slug,
+    }));
+  } catch {
+    return [];
+  }
+}
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';

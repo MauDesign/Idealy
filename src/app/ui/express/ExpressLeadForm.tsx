@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/gtag';
 
 export default function ExpressLeadForm() {
   const router = useRouter();
@@ -103,11 +104,11 @@ export default function ExpressLeadForm() {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        if (typeof window !== 'undefined' && window.gtag) {
-          window.gtag('event', 'generate_lead', {
+        if (typeof window !== 'undefined') {
+          trackEvent('generate_lead', {
             event_category: 'conversion',
             event_label: 'Express Lead Complete',
-            value: 5000.0,
+            value: 6000.0,
             currency: 'MXN',
           });
           if (typeof window.gtag_report_conversion === 'function') {

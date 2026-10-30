@@ -1,7 +1,11 @@
 import { setRequestLocale } from 'next-intl/server';
 import { prisma } from '@/lib/prisma';
 
-export const dynamic = 'force-dynamic';
+import { locales } from '../../../i18n/routing';
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, Clock, ArrowRight, Rss, FolderOpen } from 'lucide-react';
