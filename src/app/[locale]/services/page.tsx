@@ -127,8 +127,8 @@ export default async function ServicesPage({ params }: Props) {
           }}
         />
         {/* Ambient background glows */}
-        <div className="absolute top-10 left-1/4 w-[500px] h-[250px] rounded-full bg-primary/10 blur-[100px] pointer-events-none animate-pulse" />
-        <div className="absolute bottom-10 right-1/4 w-[400px] h-[200px] rounded-full bg-[#00B5A7]/10 blur-[100px] pointer-events-none" />
+        <div className="absolute top-10 left-1/4 w-[500px] h-[250px] rounded-full [background:radial-gradient(circle,rgba(0,180,166,0.1),transparent_70%)] pointer-events-none animate-pulse" />
+        <div className="absolute bottom-10 right-1/4 w-[400px] h-[200px] rounded-full [background:radial-gradient(circle,rgba(0,181,167,0.1),transparent_70%)] pointer-events-none" />
 
         <div className="container mx-auto px-6 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6 border border-primary/20">
@@ -163,7 +163,7 @@ export default async function ServicesPage({ params }: Props) {
               return (
                 <div
                   key={slug}
-                  className="group hover-3d flex flex-col rounded-3xl overflow-hidden border border-white/5 bg-[#011c27]/60 backdrop-blur-md shadow-2xl hover:shadow-primary/10 hover:border-primary/20 transition-all duration-500 min-h-[580px]"
+                  className="group hover-3d flex flex-col rounded-3xl overflow-hidden border border-white/5 bg-[#011c27]/60 backdrop-blur-md shadow-2xl hover:shadow-primary/10 hover:border-primary/20 transition-[border-color,box-shadow] duration-500 min-h-[580px]"
                 >
                   {/* Image container */}
                   <div className="relative aspect-[16/10] bg-base-300 overflow-hidden">
@@ -216,7 +216,7 @@ export default async function ServicesPage({ params }: Props) {
                     <div className="pt-4 border-t border-white/5">
                       <Link
                         href={`/${locale}/services/${slug}`}
-                        className="inline-flex w-full items-center justify-between px-6 py-3.5 rounded-full bg-white/5 border border-white/10 text-white font-bold text-sm hover:bg-primary hover:text-black hover:border-primary hover:-translate-y-0.5 transition-all duration-300 group-hover:shadow-lg"
+                        className="inline-flex w-full items-center justify-between px-6 py-3.5 rounded-full bg-white/5 border border-white/10 text-white font-bold text-sm hover:bg-primary hover:text-black hover:border-primary hover:-translate-y-0.5 transition-[transform,background-color,border-color,color,box-shadow] duration-300 group-hover:shadow-lg"
                       >
                         <span>{tPage('ver_mas')}</span>
                         <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
@@ -230,13 +230,13 @@ export default async function ServicesPage({ params }: Props) {
 
           {/* CTA middle banner */}
           <div className="mt-24 p-12 rounded-3xl bg-gradient-to-r from-[#00b4a6]/10 via-[#011c27]/80 to-[#01131b] border border-primary/20 text-center relative overflow-hidden">
-            <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full bg-primary/10 blur-[60px]" />
+            <div className="absolute -right-20 -top-20 w-60 h-60 rounded-full [background:radial-gradient(circle,rgba(0,180,166,0.1),transparent_70%)]" />
             <h2 className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight relative z-10">
               {tPage('cta_title')}
             </h2>
             <Link
               href={`/${locale}/#contact`}
-              className="inline-flex items-center gap-2 bg-primary text-black font-black px-8 py-3.5 rounded-full hover:shadow-lg hover:shadow-primary/30 hover:opacity-95 transition-all duration-300 transform hover:-translate-y-0.5 relative z-10"
+              className="inline-flex items-center gap-2 bg-primary text-black font-black px-8 py-3.5 rounded-full hover:shadow-lg hover:shadow-primary/30 hover:opacity-95 transition-[transform,box-shadow,opacity] duration-300 transform hover:-translate-y-0.5 relative z-10"
             >
               {tPage('cta_button')} <ArrowRight className="w-4 h-4" />
             </Link>

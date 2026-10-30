@@ -68,12 +68,10 @@ export default function ExpressLeadForm() {
     }
 
     // Analytics conversion event step 1
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'lead_step_1', {
-        event_category: 'engagement',
-        event_label: 'Express Form Step 1',
-      });
-    }
+    trackEvent('lead_step_1', {
+      event_category: 'engagement',
+      event_label: 'Express Form Step 1',
+    });
 
     setStep(2);
   };
@@ -104,17 +102,12 @@ export default function ExpressLeadForm() {
       const data = await res.json();
 
       if (res.ok && data.success) {
-        if (typeof window !== 'undefined') {
-          trackEvent('generate_lead', {
-            event_category: 'conversion',
-            event_label: 'Express Lead Complete',
-            value: 6000.0,
-            currency: 'MXN',
-          });
-          if (typeof window.gtag_report_conversion === 'function') {
-            window.gtag_report_conversion();
-          }
-        }
+        trackEvent('generate_lead', {
+          event_category: 'conversion',
+          event_label: 'Express Lead Complete',
+          value: 6000.0,
+          currency: 'MXN',
+        });
         router.push(data.redirectUrl || `/pagina-express/gracias?nombre=${encodeURIComponent(nombre)}`);
       } else {
         setErrorMessage(data.error || 'Ocurrió un error al enviar tus datos. Inténtalo de nuevo.');
@@ -242,7 +235,7 @@ export default function ExpressLeadForm() {
                   key={item}
                   type="button"
                   onClick={() => setDedicacion(item)}
-                  className={`min-h-[48px] px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-all text-center flex items-center justify-center cursor-pointer ${
+                  className={`min-h-[48px] px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-colors duration-150 text-center flex items-center justify-center cursor-pointer ${
                     dedicacion === item
                       ? 'bg-[#00b4a6] border-[#00b4a6] text-white shadow-md'
                       : 'bg-base-200 border-white/10 text-gray-300 hover:border-white/30'
@@ -269,7 +262,7 @@ export default function ExpressLeadForm() {
                   key={item}
                   type="button"
                   onClick={() => setTienePagina(item)}
-                  className={`w-full min-h-[48px] px-4 py-3 rounded-xl text-sm font-semibold border text-left flex items-center justify-between transition-all cursor-pointer ${
+                  className={`w-full min-h-[48px] px-4 py-3 rounded-xl text-sm font-semibold border text-left flex items-center justify-between transition-colors duration-150 cursor-pointer ${
                     tienePagina === item
                       ? 'bg-[#0069a9] border-[#0069a9] text-white shadow-md'
                       : 'bg-base-200 border-white/10 text-gray-300 hover:border-white/30'
@@ -293,7 +286,7 @@ export default function ExpressLeadForm() {
                   key={item}
                   type="button"
                   onClick={() => setUrgencia(item)}
-                  className={`min-h-[48px] px-2 py-2 rounded-xl text-xs sm:text-sm font-semibold border text-center transition-all flex items-center justify-center cursor-pointer ${
+                  className={`min-h-[48px] px-2 py-2 rounded-xl text-xs sm:text-sm font-semibold border text-center transition-colors duration-150 flex items-center justify-center cursor-pointer ${
                     urgencia === item
                       ? 'bg-[#00b4a6] border-[#00b4a6] text-white shadow-md'
                       : 'bg-base-200 border-white/10 text-gray-300 hover:border-white/30'

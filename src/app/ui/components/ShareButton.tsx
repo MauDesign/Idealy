@@ -72,7 +72,7 @@ export default function ShareButton({ title, platform }: ShareButtonProps) {
       onClick={handleShare}
       title={labels[platform]}
       aria-label={labels[platform]}
-      className="w-9 h-9 rounded-full border border-base-200 bg-base-100 flex items-center justify-center text-base-content/40 hover:border-primary hover:text-primary hover:bg-primary/10 transition-all duration-200"
+      className="w-9 h-9 rounded-full border border-base-200 bg-base-100 flex items-center justify-center text-base-content/40 hover:border-primary hover:text-primary hover:bg-primary/10 transition-colors duration-200"
     >
       {platform === 'copy' && copied ? (
         <Check className="w-4 h-4 text-success" />

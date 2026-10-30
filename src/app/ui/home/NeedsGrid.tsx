@@ -1,9 +1,6 @@
-'use client';
-
 import React from 'react';
-import Link from 'next/link';
 import { TrendingUp, Monitor, Settings, Code } from 'lucide-react';
-import { trackEvent } from '@/lib/gtag';
+import NeedCardLink from './NeedCardLink';
 
 interface NeedsGridProps {
   locale?: string;
@@ -55,10 +52,6 @@ export default function NeedsGrid({ locale = 'es' }: NeedsGridProps) {
     },
   ];
 
-  const handleCardClick = (cardId: string) => {
-    trackEvent('click_necesidad', { tarjeta: cardId });
-  };
-
   return (
     <section
       id="servicios"
@@ -90,14 +83,14 @@ export default function NeedsGrid({ locale = 'es' }: NeedsGridProps) {
           {cards.map((card) => {
             const Icon = card.icon;
             return (
-              <Link
+              <NeedCardLink
                 key={card.id}
+                id={card.id}
                 href={card.href}
-                onClick={() => handleCardClick(card.id)}
-                className="group flex flex-col justify-between p-7 rounded-2xl bg-base-200/50 dark:bg-[#021824] border border-slate-200 dark:border-white/5 hover:border-primary/60 dark:hover:border-primary/60 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 transition-all duration-300"
+                className="group flex flex-col justify-between p-7 rounded-2xl bg-base-200/50 dark:bg-[#021824] border border-slate-200 dark:border-white/5 hover:border-primary/60 dark:hover:border-primary/60 hover:-translate-y-1 hover:shadow-xl hover:shadow-primary/5 transition-[transform,border-color,box-shadow] duration-300"
               >
                 <div>
-                  <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-6 group-hover:scale-105 group-hover:bg-primary group-hover:text-white transition-all">
+                  <div className="w-14 h-14 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary mb-6 group-hover:scale-105 group-hover:bg-primary group-hover:text-white transition-[transform,background-color,color] duration-200">
                     <Icon className="w-7 h-7" aria-hidden="true" />
                   </div>
                   <h3 className="text-xl font-bold text-foreground group-hover:text-primary transition-colors mb-3 leading-snug">
@@ -110,7 +103,7 @@ export default function NeedsGrid({ locale = 'es' }: NeedsGridProps) {
                 <div className="mt-auto pt-4 border-t border-slate-200/60 dark:border-white/5 flex items-center text-sm font-bold text-primary group-hover:translate-x-1 transition-transform">
                   {card.cta}
                 </div>
-              </Link>
+              </NeedCardLink>
             );
           })}
         </div>

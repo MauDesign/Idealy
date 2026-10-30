@@ -33,7 +33,7 @@ export default function Carousel() {
             <div className="absolute inset-y-0 left-0 flex items-center z-20 pointer-events-none">
                 <button
                     onClick={() => scroll("left")}
-                    className="ml-4 pointer-events-auto bg-primary/20 hover:bg-primary/40 text-primary-content p-3 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 border border-primary/30 hidden lg:flex shadow-lg"
+                    className="ml-4 pointer-events-auto bg-primary/20 hover:bg-primary/40 text-primary-content p-3 rounded-full backdrop-blur-md transition-[opacity,background-color] duration-200 opacity-0 group-hover:opacity-100 border border-primary/30 hidden lg:flex shadow-lg"
                     aria-label="Previous"
                 >
                     <ChevronLeft size={32} />
@@ -43,7 +43,7 @@ export default function Carousel() {
             <div className="absolute inset-y-0 right-0 flex items-center z-20 pointer-events-none">
                 <button
                     onClick={() => scroll("right")}
-                    className="mr-4 pointer-events-auto bg-primary/20 hover:bg-primary/40 text-primary-content p-3 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 border border-primary/30 hidden lg:flex shadow-lg"
+                    className="mr-4 pointer-events-auto bg-primary/20 hover:bg-primary/40 text-primary-content p-3 rounded-full backdrop-blur-md transition-[opacity,background-color] duration-200 opacity-0 group-hover:opacity-100 border border-primary/30 hidden lg:flex shadow-lg"
                     aria-label="Next"
                 >
                     <ChevronRight size={32} />
@@ -64,7 +64,7 @@ export default function Carousel() {
                                     alt={t(`items.${item.id}.title`)}
                                     fill
                                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                                    className="object-cover w-full h-full brightness-90 hover:brightness-100 transition-all"
+                                    className="object-cover w-full h-full brightness-90 hover:brightness-100 transition-[filter] duration-200"
                                 />
                             </figure>
                             <div className="card-body">

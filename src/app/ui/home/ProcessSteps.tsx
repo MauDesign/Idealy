@@ -123,10 +123,10 @@ export default function ProcessSteps({ locale = 'es' }: ProcessStepsProps) {
       className="relative w-full py-28 px-6 bg-[#01131b] text-white overflow-hidden"
     >
       {/* ─────────────────────────────────────────────────────────────
-          FONDO: LÍNEAS TÉCNICAS CON BLUR ATMOSFÉRICO APLICADO
+          FONDO: LÍNEAS TÉCNICAS CON RESPLANDOR
           ───────────────────────────────────────────────────────────── */}
       <div
-        className="absolute inset-0 pointer-events-none opacity-50 z-0 blur-[5px]"
+        className="absolute inset-0 pointer-events-none opacity-50 z-0"
         style={{
           backgroundImage: `linear-gradient(to right, rgba(0, 180, 166, 0.28) 1.5px, transparent 1.5px), linear-gradient(to bottom, rgba(0, 180, 166, 0.28) 1.5px, transparent 1.5px)`,
           backgroundSize: '46px 46px',
@@ -134,9 +134,18 @@ export default function ProcessSteps({ locale = 'es' }: ProcessStepsProps) {
       />
 
       {/* Resplandores ambientales de profundidad */}
-      <div className="absolute top-1/4 -left-32 w-[520px] h-[520px] rounded-full bg-[#00b4a6]/15 blur-[130px] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/3 w-[600px] h-[350px] rounded-full bg-cyan-500/12 blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-10 -right-32 w-[520px] h-[520px] rounded-full bg-emerald-500/12 blur-[140px] pointer-events-none" />
+      <div
+        className="absolute top-1/4 -left-32 w-[520px] h-[520px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(0, 180, 166, 0.15), transparent 70%)' }}
+      />
+      <div
+        className="absolute top-1/2 left-1/3 w-[600px] h-[350px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(6, 182, 212, 0.12), transparent 70%)' }}
+      />
+      <div
+        className="absolute bottom-10 -right-32 w-[520px] h-[520px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(16, 185, 129, 0.12), transparent 70%)' }}
+      />
 
       <div className="relative w-11/12 max-w-7xl mx-auto z-10">
         {/* Encabezado */}
@@ -177,7 +186,7 @@ export default function ProcessSteps({ locale = 'es' }: ProcessStepsProps) {
           <div className="shrink-0 flex items-center">
             <a
               href="#contacto"
-              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full liquid-glass-frosted hover:!bg-[#00b4a6] text-white hover:!text-[#01131b] hover:!border-[#00b4a6] text-sm font-bold tracking-tight transition-all duration-300 group hover:shadow-[0_0_30px_rgba(0,180,166,0.6)]"
+              className="inline-flex items-center gap-2.5 px-6 py-3.5 rounded-full liquid-glass-frosted hover:!bg-[#00b4a6] text-white hover:!text-[#01131b] hover:!border-[#00b4a6] text-sm font-bold tracking-tight transition-[background-color,color,border-color,box-shadow] duration-300 group hover:shadow-[0_0_30px_rgba(0,180,166,0.6)]"
             >
               <span>{isEs ? 'Quiero agendar mi diagnóstico' : 'Book free diagnosis'}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -202,7 +211,7 @@ export default function ProcessSteps({ locale = 'es' }: ProcessStepsProps) {
                 <div
                   key={step.number}
                   onMouseEnter={() => setActiveStep(idx)}
-                  className={`group glass relative flex flex-col rounded-3xl p-6 sm:p-7 transition-all duration-500 glass cursor-pointer overflow-hidden ${isSelected
+                  className={`group glass relative flex flex-col rounded-3xl p-6 sm:p-7 transition-[transform,background-color,border-color,box-shadow] duration-300 glass cursor-pointer overflow-hidden ${isSelected
                     ? 'liquid-glass-frosted-active -translate-y-2.5'
                     : 'liquid-glass-frosted hover:-translate-y-1'
                     }`}
@@ -221,9 +230,10 @@ export default function ProcessSteps({ locale = 'es' }: ProcessStepsProps) {
 
                   {/* Halo interno reactivo según paso */}
                   <div
-                    className="absolute -bottom-16 -right-16 w-40 h-40 rounded-full blur-[45px] pointer-events-none transition-all duration-500"
+                    className="absolute -bottom-16 -right-16 w-40 h-40 rounded-full pointer-events-none transition-opacity duration-300"
                     style={{
-                      backgroundColor: isSelected ? step.glowColor : 'rgba(255, 255, 255, 0.03)',
+                      background: `radial-gradient(circle, ${isSelected ? step.glowColor : 'rgba(255, 255, 255, 0.08)'}, transparent 70%)`,
+                      opacity: isSelected ? 0.75 : 0.2,
                     }}
                   />
 
@@ -232,7 +242,7 @@ export default function ProcessSteps({ locale = 'es' }: ProcessStepsProps) {
                     <div className="relative">
                       {/* Nodo prisma de liquid glass */}
                       <div
-                        className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black transition-all duration-500 backdrop-blur-xl ${isSelected
+                        className={`w-14 h-14 rounded-2xl flex items-center justify-center font-black transition-[transform,background-color,border-color] duration-300 backdrop-blur-xl ${isSelected
                           ? 'bg-gradient-to-br from-[#00b4a6] to-cyan-400 text-[#01131b] scale-110 shadow-[0_0_25px_rgba(0,180,166,0.7),inset_0_2px_4px_rgba(255,255,255,0.7)]'
                           : 'bg-white/10 text-white border border-white/20 group-hover:border-[#00b4a6]/70 group-hover:bg-white/20 shadow-[inset_0_1px_2px_rgba(255,255,255,0.3)]'
                           }`}
@@ -308,7 +318,10 @@ export default function ProcessSteps({ locale = 'es' }: ProcessStepsProps) {
         <div className="relative rounded-3xl p-8 sm:p-10 glass border border-white/20 shadow-[0_25px_60px_rgba(0,0,0,0.7)] overflow-hidden glass">
           {/* Reflejo especular Liquid Glass superior */}
           <div className="absolute -top-16 left-0 right-0 h-32 bg-gradient-to-b from-white/25 to-transparent pointer-events-none rounded-t-3xl" />
-          <div className="absolute top-0 right-0 w-96 h-96 rounded-full bg-[#00b4a6]/15 blur-[100px] pointer-events-none" />
+          <div
+            className="absolute top-0 right-0 w-96 h-96 rounded-full pointer-events-none"
+            style={{ background: 'radial-gradient(circle, rgba(0, 180, 166, 0.15), transparent 70%)' }}
+          />
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center relative z-10">
             {/* Columna Izquierda: Información detallada del paso activo */}
@@ -363,7 +376,7 @@ export default function ProcessSteps({ locale = 'es' }: ProcessStepsProps) {
                   key={st.number}
                   type="button"
                   onClick={() => setActiveStep(i)}
-                  className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left border transition-all ${activeStep === i
+                  className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left border transition-colors duration-200 ${activeStep === i
                     ? 'liquid-glass-frosted-active text-white'
                     : 'liquid-glass-frosted text-slate-200 hover:text-white'
                     }`}

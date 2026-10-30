@@ -1,9 +1,6 @@
-'use client';
-
 import React from 'react';
-import Link from 'next/link';
 import { ShieldCheck, Check } from 'lucide-react';
-import { trackEvent } from '@/lib/gtag';
+import PricingCtaButton from './PricingCtaButton';
 
 interface PricingTiersProps {
   locale?: string;
@@ -11,15 +8,6 @@ interface PricingTiersProps {
 
 export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
   const isEs = locale === 'es';
-
-  const handlePriceClick = (plan: string, preselectedNeed?: string) => {
-    trackEvent('click_precio', { plan });
-    if (preselectedNeed && typeof window !== 'undefined') {
-      window.dispatchEvent(
-        new CustomEvent('idealy-select-need', { detail: preselectedNeed })
-      );
-    }
-  };
 
   return (
     <section
@@ -51,7 +39,7 @@ export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch mb-12">
 
           {/* Tarjeta 1 — Página Express */}
-          <div className="flex flex-col justify-between p-8 rounded-2xl bg-base-200/50 dark:bg-[#021824] border border-slate-200 dark:border-white/10 hover:shadow-xl transition-all">
+          <div className="flex flex-col justify-between p-8 rounded-2xl bg-base-200/50 dark:bg-[#021824] border border-slate-200 dark:border-white/10 hover:shadow-xl transition-shadow duration-300">
             <div>
               <h3 className="text-2xl font-bold text-foreground mb-2">
                 {isEs ? 'Página Express' : 'Express Page'}
@@ -84,17 +72,17 @@ export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
                 </li>
               </ul>
             </div>
-            <Link
+            <PricingCtaButton
               href={`/${locale}/pagina-express`}
-              onClick={() => handlePriceClick('express')}
+              plan="express"
               className="btn btn-outline btn-primary rounded-full w-full font-bold normal-case hover:text-white"
             >
               {isEs ? 'Quiero mi página →' : 'Get my page →'}
-            </Link>
+            </PricingCtaButton>
           </div>
 
           {/* Tarjeta 2 — Sitio + Crecimiento (DESTACADA) */}
-          <div className="relative flex flex-col justify-between p-8 rounded-2xl bg-base-100 dark:bg-[#021f2f] border-2 border-primary shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-all">
+          <div className="relative flex flex-col justify-between p-8 rounded-2xl bg-base-100 dark:bg-[#021f2f] border-2 border-primary shadow-2xl shadow-primary/10 hover:shadow-primary/20 transition-shadow duration-300">
             {/* Etiqueta flotante */}
             <div className="absolute -top-3.5 left-8 px-3.5 py-1 rounded-full bg-primary text-white text-xs font-black tracking-wider uppercase shadow-md">
               {isEs ? 'MÁS ELEGIDO' : 'MOST POPULAR'}
@@ -136,17 +124,18 @@ export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
                 </li>
               </ul>
             </div>
-            <Link
+            <PricingCtaButton
               href={`/${locale}/sitio-crecimiento`}
-              onClick={() => handlePriceClick('crecimiento', 'Más clientes desde internet')}
+              plan="crecimiento"
+              preselectedNeed="Más clientes desde internet"
               className="btn btn-primary rounded-full w-full font-bold text-white shadow-lg shadow-primary/30 normal-case"
             >
               {isEs ? 'Ver plan Crecimiento →' : 'See Growth Plan →'}
-            </Link>
+            </PricingCtaButton>
           </div>
 
           {/* Tarjeta 3 — Software a la medida */}
-          <div className="flex flex-col justify-between p-8 rounded-2xl bg-base-200/50 dark:bg-[#021824] border border-slate-200 dark:border-white/10 hover:shadow-xl transition-all">
+          <div className="flex flex-col justify-between p-8 rounded-2xl bg-base-200/50 dark:bg-[#021824] border border-slate-200 dark:border-white/10 hover:shadow-xl transition-shadow duration-300">
             <div>
               <h3 className="text-2xl font-bold text-foreground mb-2">
                 {isEs ? 'Software a la medida' : 'Custom Software'}
@@ -180,13 +169,14 @@ export default function PricingTiers({ locale = 'es' }: PricingTiersProps) {
                 </li>
               </ul>
             </div>
-            <Link
+            <PricingCtaButton
               href={`/${locale}/desarrollo-a-la-medida`}
-              onClick={() => handlePriceClick('medida', 'Un sistema a la medida')}
+              plan="medida"
+              preselectedNeed="Un sistema a la medida"
               className="btn btn-outline btn-primary rounded-full w-full font-bold normal-case hover:text-white"
             >
               {isEs ? 'Ver desarrollo a la medida →' : 'See Custom Software →'}
-            </Link>
+            </PricingCtaButton>
           </div>
 
         </div>

@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import Script from 'next/script';
 import { faqData } from './faqData';
@@ -49,7 +48,8 @@ export default function FAQSection({ language = 'es' }: FAQSectionProps) {
 
       {/* Background Glows */}
       <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-primary/10 rounded-full blur-[140px] pointer-events-none"
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(0, 180, 166, 0.10), transparent 70%)' }}
         aria-hidden="true"
       />
 
@@ -105,16 +105,13 @@ export default function FAQSection({ language = 'es' }: FAQSectionProps) {
                   </div>
                 </button>
 
-                <motion.div
-                  initial={false}
-                  animate={{ height: isActive ? 'auto' : 0, opacity: isActive ? 1 : 0 }}
-                  transition={{ duration: 0.25, ease: 'easeInOut' }}
-                  className="overflow-hidden"
-                >
-                  <div className="pb-6 px-6 pt-1 text-slate-300 leading-relaxed text-base border-t border-white/5">
-                    {faq.answer}
+                {isActive && (
+                  <div className="overflow-hidden animate-fadeIn">
+                    <div className="pb-6 px-6 pt-1 text-slate-300 leading-relaxed text-base border-t border-white/5">
+                      {faq.answer}
+                    </div>
                   </div>
-                </motion.div>
+                )}
               </div>
             );
           })}

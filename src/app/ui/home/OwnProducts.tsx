@@ -63,7 +63,7 @@ export default function OwnProducts({ locale = 'es' }: OwnProductsProps) {
                 href="https://wisefacturacion.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between p-5 rounded-xl bg-base-100 dark:bg-[#01131b] border border-slate-200 dark:border-white/10 hover:border-primary hover:shadow-md transition-all"
+                className="group flex items-center justify-between p-5 rounded-xl bg-base-100 dark:bg-[#01131b] border border-slate-200 dark:border-white/10 hover:border-primary hover:shadow-md transition-[border-color,box-shadow]"
               >
                 <div>
                   <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
@@ -86,7 +86,7 @@ export default function OwnProducts({ locale = 'es' }: OwnProductsProps) {
                 href="https://wisefacturacion.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group flex items-center justify-between p-5 rounded-xl bg-base-100 dark:bg-[#01131b] border border-slate-200 dark:border-white/10 hover:border-primary hover:shadow-md transition-all"
+                className="group flex items-center justify-between p-5 rounded-xl bg-base-100 dark:bg-[#01131b] border border-slate-200 dark:border-white/10 hover:border-primary hover:shadow-md transition-[border-color,box-shadow]"
               >
                 <div>
                   <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors flex items-center gap-2">

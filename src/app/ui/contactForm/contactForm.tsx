@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
 import Link from 'next/link';
-import { gtagReportConversion, trackEvent } from '@/lib/gtag';
+import { trackEvent } from '@/lib/gtag';
 
 type SubmissionStatus = 'success' | 'error' | null;
 
@@ -90,8 +90,7 @@ export default function ContactForm({ locale = 'es' }: ContactFormProps) {
 
       if (response.ok) {
         setSubmissionStatus('success');
-        gtagReportConversion();
-        trackEvent('generate_lead', { necesidad: formData.necesidad });
+        trackEvent('generate_lead', { necesidad: formData.necesidad, source: 'contact_form' });
         setFormData({
           nombre: '',
           whatsapp: '',
@@ -127,7 +126,7 @@ export default function ContactForm({ locale = 'es' }: ContactFormProps) {
           onChange={handleChange}
           placeholder={isEs ? 'Tu nombre' : 'Your name'}
           required
-          className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+          className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-colors"
         />
       </div>
 
@@ -144,7 +143,7 @@ export default function ContactForm({ locale = 'es' }: ContactFormProps) {
           onChange={handleChange}
           placeholder="222 000 0000"
           required
-          className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all"
+          className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-colors"
         />
       </div>
 
@@ -159,7 +158,7 @@ export default function ContactForm({ locale = 'es' }: ContactFormProps) {
           value={formData.necesidad}
           onChange={handleChange}
           required
-          className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-all cursor-pointer"
+          className="w-full px-4 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-colors cursor-pointer"
         >
           <option value="Más clientes desde internet">
             {isEs ? 'Más clientes desde internet' : 'More clients from internet'}
@@ -183,7 +182,7 @@ export default function ContactForm({ locale = 'es' }: ContactFormProps) {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full py-4 px-6 rounded-full bg-primary hover:bg-[#009b8f] text-white font-bold text-base shadow-lg shadow-primary/30 transition-all cursor-pointer disabled:opacity-50 mt-2"
+        className="w-full py-4 px-6 rounded-full bg-primary hover:bg-[#009b8f] text-white font-bold text-base shadow-lg shadow-primary/30 transition-colors duration-200 cursor-pointer disabled:opacity-50 mt-2"
       >
         {isSubmitting
           ? isEs ? 'Enviando...' : 'Sending...'

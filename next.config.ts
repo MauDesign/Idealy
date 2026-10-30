@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
   // Evita importar el bundle completo de lucide-react, gsap, etc.
   // Cada ícono/función se importa individualmente → bundle JS más pequeño.
   experimental: {
+    inlineCss: true,
     optimizePackageImports: [
       'lucide-react',
       'gsap',

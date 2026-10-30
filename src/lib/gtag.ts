@@ -1,29 +1,14 @@
 declare global {
   interface Window {
     dataLayer?: Record<string, unknown>[];
-    gtag_report_conversion?: (url?: string) => boolean;
-    gtag?: (...args: any[]) => void;
     fbq?: (...args: any[]) => void;
     clarity?: (...args: any[]) => void;
   }
 }
 
 /**
- * Reporte de conversión de Google Ads
- */
-export function gtagReportConversion(url?: string): boolean {
-  if (typeof window !== 'undefined' && typeof window.gtag_report_conversion === 'function') {
-    return window.gtag_report_conversion(url);
-  }
-  return false;
-}
-
-/**
- * Disparador unificado de eventos y conversiones para:
- * - Google Analytics 4 (GA4)
- * - Google Tag Manager (DataLayer)
- * - Meta Pixel (Facebook Pixel)
- * - Microsoft Clarity
+ * Disparador unificado de eventos a través de Google Tag Manager (DataLayer),
+ * Meta Pixel y Microsoft Clarity.
  */
 export function trackEvent(eventName: string, params?: Record<string, unknown>) {
   if (typeof window === 'undefined') return;
@@ -35,12 +20,7 @@ export function trackEvent(eventName: string, params?: Record<string, unknown>) 
     ...params,
   });
 
-  // 2. Google Analytics 4 directo vía gtag
-  if (typeof window.gtag === 'function') {
-    window.gtag('event', eventName, params);
-  }
-
-  // 3. Microsoft Clarity Tags / Events
+  // 2. Microsoft Clarity Tags / Events
   if (typeof window.clarity === 'function') {
     try {
       window.clarity('event', eventName);
@@ -49,12 +29,12 @@ export function trackEvent(eventName: string, params?: Record<string, unknown>) 
     }
   }
 
-  // 4. Meta Pixel (Facebook)
+  // 3. Meta Pixel (Facebook)
   if (typeof window.fbq === 'function') {
     try {
       if (eventName === 'generate_lead') {
         window.fbq('track', 'Lead', params);
-      } else if (eventName === 'click_whatsapp') {
+      } else if (eventName === 'click_whatsapp' || eventName === 'whatsapp_click') {
         window.fbq('track', 'Contact', { content_name: 'WhatsApp', ...params });
         window.fbq('trackCustom', 'WhatsAppClick', params);
       } else if (eventName === 'schedule_meeting' || eventName === 'schedule') {
@@ -91,12 +71,6 @@ export function trackWhatsAppConversion(ubicacion: string) {
     event_category: 'engagement',
     event_label: `whatsapp_${ubicacion}`,
   });
-  if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
-    window.gtag('event', 'contact', {
-      method: 'whatsapp',
-      location: ubicacion,
-    });
-  }
 }
 
 /**
@@ -108,5 +82,4 @@ export function trackLeadConversion(tipo: string, value: number = 6000) {
     value,
     lead_type: tipo,
   });
-  gtagReportConversion();
 }

@@ -85,7 +85,7 @@ export default function Navbar({ locale }: NavbarProps) {
               <li key={link.href}>
                 <Link
                   href={link.href}
-                  className="text-foreground/80 hover:text-primary transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary hover:after:w-full after:transition-all"
+                  className="text-foreground/80 hover:text-primary transition-colors py-1 relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-primary after:scale-x-0 hover:after:scale-x-100 after:origin-left after:transition-transform after:duration-200"
                 >
                   {link.label}
                 </Link>
@@ -100,7 +100,7 @@ export default function Navbar({ locale }: NavbarProps) {
             <button
               type="button"
               onClick={handleCtaClick}
-              className="btn btn-primary btn-sm rounded-full px-5 py-2 text-sm font-semibold shadow-sm hover:shadow-primary/30 transition-all normal-case cursor-pointer"
+              className="btn btn-primary btn-sm rounded-full px-5 py-2 text-sm font-semibold shadow-sm hover:shadow-primary/30 transition-shadow duration-200 normal-case cursor-pointer"
             >
               {isEs ? 'Diagnóstico gratis' : t('diagnostic')}
             </button>

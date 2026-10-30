@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { GoogleAnalytics, GoogleTagManager } from "@next/third-parties/google";
 import Script from "next/script";
 import type { Viewport } from 'next';
 import { NextIntlClientProvider } from 'next-intl';
@@ -11,6 +10,8 @@ import Navbar from "../ui/navbar/navbar";
 import { ThemeProvider } from "../ui/ThemeProvider";
 import StructuredData from "../ui/StructuredData";
 import WhatsAppFab from "../ui/components/WhatsAppFab";
+import DelayedGTM from "../ui/components/DelayedGTM";
+import MotionProvider from "../ui/providers/MotionProvider";
 import { getKeywordsForLocale } from '@/config/keywords';
 import { locales } from '@/i18n/routing';
 
@@ -104,35 +105,6 @@ export default async function LocaleLayout({ children, params }: Props) {
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
-        <GoogleTagManager gtmId="GTM-WDB3RSDZ" />
-        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-        <GoogleAnalytics gaId="G-GJBZY50Y93" />
-        <Script src="https://www.googletagmanager.com/gtag/js?id=AW-18107657847" strategy="lazyOnload" />
-        <Script id="google-ads-tag" strategy="lazyOnload">
-          {`
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-
-            gtag('config', 'AW-18107657847');
-
-            function gtag_report_conversion(url) {
-              var callback = function () {
-                if (typeof(url) != 'undefined') {
-                  window.location = url;
-                }
-              };
-              gtag('event', 'conversion', {
-                  'send_to': 'AW-18107657847/-BzNCLXUzsUcEPfcs7pD',
-                  'value': 1.0,
-                  'currency': 'MXN',
-                  'event_callback': callback
-              });
-              return false;
-            }
-          `}
-        </Script>
-
         {/* Microsoft Clarity */}
         {clarityId && (
           <Script id="microsoft-clarity" strategy="afterInteractive">
@@ -168,6 +140,7 @@ export default async function LocaleLayout({ children, params }: Props) {
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} ${sora.variable} bg-background text-foreground transition-colors duration-300`}
       >
+        <DelayedGTM id="GTM-WDB3RSDZ" />
         <StructuredData locale={locale} />
         <noscript>
           <iframe
@@ -196,9 +169,11 @@ export default async function LocaleLayout({ children, params }: Props) {
             enableSystem={false}
             disableTransitionOnChange
           >
-            <Navbar locale={locale} />
-            {children}
-            <WhatsAppFab />
+            <MotionProvider>
+              <Navbar locale={locale} />
+              {children}
+              <WhatsAppFab />
+            </MotionProvider>
           </ThemeProvider>
         </NextIntlClientProvider>
       </body>

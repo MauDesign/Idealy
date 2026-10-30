@@ -52,7 +52,7 @@ export default function TrustBar({ locale = 'es' }: TrustBarProps) {
           {clientLogos.map((client) => (
             <div
               key={client.name}
-              className="flex items-center justify-center h-16 w-full max-w-[170px] px-4 rounded-lg bg-base-100/50 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5 opacity-70 hover:opacity-100 hover:border-primary/40 transition-all group"
+              className="flex items-center justify-center h-16 w-full max-w-[170px] px-4 rounded-lg bg-base-100/50 dark:bg-white/[0.02] border border-slate-200/60 dark:border-white/5 opacity-70 hover:opacity-100 hover:border-primary/40 transition-[opacity,border-color] duration-200 group"
             >
               <span className="font-bold tracking-widest text-xs sm:text-sm text-slate-600 dark:text-slate-300 group-hover:text-primary transition-colors text-center select-none">
                 {client.label}

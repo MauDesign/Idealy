@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/gtag';
 
 interface CustomSoftwareLeadFormProps {
   locale?: string;
@@ -98,14 +99,12 @@ export default function CustomSoftwareLeadForm({ locale = 'es' }: CustomSoftware
       });
 
       if (res.ok) {
-        if (typeof window !== 'undefined' && (window as any).gtag) {
-          (window as any).gtag('event', 'generate_lead', {
-            event_category: 'conversion',
-            event_label: 'Custom Software Lead Complete',
-            value: 25000.0,
-            currency: 'MXN',
-          });
-        }
+        trackEvent('generate_lead', {
+          event_category: 'conversion',
+          event_label: 'Custom Software Lead Complete',
+          value: 25000.0,
+          currency: 'MXN',
+        });
         setSuccess(true);
       } else {
         const data = await res.json();
@@ -271,7 +270,7 @@ export default function CustomSoftwareLeadForm({ locale = 'es' }: CustomSoftware
                   type="button"
                   key={tipo}
                   onClick={() => setTipoSistema(tipo)}
-                  className={`text-left p-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition-all ${
+                  className={`text-left p-2.5 rounded-xl border text-xs sm:text-sm font-semibold transition-colors duration-150 ${
                     tipoSistema === tipo
                       ? 'border-[#00b4a6] bg-[#00b4a6]/20 text-white'
                       : 'border-white/10 bg-base-200/60 text-slate-300 hover:border-white/30'
@@ -298,7 +297,7 @@ export default function CustomSoftwareLeadForm({ locale = 'es' }: CustomSoftware
                   type="button"
                   key={sit}
                   onClick={() => setSituacionActual(sit)}
-                  className={`p-2 rounded-xl border text-xs font-semibold text-center transition-all ${
+                  className={`p-2 rounded-xl border text-xs font-semibold text-center transition-colors duration-150 ${
                     situacionActual === sit
                       ? 'border-[#00b4a6] bg-[#00b4a6]/20 text-white'
                       : 'border-white/10 bg-base-200/60 text-slate-300 hover:border-white/30'

@@ -1,6 +1,7 @@
 import { getTranslations } from 'next-intl/server';
 import { setRequestLocale } from 'next-intl/server';
 import type { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { keywordsByPage } from '@/config/keywords';
 import GSAPInitializer from '@/app/ui/components/GSAPInitializer';
 
@@ -10,16 +11,22 @@ import TrustBar from '@/app/ui/home/TrustBar';
 import NeedsGrid from '@/app/ui/home/NeedsGrid';
 import Differentiator from '@/app/ui/home/Differentiator';
 import CaseStudies from '@/app/ui/home/CaseStudies';
-import ProcessSteps from '@/app/ui/home/ProcessSteps';
 import PricingTiers from '@/app/ui/home/PricingTiers';
 import OwnProducts from '@/app/ui/home/OwnProducts';
 import FounderBlock from '@/app/ui/home/FounderBlock';
 import Testimonials from '@/app/ui/home/Testimonials';
-import FAQSection from '@/app/ui/FAQsection/FAQSection';
 import Contact from '@/app/ui/contact/contact';
 import Footer from '@/app/ui/Footer/Footer';
 import { faqData } from '@/app/ui/FAQsection/faqData';
 import { locales } from '../../i18n/routing';
+
+const ProcessSteps = dynamic(() => import('@/app/ui/home/ProcessSteps'), {
+  loading: () => <div className="w-full min-h-[400px]" />,
+});
+
+const FAQSection = dynamic(() => import('@/app/ui/FAQsection/FAQSection'), {
+  loading: () => <div className="w-full min-h-[300px]" />,
+});
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));

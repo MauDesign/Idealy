@@ -18,12 +18,17 @@ import {
   Layers,
   Bot
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
 import WhatsAppButton from '@/app/ui/express/WhatsAppModal';
 import ExpressGSAPInitializer from '@/app/ui/express/ExpressGSAPInitializer';
 import GrowthLeadForm from '@/app/ui/growth/GrowthLeadForm';
-import GrowthFAQAccordion from '@/app/ui/growth/GrowthFAQAccordion';
 import { setRequestLocale } from 'next-intl/server';
 import { locales } from '../../../i18n/routing';
+
+const GrowthFAQAccordion = dynamic(
+  () => import('@/app/ui/growth/GrowthFAQAccordion'),
+  { loading: () => <div className="w-full min-h-[250px]" /> }
+);
 
 export function generateStaticParams() {
   return locales.map((locale) => ({ locale }));
@@ -202,7 +207,7 @@ export default async function SitioCrecimientoPage({ params }: Props) {
                     ? 'Hi Mauricio, I am interested in the Website + Growth plan ($8,500 MXN / mo) to scale my company leads 🚀'
                     : 'Hola Mauricio, me interesa el plan Sitio + Crecimiento ($8,500/mes) para impulsar las ventas de mi negocio 🚀'
                 }
-                className="py-2 px-4 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white text-xs sm:text-sm font-bold shadow-md transition-all"
+                className="py-2 px-4 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white text-xs sm:text-sm font-bold shadow-md transition-colors duration-200"
               />
             </div>
           </div>
@@ -214,8 +219,8 @@ export default async function SitioCrecimientoPage({ params }: Props) {
           <div className="absolute inset-0 bg-[linear-gradient(to_right,#00b4a615_1px,transparent_1px),linear-gradient(to_bottom,#00b4a615_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_80%_60%_at_50%_40%,#000_70%,transparent_100%)] pointer-events-none"></div>
 
           {/* Background Ambient Glows */}
-          <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[600px] h-[600px] bg-[#00b4a6]/20 rounded-full blur-[140px] pointer-events-none"></div>
-          <div className="absolute top-10 right-1/4 translate-x-1/2 w-[600px] h-[600px] bg-[#0069a9]/25 rounded-full blur-[140px] pointer-events-none"></div>
+          <div className="absolute top-0 left-1/4 -translate-x-1/2 w-[600px] h-[600px] rounded-full [background:radial-gradient(circle,rgba(0,180,166,0.2),transparent_70%)] pointer-events-none"></div>
+          <div className="absolute top-10 right-1/4 translate-x-1/2 w-[600px] h-[600px] rounded-full [background:radial-gradient(circle,rgba(0,105,169,0.25),transparent_70%)] pointer-events-none"></div>
 
           <div className="max-w-6xl mx-auto px-4 sm:px-8 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start">
@@ -262,12 +267,12 @@ export default async function SitioCrecimientoPage({ params }: Props) {
                         ? 'Hi Mauricio, I want to explore how the Website + Growth plan works for my business 🚀'
                         : 'Hola Mauricio, quiero saber cómo funciona el plan Sitio + Crecimiento para mi empresa 🚀'
                     }
-                    className="w-full sm:w-auto py-4 px-7 rounded-2xl bg-gradient-to-r from-[#00b4a6] to-[#009b8e] hover:from-[#00c7b7] hover:to-[#00b4a6] text-white text-base sm:text-lg font-extrabold shadow-[0_0_30px_rgba(0,180,166,0.35)] hover:shadow-[0_0_40px_rgba(0,180,166,0.5)] transition-all transform hover:-translate-y-0.5"
+                    className="w-full sm:w-auto py-4 px-7 rounded-2xl bg-gradient-to-r from-[#00b4a6] to-[#009b8e] hover:from-[#00c7b7] hover:to-[#00b4a6] text-white text-base sm:text-lg font-extrabold shadow-[0_0_30px_rgba(0,180,166,0.35)] hover:shadow-[0_0_40px_rgba(0,180,166,0.5)] transition-[transform,box-shadow] duration-200 transform hover:-translate-y-0.5"
                   />
 
                   <a
                     href="#que-incluye"
-                    className="w-full sm:w-auto py-4 px-5 rounded-2xl bg-base-200/80 hover:bg-base-200 border border-white/10 text-gray-200 hover:text-white text-sm font-bold text-center transition-all flex items-center justify-center gap-2 hover:border-white/30"
+                    className="w-full sm:w-auto py-4 px-5 rounded-2xl bg-base-200/80 hover:bg-base-200 border border-white/10 text-gray-200 hover:text-white text-sm font-bold text-center transition-[background-color,border-color,color] duration-200 flex items-center justify-center gap-2 hover:border-white/30"
                   >
                     <span>{isEn ? 'See what is included' : 'Ver lo que incluye'}</span>
                     <span className="text-[#00b4a6] font-extrabold">↓</span>
@@ -368,7 +373,7 @@ export default async function SitioCrecimientoPage({ params }: Props) {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {/* Pilar 1 */}
-            <div className="bg-[#0b1c2b]/80 border border-white/10 hover:border-[#00b4a6]/50 rounded-3xl p-8 transition-all hover:shadow-[0_0_30px_rgba(0,180,166,0.15)] flex flex-col justify-between">
+            <div className="bg-[#0b1c2b]/80 border border-white/10 hover:border-[#00b4a6]/50 rounded-3xl p-8 transition-[border-color,box-shadow] duration-300 hover:shadow-[0_0_30px_rgba(0,180,166,0.15)] flex flex-col justify-between">
               <div>
                 <div className="w-14 h-14 rounded-2xl bg-[#00b4a6]/20 border border-[#00b4a6]/40 flex items-center justify-center text-[#00b4a6] mb-6">
                   <Layers className="w-7 h-7" />
@@ -399,7 +404,7 @@ export default async function SitioCrecimientoPage({ params }: Props) {
             </div>
 
             {/* Pilar 2 */}
-            <div className="bg-[#0b1c2b]/80 border border-white/10 hover:border-[#00b4a6]/50 rounded-3xl p-8 transition-all hover:shadow-[0_0_30px_rgba(0,180,166,0.15)] flex flex-col justify-between">
+            <div className="bg-[#0b1c2b]/80 border border-white/10 hover:border-[#00b4a6]/50 rounded-3xl p-8 transition-[border-color,box-shadow] duration-300 hover:shadow-[0_0_30px_rgba(0,180,166,0.15)] flex flex-col justify-between">
               <div>
                 <div className="w-14 h-14 rounded-2xl bg-blue-500/20 border border-blue-500/40 flex items-center justify-center text-blue-400 mb-6">
                   <Target className="w-7 h-7" />
@@ -430,7 +435,7 @@ export default async function SitioCrecimientoPage({ params }: Props) {
             </div>
 
             {/* Pilar 3 */}
-            <div className="bg-[#0b1c2b]/80 border border-white/10 hover:border-[#00b4a6]/50 rounded-3xl p-8 transition-all hover:shadow-[0_0_30px_rgba(0,180,166,0.15)] flex flex-col justify-between">
+            <div className="bg-[#0b1c2b]/80 border border-white/10 hover:border-[#00b4a6]/50 rounded-3xl p-8 transition-[border-color,box-shadow] duration-300 hover:shadow-[0_0_30px_rgba(0,180,166,0.15)] flex flex-col justify-between">
               <div>
                 <div className="w-14 h-14 rounded-2xl bg-purple-500/20 border border-purple-500/40 flex items-center justify-center text-purple-400 mb-6">
                   <Bot className="w-7 h-7" />
@@ -461,7 +466,7 @@ export default async function SitioCrecimientoPage({ params }: Props) {
             </div>
 
             {/* Pilar 4 */}
-            <div className="bg-[#0b1c2b]/80 border border-white/10 hover:border-[#00b4a6]/50 rounded-3xl p-8 transition-all hover:shadow-[0_0_30px_rgba(0,180,166,0.15)] flex flex-col justify-between">
+            <div className="bg-[#0b1c2b]/80 border border-white/10 hover:border-[#00b4a6]/50 rounded-3xl p-8 transition-[border-color,box-shadow] duration-300 hover:shadow-[0_0_30px_rgba(0,180,166,0.15)] flex flex-col justify-between">
               <div>
                 <div className="w-14 h-14 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 mb-6">
                   <BarChart3 className="w-7 h-7" />
@@ -641,7 +646,7 @@ export default async function SitioCrecimientoPage({ params }: Props) {
                   ? 'Hi Mauricio, I want to schedule a growth diagnosis for my company under the Website + Growth plan 📈'
                   : 'Hola Mauricio, quiero agendar un diagnóstico de crecimiento para mi empresa con el plan Sitio + Crecimiento 📈'
               }
-              className="py-4 px-10 rounded-2xl bg-[#00b4a6] hover:bg-[#009b8e] text-white text-lg sm:text-xl font-extrabold shadow-2xl transition-all"
+              className="py-4 px-10 rounded-2xl bg-[#00b4a6] hover:bg-[#009b8e] text-white text-lg sm:text-xl font-extrabold shadow-2xl transition-colors duration-200"
             />
           </div>
 

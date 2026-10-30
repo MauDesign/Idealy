@@ -420,7 +420,7 @@ export default async function PostDetailPage({
                   <Link
                     key={related.id}
                     href={`/${locale}/blog/${related.slug}`}
-                    className="group flex flex-col rounded-2xl overflow-hidden border border-base-200 bg-base-100 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+                    className="group flex flex-col rounded-2xl overflow-hidden border border-base-200 bg-base-100 hover:shadow-lg hover:-translate-y-0.5 transition-[transform,box-shadow] duration-300"
                   >
                     <div className="relative aspect-[16/9] bg-base-300 overflow-hidden">
                       {related.featuredImage ? (

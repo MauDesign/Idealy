@@ -40,7 +40,7 @@ export default function CaseStudies({ locale = 'es' }: CaseStudiesProps) {
           {caseStudies.map((item) => (
             <article
               key={item.id}
-              className="flex flex-col rounded-2xl bg-base-100 dark:bg-[#01131b] border border-slate-200 dark:border-white/10 overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 group"
+              className="flex flex-col rounded-2xl bg-base-100 dark:bg-[#01131b] border border-slate-200 dark:border-white/10 overflow-hidden shadow-sm hover:shadow-xl transition-shadow duration-300 group"
             >
               {/* Imagen a todo el ancho (proporción 16:10) */}
               <div className="relative w-full aspect-[16/10] overflow-hidden bg-slate-900">

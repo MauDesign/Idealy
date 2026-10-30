@@ -129,7 +129,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
           }}
         />
         {/* Accent glow */}
-        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full bg-primary/10 blur-[100px] pointer-events-none" />
+        <div className="absolute top-20 left-1/2 -translate-x-1/2 w-[600px] h-[300px] rounded-full [background:radial-gradient(circle,rgba(0,180,166,0.1),transparent_70%)] pointer-events-none" />
 
         <div className="container mx-auto px-6 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest px-4 py-2 rounded-full mb-6 border border-primary/20">
@@ -157,7 +157,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
                 </p>
                 <Link
                   href={`/${locale}/blog/${featuredPost.slug}`}
-                  className="group grid md:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-base-200 bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-500"
+                  className="group grid md:grid-cols-2 gap-0 rounded-3xl overflow-hidden border border-base-200 bg-base-100 shadow-xl hover:shadow-2xl transition-shadow duration-500"
                 >
                   {/* Image */}
                   <div className="relative aspect-[4/3] md:aspect-auto bg-base-300 overflow-hidden">
@@ -235,7 +235,7 @@ export default async function BlogPage({ params }: { params: Promise<{ locale: s
                     <Link
                       key={post.id}
                       href={`/${locale}/blog/${post.slug}`}
-                      className="group flex flex-col rounded-2xl overflow-hidden border border-base-200 bg-base-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-all duration-400"
+                      className="group flex flex-col rounded-2xl overflow-hidden border border-base-200 bg-base-100 shadow-md hover:shadow-xl hover:-translate-y-1 transition-[transform,box-shadow] duration-400"
                     >
                       {/* Image */}
                       <div className="relative aspect-[16/9] bg-base-300 overflow-hidden">

@@ -333,7 +333,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                   {features.map((feat, idx) => (
                     <div
                       key={idx}
-                      className="p-6 rounded-2xl bg-[#011c27]/40 border border-white/5 hover:border-primary/20 transition-all duration-300 flex gap-4"
+                      className="p-6 rounded-2xl bg-[#011c27]/40 border border-white/5 hover:border-primary/20 transition-colors duration-300 flex gap-4"
                     >
                       <div className="mt-1 flex-shrink-0 w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-bold text-sm">
                         {idx + 1}
@@ -375,7 +375,7 @@ export default async function ServiceDetailPage({ params }: Props) {
                   {config.technologies.map((tech, idx) => (
                     <span
                       key={idx}
-                      className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-primary/30 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-semibold tracking-wide transition-all duration-300 cursor-default"
+                      className="px-4 py-2 rounded-xl bg-white/5 border border-white/10 hover:border-primary/30 hover:bg-white/10 text-slate-300 hover:text-white text-xs font-semibold tracking-wide transition-colors duration-300 cursor-default"
                     >
                       {tech}
                     </span>
@@ -402,10 +402,10 @@ export default async function ServiceDetailPage({ params }: Props) {
               {steps.map((step, idx) => (
                 <div
                   key={idx}
-                  className="group relative p-8 rounded-3xl bg-[#011c27]/40 border border-white/5 hover:border-primary/30 hover:bg-[#011c27]/75 transition-all duration-500 flex flex-col justify-between min-h-[250px] overflow-hidden"
+                  className="group relative p-8 rounded-3xl bg-[#011c27]/40 border border-white/5 hover:border-primary/30 hover:bg-[#011c27]/75 transition-colors duration-500 flex flex-col justify-between min-h-[250px] overflow-hidden"
                 >
                   {/* Subtle step background glow */}
-                  <div className="absolute -right-8 -bottom-8 w-24 h-24 rounded-full bg-primary/5 group-hover:bg-primary/10 blur-xl transition-all duration-500 pointer-events-none" />
+                  <div className="absolute -right-8 -bottom-8 w-24 h-24 rounded-full [background:radial-gradient(circle,rgba(0,180,166,0.1),transparent_70%)] pointer-events-none" />
                   
                   <div>
                     {/* Glowing Big Number */}
@@ -428,7 +428,7 @@ export default async function ServiceDetailPage({ params }: Props) {
 
           {/* Final Call to Action Box */}
           <div className="mt-24 p-12 rounded-3xl bg-gradient-to-r from-primary/10 via-[#011c27]/80 to-[#01131b] border border-primary/20 text-center relative overflow-hidden">
-            <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full bg-primary/10 blur-[50px]" />
+            <div className="absolute -right-16 -top-16 w-48 h-48 rounded-full [background:radial-gradient(circle,rgba(0,180,166,0.1),transparent_70%)]" />
             <h2 className="text-2xl md:text-3xl font-black text-white mb-4 tracking-tight">
               {locale === 'en' ? 'Ready to Start?' : '¿Listo para empezar?'}
             </h2>
@@ -439,7 +439,7 @@ export default async function ServiceDetailPage({ params }: Props) {
             </p>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 bg-primary text-black font-black px-8 py-3.5 rounded-full hover:shadow-lg hover:shadow-primary/30 hover:opacity-95 transition-all duration-300 transform hover:-translate-y-0.5"
+              className="inline-flex items-center gap-2 bg-primary text-black font-black px-8 py-3.5 rounded-full hover:shadow-lg hover:shadow-primary/30 hover:opacity-95 transition-[transform,box-shadow,opacity] duration-300 transform hover:-translate-y-0.5"
             >
               <MessageSquare className="w-5 h-5" />
               {locale === 'en' ? "Schedule Free Consultation" : "Programar Asesoría Gratis"}

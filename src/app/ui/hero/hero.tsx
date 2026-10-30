@@ -20,11 +20,13 @@ export default function Hero({ locale = 'es' }: HeroProps) {
     >
       {/* Background glow effects */}
       <div
-        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-primary/15 rounded-full blur-[140px] pointer-events-none"
+        className="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(0, 180, 166, 0.15), transparent 70%)' }}
         aria-hidden="true"
       />
       <div
-        className="absolute bottom-10 right-10 w-[400px] h-[400px] bg-cyan-500/10 rounded-full blur-[120px] pointer-events-none"
+        className="absolute bottom-10 right-10 w-[400px] h-[400px] rounded-full pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(6, 182, 212, 0.10), transparent 70%)' }}
         aria-hidden="true"
       />
 

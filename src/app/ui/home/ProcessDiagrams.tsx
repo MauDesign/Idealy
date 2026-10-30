@@ -14,7 +14,7 @@
  */
 
 import { useRef } from "react";
-import { motion, useInView, useReducedMotion, type Transition } from "framer-motion";
+import { m, useInView, useReducedMotion, type Transition } from "framer-motion";
 
 /* ---------- Tokens ---------- */
 const TEAL = "#14D9C4";
@@ -79,7 +79,7 @@ const show = (on: number, full: number, end = 0.9) => ({
 /** Pulso infinito (anillo que crece y se desvanece). */
 function Pulse({ cx, cy, play, delay = 0, r = 5 }: { cx: number; cy: number; play: boolean; delay?: number; r?: number }) {
   return (
-    <motion.circle
+    <m.circle
       cx={cx}
       cy={cy}
       r={r}
@@ -125,14 +125,14 @@ export function DiagnosticoDiagram({ locale }: DiagramProps) {
       <line x1={cx - 80} y1={cy} x2={cx + 80} y2={cy} stroke={LINE} />
       <line x1={cx} y1={cy - 80} x2={cx} y2={cy + 80} stroke={LINE} />
 
-      <motion.g
+      <m.g
         style={{ transformBox: "view-box", transformOrigin: `${cx}px ${cy}px` }}
         animate={play ? { rotate: 360 } : { rotate: 0 }}
         transition={play ? { duration: 3, repeat: Infinity, ease: "linear" } : { duration: 0 }}
       >
         <path d={`M${cx} ${cy} L${cx + 80} ${cy} A80 80 0 0 0 151.57 63.43 Z`} fill={TEAL} fillOpacity={0.12} />
         <line x1={cx} y1={cy} x2={cx + 80} y2={cy} stroke={TEAL} strokeWidth={1.5} />
-      </motion.g>
+      </m.g>
       <circle cx={cx} cy={cy} r={3} fill={TEAL} />
 
       {/* Conexiones nodo → hoja de ruta */}
@@ -141,7 +141,7 @@ export function DiagnosticoDiagram({ locale }: DiagramProps) {
         const ty = rows[i];
         const mx = (n.x + 200) / 2;
         return (
-          <motion.path
+          <m.path
             key={`c-${n.label}`}
             d={`M${n.x} ${n.y} C ${mx} ${n.y}, ${mx} ${ty}, 200 ${ty}`}
             stroke={TEAL}
@@ -157,13 +157,13 @@ export function DiagnosticoDiagram({ locale }: DiagramProps) {
       {nodes.map((n, i) => {
         const s = show(0.1 + i * 0.1, 0.16 + i * 0.1);
         return (
-          <motion.g key={n.label} animate={play ? { opacity: s.values } : { opacity: 1 }} transition={loop(play, D, s.times)}>
+          <m.g key={n.label} animate={play ? { opacity: s.values } : { opacity: 1 }} transition={loop(play, D, s.times)}>
             <Pulse cx={n.x} cy={n.y} play={play} delay={i * 0.4} />
             <circle cx={n.x} cy={n.y} r={5} fill={TEAL} />
             <text x={n.x} y={n.y - 11} textAnchor="middle" fontFamily={MONO} fontSize={8} fill={MUTED} letterSpacing={1}>
               {n.label}
             </text>
-          </motion.g>
+          </m.g>
         );
       })}
 
@@ -178,7 +178,7 @@ export function DiagnosticoDiagram({ locale }: DiagramProps) {
         return (
           <g key={y}>
             <rect x={212} y={y - 7} width={14} height={14} rx={3} stroke={LINE} />
-            <motion.path
+            <m.path
               d={`M215.5 ${y} L218.5 ${y + 3} L223 ${y - 3.5}`}
               stroke={TEAL}
               strokeWidth={2}
@@ -227,7 +227,7 @@ export function PrototipoDiagram({ locale }: DiagramProps) {
       {screens.map((s, i) => (
         <g key={s.label}>
           <rect x={s.x} y={50} width={70} height={130} rx={10} fill={BG} stroke={LINE} />
-          <motion.rect
+          <m.rect
             x={s.x}
             y={50}
             width={70}
@@ -253,7 +253,7 @@ export function PrototipoDiagram({ locale }: DiagramProps) {
       {/* Flechas de flujo */}
       {[92, 197].map((x, i) => (
         <g key={x}>
-          <motion.path
+          <m.path
             d={`M${x} 112 C ${x + 10} 96, ${x + 21} 96, ${x + 31} 112`}
             stroke={TEAL}
             strokeWidth={1.5}
@@ -261,7 +261,7 @@ export function PrototipoDiagram({ locale }: DiagramProps) {
             animate={play ? { pathLength: arrows[i].values } : { pathLength: 1 }}
             transition={loop(play, D, arrows[i].times)}
           />
-          <motion.path
+          <m.path
             d={`M${x + 26} 109 L${x + 31} 112 L${x + 32} 106`}
             stroke={TEAL}
             strokeWidth={1.5}
@@ -275,7 +275,7 @@ export function PrototipoDiagram({ locale }: DiagramProps) {
 
       {/* Ondas de clic */}
       {clicks.map((c) => (
-        <motion.circle
+        <m.circle
           key={c.cx}
           cx={c.cx}
           cy={158}
@@ -289,7 +289,7 @@ export function PrototipoDiagram({ locale }: DiagramProps) {
       ))}
 
       {/* Cursor */}
-      <motion.g
+      <m.g
         animate={
           play
             ? { x: [200, 52, 52, 157, 157, 255, 200], y: [218, 156, 156, 156, 156, 218, 218] }
@@ -304,7 +304,7 @@ export function PrototipoDiagram({ locale }: DiagramProps) {
           strokeWidth={1.2}
           strokeLinejoin="round"
         />
-      </motion.g>
+      </m.g>
     </svg>
   );
 }
@@ -330,7 +330,7 @@ export function DesarrolloDiagram({ locale }: DiagramProps) {
       {commits.slice(0, -1).map((x, i) => {
         const s = show(at[i] + 0.01, at[i + 1] - 0.02);
         return (
-          <motion.path
+          <m.path
             key={`b-${x}`}
             d={`M${x} 115 C ${x + 14} 72, ${x + 56} 72, ${x + 70} 115`}
             stroke={TEAL}
@@ -344,7 +344,7 @@ export function DesarrolloDiagram({ locale }: DiagramProps) {
 
       {/* Línea principal */}
       <line x1={24} y1={115} x2={296} y2={115} stroke={LINE} strokeWidth={2} />
-      <motion.path
+      <m.path
         d="M24 115 H296"
         stroke={TEAL}
         strokeWidth={2}
@@ -358,10 +358,10 @@ export function DesarrolloDiagram({ locale }: DiagramProps) {
         return (
           <g key={x}>
             <circle cx={x} cy={115} r={7} fill={BG} stroke={TEAL} strokeOpacity={0.5} strokeWidth={1.5} />
-            <motion.g animate={play ? { opacity: s.values } : { opacity: 1 }} transition={loop(play, D, s.times)}>
+            <m.g animate={play ? { opacity: s.values } : { opacity: 1 }} transition={loop(play, D, s.times)}>
               <Pulse cx={x} cy={115} r={7} play={play} delay={i * 0.4} />
               <circle cx={x} cy={115} r={4} fill={TEAL} />
-            </motion.g>
+            </m.g>
             <text x={x} y={140} textAnchor="middle" fontFamily={MONO} fontSize={8} fill={MUTED} letterSpacing={1}>
               {tx.d3Week} {i + 1}
             </text>
@@ -371,7 +371,7 @@ export function DesarrolloDiagram({ locale }: DiagramProps) {
 
       {/* Barra de progreso escalonada */}
       <rect x={24} y={164} width={272} height={6} rx={3} fill={LINE} />
-      <motion.rect
+      <m.rect
         x={24}
         y={164}
         width={272}
@@ -392,12 +392,12 @@ export function DesarrolloDiagram({ locale }: DiagramProps) {
       {/* Terminal */}
       <text x={24} y={208} fontFamily={MONO} fontSize={10} fill={TEAL}>
         {tx.d3Cmd}{" "}
-        <motion.tspan
+        <m.tspan
           animate={play ? { opacity: [1, 1, 0, 0] } : { opacity: 1 }}
           transition={play ? { duration: 1, times: [0, 0.5, 0.5, 1], repeat: Infinity } : { duration: 0 }}
         >
           ▍
-        </motion.tspan>
+        </m.tspan>
       </text>
     </svg>
   );
@@ -440,13 +440,13 @@ export function LanzamientoDiagram({ locale }: DiagramProps) {
       ))}
 
       {/* Área + línea */}
-      <motion.path
+      <m.path
         d={`${line} L290 182 L28 182 Z`}
         fill="url(#lz-area)"
         animate={play ? { opacity: [0, 0, 0, 1, 1, 0] } : { opacity: 1 }}
         transition={loop(play, D, [0, 0.05, 0.45, 0.62, 0.9, 1])}
       />
-      <motion.path
+      <m.path
         d={line}
         stroke={TEAL}
         strokeWidth={2.5}
@@ -457,17 +457,17 @@ export function LanzamientoDiagram({ locale }: DiagramProps) {
       />
 
       {/* Punto final + etiqueta */}
-      <motion.g animate={play ? { opacity: end.values } : { opacity: 1 }} transition={loop(play, D, end.times)}>
+      <m.g animate={play ? { opacity: end.values } : { opacity: 1 }} transition={loop(play, D, end.times)}>
         <Pulse cx={290} cy={54} play={play} />
         <circle cx={290} cy={54} r={5} fill={TEAL} />
         <text x={280} y={46} textAnchor="end" fontFamily={MONO} fontSize={9} fill="#fff" letterSpacing={1}>
           {tx.d4Leads}
         </text>
-      </motion.g>
+      </m.g>
 
       {/* Pulso de uptime */}
       <path d="M24 214 H120 L128 202 L136 226 L144 208 L150 214 H296" stroke={LINE} strokeWidth={1.5} />
-      <motion.path
+      <m.path
         d="M24 214 H120 L128 202 L136 226 L144 208 L150 214 H296"
         stroke={TEAL}
         strokeWidth={1.8}

@@ -256,7 +256,7 @@ export default async function DescargaPage({
             <a
               href={downloadCertUrl}
               download={`Certificado_Pagina_Express_${cert.folioCode}.pdf`}
-              className="py-4 px-6 rounded-2xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-extrabold text-base text-center shadow-xl transition-all flex items-center justify-center gap-3 cursor-pointer border border-[#00b4a6]"
+              className="py-4 px-6 rounded-2xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-extrabold text-base text-center shadow-xl transition-colors duration-200 flex items-center justify-center gap-3 cursor-pointer border border-[#00b4a6]"
             >
               <svg className="w-6 h-6 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -268,7 +268,7 @@ export default async function DescargaPage({
             <a
               href={downloadGuiaUrl}
               download="Guia_10_Mensajes_WhatsApp_Idealy.pdf"
-              className="py-4 px-6 rounded-2xl bg-base-200 hover:bg-base-300 border border-white/20 text-white font-extrabold text-base text-center shadow-xl transition-all flex items-center justify-center gap-3 cursor-pointer"
+              className="py-4 px-6 rounded-2xl bg-base-200 hover:bg-base-300 border border-white/20 text-white font-extrabold text-base text-center shadow-xl transition-colors duration-200 flex items-center justify-center gap-3 cursor-pointer"
             >
               <svg className="w-6 h-6 shrink-0 text-[#00b4a6]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />

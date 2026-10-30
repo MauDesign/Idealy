@@ -31,7 +31,7 @@ export default function HeroCtas({ locale }: HeroCtasProps) {
           <button
             type="button"
             onClick={handleDiagnosticoClick}
-            className="btn btn-primary btn-lg rounded-full px-8 text-base font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all text-white normal-case cursor-pointer flex items-center justify-center gap-2"
+            className="btn btn-primary btn-lg rounded-full px-8 text-base font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-0.5 transition-[transform,box-shadow] duration-200 text-white normal-case cursor-pointer flex items-center justify-center gap-2"
           >
             <span>{isEs ? 'Agenda tu diagnóstico gratis' : 'Book free diagnosis'}</span>
             <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full font-medium">30 min</span>
@@ -41,7 +41,7 @@ export default function HeroCtas({ locale }: HeroCtasProps) {
             target="_blank"
             rel="noopener noreferrer"
             onClick={handleWhatsAppClick}
-            className="btn btn-ghost btn-lg rounded-full px-7 text-base font-medium border border-white/20 hover:border-[#25D366] hover:bg-[#25D366]/10 text-white hover:text-[#25D366] transition-all normal-case inline-flex items-center justify-center gap-2"
+            className="btn btn-ghost btn-lg rounded-full px-7 text-base font-medium border border-white/20 hover:border-[#25D366] hover:bg-[#25D366]/10 text-white hover:text-[#25D366] transition-colors duration-200 normal-case inline-flex items-center justify-center gap-2"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"

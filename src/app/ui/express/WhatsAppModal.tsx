@@ -85,12 +85,10 @@ export default function WhatsAppButton({
     const encodedMessage = encodeURIComponent(presetMessage);
     const directUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodedMessage}`;
     
-    if (typeof window !== 'undefined' && window.gtag) {
-      window.gtag('event', 'whatsapp_click', {
-        event_category: 'conversion',
-        event_label: locationTag,
-      });
-    }
+    trackEvent('whatsapp_click', {
+      event_category: 'conversion',
+      event_label: locationTag,
+    });
     
     window.open(directUrl, '_blank');
   };
@@ -143,18 +141,13 @@ export default function WhatsAppButton({
         setFolioCode(assignedFolio);
         setDownloadUrl(assignedDownloadUrl);
 
-        // Analytics tracking unificado (GA4, Meta Pixel, Clarity, GTM)
-        if (typeof window !== 'undefined') {
-          trackEvent('generate_lead', {
-            event_category: 'conversion',
-            event_label: `WhatsApp Lead (${locationTag})`,
-            value: 6000.0,
-            currency: 'MXN',
-          });
-          if (typeof window.gtag_report_conversion === 'function') {
-            window.gtag_report_conversion();
-          }
-        }
+        // Analytics tracking unificado (GTM, Meta Pixel, Clarity)
+        trackEvent('generate_lead', {
+          event_category: 'conversion',
+          event_label: `WhatsApp Lead (${locationTag})`,
+          value: 6000.0,
+          currency: 'MXN',
+        });
 
         const waText = `Hola Mauricio, soy ${nombre} de *${nombreNegocio}*. Tengo dudas sobre la Página Express y quiero solicitar mi obsequio y activar mi certificado (${assignedFolio}) 🚀`;
         const generatedWaUrl = `https://wa.me/${PHONE_NUMBER}?text=${encodeURIComponent(waText)}`;
@@ -192,7 +185,7 @@ export default function WhatsAppButton({
     <>
       <button
         onClick={handleOpenModal}
-        className={`inline-flex items-center justify-center font-bold transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-lg hover:shadow-xl ${className}`}
+        className={`inline-flex items-center justify-center font-bold transition-[transform,box-shadow] duration-200 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-lg hover:shadow-xl ${className}`}
       >
         <span>{buttonText}</span>
       </button>
@@ -202,7 +195,7 @@ export default function WhatsAppButton({
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
           <div className="bg-[#0b1c2b] border border-[#00b4a6]/40 rounded-3xl p-6 sm:p-8 max-w-md w-full text-left shadow-2xl relative overflow-hidden">
             {/* Top Glow Accent */}
-            <div className="absolute -top-10 -right-10 w-40 h-40 bg-[#00b4a6]/20 rounded-full blur-2xl pointer-events-none"></div>
+            <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full [background:radial-gradient(circle,rgba(0,180,166,0.2),transparent_70%)] pointer-events-none"></div>
 
             <button
               onClick={() => setIsOpen(false)}
@@ -294,7 +287,7 @@ export default function WhatsAppButton({
                   <button
                     type="submit"
                     disabled={submitting}
-                    className="w-full min-h-[50px] mt-2 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 transition-all shadow-lg cursor-pointer disabled:opacity-50"
+                    className="w-full min-h-[50px] mt-2 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-extrabold text-sm sm:text-base flex items-center justify-center gap-2 transition-colors duration-200 shadow-lg cursor-pointer disabled:opacity-50"
                   >
                     {submitting ? (
                       <span>Generando Certificado y Abriendo...</span>
@@ -338,7 +331,7 @@ export default function WhatsAppButton({
                       href={finalWaUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="block w-full py-3.5 px-4 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-extrabold text-sm transition-all shadow-lg flex items-center justify-center gap-2"
+                      className="block w-full py-3.5 px-4 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-extrabold text-sm transition-colors duration-200 shadow-lg flex items-center justify-center gap-2"
                     >
                       <span>💬 Abrir chat de WhatsApp con Folio {folioCode}</span>
                     </a>

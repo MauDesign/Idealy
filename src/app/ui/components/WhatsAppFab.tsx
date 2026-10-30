@@ -24,7 +24,7 @@ export default function WhatsAppFab() {
         rel="noopener noreferrer"
         onClick={handleClick}
         aria-label="Escríbenos por WhatsApp"
-        className="fixed bottom-6 right-6 z-40 flex h-[60px] w-[60px] items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-[#25D366]/40"
+        className="fixed bottom-6 right-6 z-40 flex h-[60px] w-[60px] items-center justify-center rounded-full bg-[#25D366] text-white shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 transition-[transform,box-shadow] duration-200 focus:outline-none focus:ring-4 focus:ring-[#25D366]/40"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

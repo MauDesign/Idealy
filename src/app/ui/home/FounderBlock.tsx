@@ -67,13 +67,13 @@ export default function FounderBlock({ locale = 'es' }: FounderBlockProps) {
             <div className="flex flex-wrap items-center gap-4">
               <Link
                 href="/#contacto"
-                className="btn btn-primary rounded-full px-8 font-bold text-white shadow-md hover:shadow-primary/30 transition-all normal-case"
+                className="btn btn-primary rounded-full px-8 font-bold text-white shadow-md hover:shadow-primary/30 transition-shadow normal-case"
               >
                 {isEs ? 'Platica conmigo →' : 'Talk with me →'}
               </Link>
               <Link
                 href={`/${locale}/leo`}
-                className="btn btn-ghost rounded-full px-6 text-sm font-semibold text-primary hover:bg-primary/10 transition-all normal-case"
+                className="btn btn-ghost rounded-full px-6 text-sm font-semibold text-primary hover:bg-primary/10 transition-colors normal-case"
               >
                 {isEs ? 'Conoce a LEO →' : 'Discover LEO →'}
               </Link>

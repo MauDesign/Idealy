@@ -41,7 +41,8 @@ export default function HeroVisual({ locale = 'es' }: HeroVisualProps) {
     >
       {/* Halo de luz ambiental con pulsación suave */}
       <div
-        className="absolute -inset-4 sm:-inset-6 rounded-full bg-gradient-to-tr from-primary/25 via-cyan-500/20 to-teal-400/10 blur-[80px] animate-pulse-aura pointer-events-none"
+        className="absolute -inset-4 sm:-inset-6 rounded-full animate-pulse-aura pointer-events-none"
+        style={{ background: 'radial-gradient(circle, rgba(0, 180, 166, 0.22), transparent 70%)' }}
         aria-hidden="true"
       />
 

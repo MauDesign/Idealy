@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { trackEvent } from '@/lib/gtag';
 
 interface GrowthLeadFormProps {
   locale?: string;
@@ -98,14 +99,12 @@ export default function GrowthLeadForm({ locale = 'es' }: GrowthLeadFormProps) {
       });
 
       if (res.ok) {
-        if (typeof window !== 'undefined' && (window as any).gtag) {
-          (window as any).gtag('event', 'generate_lead', {
-            event_category: 'conversion',
-            event_label: 'Growth Lead Complete',
-            value: 8500.0,
-            currency: 'MXN',
-          });
-        }
+        trackEvent('generate_lead', {
+          event_category: 'conversion',
+          event_label: 'Growth Lead Complete',
+          value: 8500.0,
+          currency: 'MXN',
+        });
         setSuccess(true);
       } else {
         const data = await res.json();
@@ -257,7 +256,7 @@ export default function GrowthLeadForm({ locale = 'es' }: GrowthLeadFormProps) {
                   type="button"
                   key={obj}
                   onClick={() => setObjetivoPrincipal(obj)}
-                  className={`text-left p-3 rounded-xl border text-xs sm:text-sm font-semibold transition-all ${
+                  className={`text-left p-3 rounded-xl border text-xs sm:text-sm font-semibold transition-colors duration-150 ${
                     objetivoPrincipal === obj
                       ? 'border-[#00b4a6] bg-[#00b4a6]/20 text-white'
                       : 'border-white/10 bg-base-200/60 text-slate-300 hover:border-white/30'
@@ -284,7 +283,7 @@ export default function GrowthLeadForm({ locale = 'es' }: GrowthLeadFormProps) {
                   type="button"
                   key={pres}
                   onClick={() => setInversionAds(pres)}
-                  className={`p-2.5 rounded-xl border text-xs font-semibold text-center transition-all ${
+                  className={`p-2.5 rounded-xl border text-xs font-semibold text-center transition-colors duration-150 ${
                     inversionAds === pres
                       ? 'border-[#00b4a6] bg-[#00b4a6]/20 text-white'
                       : 'border-white/10 bg-base-200/60 text-slate-300 hover:border-white/30'

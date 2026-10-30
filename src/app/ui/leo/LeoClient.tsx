@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { BrainCircuit, LineChart, Cpu, Rocket, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -9,12 +9,12 @@ export default function LeoClient({ texts }: { texts: Record<string, string> }) 
   return (
     <div className="w-full text-white bg-black pb-24 overflow-hidden relative">
       {/* Background Glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-primary/20 rounded-full blur-[120px] opacity-60 pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-secondary/10 rounded-full blur-[100px] opacity-40 pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[500px] rounded-full [background:radial-gradient(circle,rgba(0,180,166,0.2),transparent_70%)] opacity-60 pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full [background:radial-gradient(circle,rgba(0,105,169,0.1),transparent_70%)] opacity-40 pointer-events-none" />
       
       {/* Hero Section */}
       <section className="relative z-10 container mx-auto px-6 pt-56 pb-20 text-center">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
@@ -27,25 +27,25 @@ export default function LeoClient({ texts }: { texts: Record<string, string> }) 
             sizes="(max-width: 768px) 192px, 224px"
             className="object-cover mask mask-squircle shadow-[0_0_50px_-10px] shadow-primary/40" 
           />
-        </motion.div>
+        </m.div>
         
-        <motion.h1 
+        <m.h1 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-5xl md:text-7xl font-black mb-6 tracking-tighter"
         >
           {texts.hero_title}
-        </motion.h1>
+        </m.h1>
         
-        <motion.p 
+        <m.p 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
           className="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto leading-relaxed"
         >
           {texts.hero_subtitle}
-        </motion.p>
+        </m.p>
       </section>
 
       {/* Agency Subtitle */}
@@ -58,7 +58,7 @@ export default function LeoClient({ texts }: { texts: Record<string, string> }) 
       {/* What is LEO Section */}
       <section className="relative z-10 container mx-auto px-6 py-20">
         <div className="grid md:grid-cols-2 gap-16 items-center">
-          <motion.div 
+          <m.div 
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -71,9 +71,9 @@ export default function LeoClient({ texts }: { texts: Record<string, string> }) 
               className="object-cover" 
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
-          </motion.div>
+          </m.div>
           
-          <motion.div
+          <m.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
@@ -96,7 +96,7 @@ export default function LeoClient({ texts }: { texts: Record<string, string> }) 
                 </div>
               ))}
             </div>
-          </motion.div>
+          </m.div>
         </div>
       </section>
 
@@ -109,7 +109,7 @@ export default function LeoClient({ texts }: { texts: Record<string, string> }) 
             { step: texts.process_2, desc: texts.process_2_desc },
             { step: texts.process_3, desc: texts.process_3_desc }
           ].map((process, idx) => (
-            <motion.div 
+            <m.div 
               key={idx}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -119,14 +119,14 @@ export default function LeoClient({ texts }: { texts: Record<string, string> }) 
             >
               <h3 className="text-2xl font-bold mb-4 text-primary">{process.step}</h3>
               <p className="text-gray-400 leading-relaxed">{process.desc}</p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </section>
 
       {/* CTA Section */}
       <section className="relative z-10 container mx-auto px-6 py-24 text-center">
-        <motion.div 
+        <m.div 
           initial={{ opacity: 0, scale: 0.9 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -141,7 +141,7 @@ export default function LeoClient({ texts }: { texts: Record<string, string> }) 
             {texts.cta_button}
             <ArrowRight className="w-5 h-5" />
           </Link>
-        </motion.div>
+        </m.div>
       </section>
     </div>
   );

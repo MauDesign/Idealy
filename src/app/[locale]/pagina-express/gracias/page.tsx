@@ -28,7 +28,7 @@ export default async function GraciasPage({
   return (
     <div className="min-h-screen bg-[#07131e] text-white flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Background glow effects */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-[#00b4a6]/15 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 rounded-full [background:radial-gradient(circle,rgba(0,180,166,0.15),transparent_70%)] pointer-events-none"></div>
 
       <div className="max-w-xl w-full bg-base-100/90 border border-[#00b4a6]/40 rounded-3xl p-8 sm:p-12 text-center shadow-2xl backdrop-blur-md relative z-10">
         <div className="mb-6 flex justify-center">

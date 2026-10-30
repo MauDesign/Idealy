@@ -85,7 +85,7 @@ export default function CustomSoftwareFAQAccordion({ locale = 'es' }: CustomSoft
         return (
           <div
             key={idx}
-            className={`border rounded-2xl transition-all overflow-hidden ${
+            className={`border rounded-2xl transition-[border-color,background-color,box-shadow] duration-200 overflow-hidden ${
               isOpen
                 ? 'bg-[#0b1c2b] border-[#00b4a6]/50 shadow-lg shadow-[#00b4a6]/5'
                 : 'bg-base-100/50 border-white/10 hover:border-white/20'

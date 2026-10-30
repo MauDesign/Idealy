@@ -1,7 +1,4 @@
-'use client';
-
 import React from 'react';
-import { useTranslations } from 'next-intl';
 import { Link } from '../../../i18n/navigation';
 import Image from 'next/image';
 
@@ -10,7 +7,6 @@ interface FooterProps {
 }
 
 export default function Footer({ locale = 'es' }: FooterProps) {
-  const t = useTranslations('Footer');
   const isEs = locale === 'es';
 
   return (
