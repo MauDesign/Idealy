@@ -3,8 +3,20 @@
 import { useState, useEffect } from 'react';
 import { 
   Mail, Send, Eye, CheckCircle2, AlertCircle, RefreshCw, 
-  Users, Sparkles, Monitor, Smartphone, FileText, ChevronDown, ChevronUp, Copy, Check, ShieldCheck, Lock
+  Users, Sparkles, Monitor, Smartphone, FileText, ChevronDown, ChevronUp, Copy, Check, ShieldCheck, Lock,
+  LayoutTemplate
 } from 'lucide-react';
+
+interface EmailTemplateOption {
+  id: string;
+  name: string;
+  filename: string;
+  description: string;
+  defaultSubject: string;
+  defaultPreheader: string;
+  subjectPresets: string[];
+  html: string;
+}
 
 interface Recipient {
   id: string;
@@ -39,9 +51,13 @@ export default function AdminBoletinPage() {
   const [sending, setSending] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
+  // Templates State
+  const [templates, setTemplates] = useState<EmailTemplateOption[]>([]);
+  const [selectedTemplateId, setSelectedTemplateId] = useState<string>('servicios_idealy');
+
   // Campaign Form State
-  const [subject, setSubject] = useState('Factura, controla asistencias y vende más desde un solo lugar');
-  const [preheader, setPreheader] = useState('Facturación CFDI 4.0 desde $290, checador digital y tu página web en 5 días.');
+  const [subject, setSubject] = useState('{{name}}, ¿cuántas horas pierde tu equipo en tareas que una máquina haría gratis?');
+  const [preheader, setPreheader] = useState('Diagnóstico gratis de 10 min. Sales con un plan, contrates o no.');
   const [senderName, setSenderName] = useState('Leo de Idealy');
   const [senderEmail, setSenderEmail] = useState('hello@idealy.com.mx');
   const [toAddress, setToAddress] = useState('pymes@idealy.com.mx');
@@ -57,12 +73,22 @@ export default function AdminBoletinPage() {
   const [expandedCampaignId, setExpandedCampaignId] = useState<string | null>(null);
   const [copiedLink, setCopiedLink] = useState(false);
 
-  // Subject line presets
-  const subjectPresets = [
-    'Factura, controla asistencias y vende más desde un solo lugar',
-    '¿Tu empresa ya está lista para el registro electrónico de jornada?',
-    '5 soluciones para que tu negocio deje de perder tiempo (y dinero)'
+  // Subject line presets fallback
+  const fallbackSubjectPresets = [
+    '{{name}}, ¿cuántas horas pierde tu equipo en tareas que una máquina haría gratis?',
+    'Deja de pagar por trabajo que tu empresa no debería estar haciendo.',
+    'Diagnóstico Digital Express: 10 minutos que pueden ahorrarte meses.'
   ];
+
+  // Select active template helper
+  const handleSelectTemplate = (templateId: string) => {
+    const tpl = templates.find((t) => t.id === templateId);
+    if (!tpl) return;
+    setSelectedTemplateId(templateId);
+    setHtmlContent(tpl.html);
+    setSubject(tpl.defaultSubject);
+    setPreheader(tpl.defaultPreheader);
+  };
 
   // Fetch initial data
   const fetchData = async () => {
@@ -74,9 +100,20 @@ export default function AdminBoletinPage() {
         setCampaigns(data.campaigns || []);
         setStats(data.stats || { totalCampaigns: 0, totalSent: 0, totalOpened: 0, openRate: 0 });
         setContactsCount(data.contacts?.length || 0);
-        if (data.defaultHtml) {
+        
+        if (data.templates && data.templates.length > 0) {
+          setTemplates(data.templates);
+          const initialTpl =
+            data.templates.find((t: EmailTemplateOption) => t.id === 'servicios_idealy') ||
+            data.templates[0];
+          setSelectedTemplateId(initialTpl.id);
+          setHtmlContent(initialTpl.html);
+          setSubject(initialTpl.defaultSubject);
+          setPreheader(initialTpl.defaultPreheader);
+        } else if (data.defaultHtml) {
           setHtmlContent(data.defaultHtml);
         }
+
         // Pre-fill recipient contacts if input is empty
         if (data.contacts && data.contacts.length > 0 && !recipientInput) {
           const emails = data.contacts.map((c: any) => c.email).join('\n');
@@ -155,8 +192,12 @@ export default function AdminBoletinPage() {
     }
   };
 
+  const currentTemplate = templates.find((t) => t.id === selectedTemplateId);
+  const activeSubjectPresets = currentTemplate?.subjectPresets || fallbackSubjectPresets;
+
   const copyTemplateUrl = () => {
-    const url = `${window.location.origin}/templates/boletin_pyme_idealy.html`;
+    const filename = currentTemplate?.filename || 'servicios_idealy.html';
+    const url = `${window.location.origin}/templates/${filename}`;
     navigator.clipboard.writeText(url);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);
@@ -268,6 +309,54 @@ export default function AdminBoletinPage() {
             </h2>
 
             <form onSubmit={handleSendCampaign} className="space-y-5">
+              {/* Selector de Plantilla */}
+              <div className="p-4 bg-base-200/50 rounded-xl border border-base-300 space-y-3">
+                <div className="flex items-center justify-between">
+                  <label className="label-text font-bold flex items-center gap-2 text-sm text-base-content">
+                    <LayoutTemplate className="w-4 h-4 text-primary" />
+                    Selecciona el Correo a Enviar
+                  </label>
+                  <span className="badge badge-primary badge-outline text-xs">
+                    {templates.length || 2} Plantillas
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  {templates.map((tpl) => {
+                    const isSelected = selectedTemplateId === tpl.id;
+                    return (
+                      <button
+                        key={tpl.id}
+                        type="button"
+                        onClick={() => handleSelectTemplate(tpl.id)}
+                        className={`text-left p-3.5 rounded-xl border transition-all cursor-pointer flex flex-col justify-between ${
+                          isSelected
+                            ? 'bg-primary/10 border-primary shadow-sm ring-2 ring-primary/40'
+                            : 'bg-base-100 border-base-300 hover:border-primary/50'
+                        }`}
+                      >
+                        <div>
+                          <div className="flex items-center justify-between mb-1.5">
+                            <span className="font-bold text-sm text-base-content flex items-center gap-1.5">
+                              {tpl.id === 'servicios_idealy' ? '🚀' : '📰'} {tpl.name}
+                            </span>
+                            {isSelected && (
+                              <span className="badge badge-primary badge-xs font-semibold">Seleccionada</span>
+                            )}
+                          </div>
+                          <p className="text-xs text-base-content/70 line-clamp-2 leading-relaxed">
+                            {tpl.description}
+                          </p>
+                        </div>
+                        <span className="text-[11px] font-mono text-base-content/50 mt-2.5 block">
+                          📄 {tpl.filename}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+
               {/* Remitente & De que correo saldrá */}
               <div className="grid grid-cols-2 gap-4">
                 <div className="form-control">
@@ -348,7 +437,7 @@ export default function AdminBoletinPage() {
                   value={subject}
                   onChange={(e) => setSubject(e.target.value)}
                 >
-                  {subjectPresets.map((preset, idx) => (
+                  {activeSubjectPresets.map((preset, idx) => (
                     <option key={idx} value={preset}>
                       Asunto {idx + 1}: {preset}
                     </option>
@@ -423,10 +512,17 @@ export default function AdminBoletinPage() {
           {/* Live Preview Side */}
           <div className="lg:col-span-6 bg-base-100 p-6 rounded-2xl border border-base-300 shadow-sm flex flex-col">
             <div className="flex items-center justify-between pb-4 border-b border-base-300 mb-4">
-              <h2 className="text-xl font-bold flex items-center gap-2">
-                <Monitor className="w-5 h-5 text-primary" />
-                Vista Previa de la Plantilla
-              </h2>
+              <div>
+                <h2 className="text-xl font-bold flex items-center gap-2">
+                  <Monitor className="w-5 h-5 text-primary" />
+                  Vista Previa
+                </h2>
+                {currentTemplate && (
+                  <span className="text-xs text-primary font-semibold flex items-center gap-1 mt-0.5">
+                    📄 {currentTemplate.name}
+                  </span>
+                )}
+              </div>
               <div className="join border border-base-300">
                 <button
                   className={`join-item btn btn-xs gap-1 ${previewDevice === 'desktop' ? 'btn-active btn-primary' : ''}`}

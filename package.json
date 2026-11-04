@@ -44,7 +44,8 @@
     "react-dom": "^19.0.0",
     "tailwind": "^4.0.0",
     "tailwind-merge": "^3.5.0",
-    "uploadthing": "^7.7.4"
+    "uploadthing": "^7.7.4",
+    "zod": "^4.6.7"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -53,7 +54,7 @@
     "@types/nodemailer": "^7.0.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
-    "daisyui": "^5.0.46",
+    "daisyui": "5.0.46",
     "eslint": "^9",
     "eslint-config-next": "^16.0.0",
     "prisma": "^7.7.0",

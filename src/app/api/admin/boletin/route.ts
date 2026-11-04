@@ -73,20 +73,56 @@ export async function GET(req: NextRequest) {
       orderBy: { createdAt: 'desc' },
     });
 
-    // Read local HTML template file content
-    let defaultHtml = '';
-    try {
-      const templatePath = path.join(process.cwd(), 'public', 'templates', 'boletin_pyme_idealy.html');
-      defaultHtml = fs.readFileSync(templatePath, 'utf-8');
-    } catch (e) {
-      console.error('Could not read default template file:', e);
-    }
-
-    // Replace image paths in HTML to ensure local/origin rendering
+    // Available email templates
     const origin = req.nextUrl.origin || 'http://localhost:3000';
-    if (defaultHtml) {
-      defaultHtml = defaultHtml.replace(/src="https:\/\/idealy\.com\.mx\/img\//g, `src="${origin}/img/`);
-    }
+    const templateDefs = [
+      {
+        id: 'servicios_idealy',
+        name: 'Propuesta de Valor & Servicios Idealy (High-Converting)',
+        filename: 'servicios_idealy.html',
+        description: 'Enfoque de alto impacto: dolor operativo, 5 servicios orientados a resultados, oferta con garantía invertida y P.D.',
+        defaultSubject: '{{name}}, ¿cuántas horas pierde tu equipo en tareas que una máquina haría gratis?',
+        defaultPreheader: 'Diagnóstico gratis de 10 min. Sales con un plan, contrates o no.',
+        subjectPresets: [
+          '{{name}}, ¿cuántas horas pierde tu equipo en tareas que una máquina haría gratis?',
+          'Deja de pagar por trabajo que tu empresa no debería estar haciendo.',
+          'Diagnóstico Digital Express: 10 minutos que pueden ahorrarte meses.',
+        ],
+      },
+      {
+        id: 'boletin_pyme_idealy',
+        name: 'Boletín PyME - Ecosistema Completo (Wise + Web)',
+        filename: 'boletin_pyme_idealy.html',
+        description: 'Facturación CFDI 4.0, checador digital y páginas express para PyMEs.',
+        defaultSubject: 'Factura, controla asistencias y vende más desde un solo lugar',
+        defaultPreheader: 'Facturación CFDI 4.0 desde $290, checador digital y tu página web en 5 días.',
+        subjectPresets: [
+          'Factura, controla asistencias y vende más desde un solo lugar',
+          '¿Tu empresa ya está lista para el registro electrónico de jornada?',
+          '5 soluciones para que tu negocio deje de perder tiempo (y dinero)',
+        ],
+      },
+    ];
+
+    const templates = templateDefs.map((def) => {
+      let html = '';
+      try {
+        const templatePath = path.join(process.cwd(), 'public', 'templates', def.filename);
+        if (fs.existsSync(templatePath)) {
+          html = fs.readFileSync(templatePath, 'utf-8');
+          html = html.replace(/src="https:\/\/idealy\.com\.mx\/img\//g, `src="${origin}/img/`);
+        }
+      } catch (err) {
+        console.error(`Could not read template ${def.filename}:`, err);
+      }
+      return {
+        ...def,
+        html,
+      };
+    });
+
+    // Default template fallback for backward compatibility
+    const defaultHtml = templates.find((t) => t.id === 'servicios_idealy')?.html || templates[0]?.html || '';
 
     // Stats summary
     const totalCampaigns = campaigns.length;
@@ -97,6 +133,7 @@ export async function GET(req: NextRequest) {
       campaigns,
       contacts,
       leadsCount: leads.length,
+      templates,
       defaultHtml,
       stats: {
         totalCampaigns,

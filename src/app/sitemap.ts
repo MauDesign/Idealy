@@ -21,8 +21,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   }));
 
-  // 2. Las 3 páginas de oferta (Landing pages core por idioma)
-  const offerPages = ['pagina-express', 'sitio-crecimiento', 'desarrollo-a-la-medida'];
+  // 2. Las páginas de oferta (Landing pages core por idioma)
+  const offerPages = ['pagina-express', 'sitio-crecimiento', 'desarrollo-a-la-medida', 'diagnostico'];
   const offerEntries: MetadataRoute.Sitemap = [];
   for (const locale of locales) {
     for (const page of offerPages) {
