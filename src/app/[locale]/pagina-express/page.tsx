@@ -134,8 +134,8 @@ export default async function PaginaExpressPage({ params }: Props) {
                 price: '6000',
                 priceCurrency: 'MXN',
                 availability: 'https://schema.org/InStock',
-                validFrom: '2026-09-01',
-                priceValidUntil: '2026-10-31',
+                validFrom: '2026-01-01',
+                priceValidUntil: '2026-12-31',
                 seller: {
                   '@type': 'Organization',
                   name: 'Idealy',
@@ -161,7 +161,7 @@ export default async function PaginaExpressPage({ params }: Props) {
             </Link>
             <div className="flex items-center gap-3">
               <span className="hidden sm:inline-block text-xs font-bold px-3 py-1 rounded-full bg-[#00b4a6]/20 border border-[#00b4a6]/40 text-[#00b4a6]">
-                PÁGINA EXPRESS · SOLO OCTUBRE
+                PÁGINA EXPRESS · 10 ESPACIOS POR MES
               </span>
               <WhatsAppButton
                 buttonText="Preguntar por WhatsApp 💬"
@@ -234,7 +234,7 @@ export default async function PaginaExpressPage({ params }: Props) {
                   </div>
                   <div className="flex items-center gap-2.5 text-gray-300 font-semibold">
                     <span className="w-5 h-5 rounded-full bg-white/10 flex items-center justify-center text-xs shrink-0">🔥</span>
-                    <span>¡No te quedes fuera! Aparta tu lugar · Solo 10 cupos disponibles este mes</span>
+                    <span>¡No te quedes fuera! Aparta tu lugar · Solo 10 espacios disponibles por mes</span>
                   </div>
                 </div>
               </div>
@@ -398,7 +398,7 @@ export default async function PaginaExpressPage({ params }: Props) {
               {
                 num: '1',
                 title: 'Aparta tu lugar con el 50% ($3,000 + IVA)',
-                desc: 'Aseguras tu lugar dentro de los 10 cupos disponibles de este mes.',
+                desc: 'Aseguras tu lugar dentro de los 10 espacios disponibles de este mes.',
               },
               {
                 num: '2',
@@ -575,10 +575,10 @@ export default async function PaginaExpressPage({ params }: Props) {
       <section className="py-20 px-4 sm:px-8 max-w-4xl mx-auto">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 font-extrabold text-xs tracking-wider uppercase mb-4">
-            ⚡ SOLO 10 LUGARES EN OCTUBRE
+            ⚡ SOLO 10 ESPACIOS POR MES
           </div>
           <h2 className="text-3xl sm:text-5xl font-extrabold text-white mb-6">
-            Solo 10 lugares en octubre. Aparta el tuyo hoy.
+            Solo 10 espacios por mes. Aparta el tuyo hoy.
           </h2>
 
           <div className="flex justify-center mb-8">

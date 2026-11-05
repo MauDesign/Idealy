@@ -1,0 +1,291 @@
+{
+  "name": "Idealy - Diagnóstico Express + Auditoría Web Automática",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "diagnostico-idealy",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        180,
+        340
+      ],
+      "id": "webhook-diagnostico-entry",
+      "name": "Webhook - Entrada Diagnóstico"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Obtener payload\nconst body = $input.first().json.body || $input.first().json;\n\n// 2. Normalización de contacto\nconst nombre = (body.nombre || 'Emprendedor').trim();\nconst empresa = (body.empresa || 'Empresa').trim();\nconst email = (body.email || '').trim().toLowerCase();\nconst rawWhatsapp = (body.whatsapp || '').replace(/\\D/g, '');\nlet numberFormatted = rawWhatsapp;\nif (rawWhatsapp.length === 10) {\n  numberFormatted = '52' + rawWhatsapp;\n} else if (!rawWhatsapp.startsWith('52') && rawWhatsapp.length > 0) {\n  numberFormatted = '52' + rawWhatsapp;\n}\n\n// 3. Normalización de URL del sitio web\nlet sitio_url = (body.sitio_url || '').trim();\nif (sitio_url && !sitio_url.startsWith('http://') && !sitio_url.startsWith('https://')) {\n  sitio_url = 'https://' + sitio_url;\n}\nconst tiene_sitio = Boolean(sitio_url && sitio_url.includes('.') && sitio_url.length > 7);\n\n// 4. Algoritmo de Cálculo de Madurez Digital\nlet operacion = 75;\nlet automatizacion = 60;\nlet ventas_web = 60;\nlet ux = 60;\n\n// Registro de ventas\nif (body.registro_ventas === 'papel') operacion -= 40;\nelse if (body.registro_ventas === 'excel') operacion -= 25;\nelse if (body.registro_ventas === 'sistema_basico') operacion -= 10;\nelse if (body.registro_ventas === 'crm') operacion += 15;\n\n// Sistemas conectados\nif (body.sistemas_conectados === 'no') {\n  operacion -= 30;\n  automatizacion -= 35;\n} else if (body.sistemas_conectados === 'algunos') {\n  operacion -= 10;\n  automatizacion -= 15;\n} else {\n  automatizacion += 25;\n}\n\n// Horas repetitivas semanales\nlet horas_semana = 5;\nif (body.horas_repetitivas === '0-5') { horas_semana = 4; automatizacion += 10; }\nelse if (body.horas_repetitivas === '5-15') { horas_semana = 10; automatizacion -= 10; }\nelse if (body.horas_repetitivas === '15-30') { horas_semana = 22; automatizacion -= 25; }\nelse if (body.horas_repetitivas === '30+') { horas_semana = 35; automatizacion -= 40; }\n\n// Seguimiento a prospectos\nif (body.seguimiento === 'ninguno') { ventas_web -= 35; operacion -= 20; }\nelse if (body.seguimiento === 'manual') { ventas_web -= 15; automatizacion -= 15; }\nelse if (body.seguimiento === 'recordatorios') { ventas_web += 5; }\nelse if (body.seguimiento === 'automatizado') { ventas_web += 25; automatizacion += 20; }\n\n// Sitio web y móvil\nif (body.sitio_web === 'no_tengo') { ventas_web -= 40; ux -= 30; }\nelse if (body.sitio_web === 'no_trae') { ventas_web -= 25; ux -= 20; }\nelse if (body.sitio_web === 'algunos') { ventas_web += 5; }\nelse if (body.sitio_web === 'principal') { ventas_web += 25; }\n\nif (body.movil === 'no_tengo' || body.movil === 'no_se') ux -= 25;\nelse if (body.movil === 'regular') ux -= 15;\nelse if (body.movil === 'si') ux += 20;\n\n// Autoservicio\nif (body.autoservicio === 'no') { automatizacion -= 20; ux -= 15; }\nelse if (body.autoservicio === 'parcial') automatizacion += 5;\nelse if (body.autoservicio === 'si') { automatizacion += 20; ux += 15; }\n\nconst clamp = (val) => Math.max(10, Math.min(95, Math.round(val)));\noperacion = clamp(operacion);\nautomatizacion = clamp(automatizacion);\nventas_web = clamp(ventas_web);\nux = clamp(ux);\n\nconst score_global = Math.round((operacion + automatizacion + ventas_web + ux) / 4);\nconst horas_mes = horas_semana * 4;\nconst costo_mes = horas_mes * 120;\n\nlet nivel = 'HOT';\nif (score_global > 65) nivel = 'COLD';\nelse if (score_global > 40) nivel = 'WARM';\n\nconst randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();\nconst id = `DX-${randomSuffix}`;\n\nreturn {\n  id,\n  ok: true,\n  nombre,\n  empresa,\n  email,\n  whatsapp: body.whatsapp || '',\n  numberFormatted,\n  sitio_url,\n  tiene_sitio,\n  giro: body.giro || 'servicios',\n  tamano: body.tamano || '1-5',\n  dolor: body.dolor || 'tiempo',\n  presupuesto: body.presupuesto || '<20k',\n  urgencia: body.urgencia || 'este_mes',\n  score_global,\n  areas: {\n    operacion,\n    automatizacion,\n    ventas_web,\n    ux\n  },\n  horas_mes,\n  costo_mes,\n  nivel,\n  utm_source: body.utm_source || 'directo',\n  utm_medium: body.utm_medium || '-',\n  utm_campaign: body.utm_campaign || '-'\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        400,
+        340
+      ],
+      "id": "code-evaluar-diagnostico",
+      "name": "Calcular Madurez & Normalizar"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"ok\": true,\n  \"id\": \"{{ $json.id }}\",\n  \"score_global\": {{ $json.score_global }},\n  \"areas\": {\n    \"operacion\": {{ $json.areas.operacion }},\n    \"automatizacion\": {{ $json.areas.automatizacion }},\n    \"ventas_web\": {{ $json.areas.ventas_web }},\n    \"ux\": {{ $json.areas.ux }}\n  },\n  \"horas_mes\": {{ $json.horas_mes }},\n  \"costo_mes\": {{ $json.costo_mes }},\n  \"nivel\": \"{{ $json.nivel }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        620,
+        220
+      ],
+      "id": "respond-to-webhook-app",
+      "name": "Respuesta Inmediata a la App"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{ $json.tiene_sitio }}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        620,
+        460
+      ],
+      "id": "if-tiene-sitio-web",
+      "name": "¿Tiene Sitio Web?"
+    },
+    {
+      "parameters": {
+        "url": "=https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url={{ encodeURIComponent($json.sitio_url) }}&strategy=mobile&category=PERFORMANCE&category=SEO",
+        "options": {
+          "timeout": 14000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        840,
+        380
+      ],
+      "id": "http-pagespeed-audit",
+      "name": "Google PageSpeed & SEO Audit",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extraer métricas de auditoría web de Google Lighthouse\nconst prev = $('Calcular Madurez & Normalizar').first().json;\nconst ps = $input.first().json;\n\nlet perfScore = 0;\nlet seoScore = 0;\nlet loadTime = 'N/D';\nlet auditSummary = 'No se pudo auditar automáticamente el sitio';\n\ntry {\n  const lighthouse = ps?.lighthouseResult;\n  if (lighthouse) {\n    perfScore = Math.round((lighthouse.categories?.performance?.score || 0) * 100);\n    seoScore = Math.round((lighthouse.categories?.seo?.score || 0) * 100);\n    const fcp = lighthouse.audits?.['first-contentful-paint']?.displayValue || 'N/D';\n    const speedIndex = lighthouse.audits?.['speed-index']?.displayValue || 'N/D';\n    loadTime = fcp;\n    \n    if (perfScore < 50) {\n      auditSummary = `Tu web en celular tarda ${loadTime} en mostrar contenido y tiene ${perfScore}/100 de velocidad. Estás perdiendo hasta el 40% de visitas que se van antes de cargar.`;\n    } else if (perfScore < 80) {\n      auditSummary = `Velocidad aceptable (${perfScore}/100), pero con tiempo de carga (${loadTime}) que frena tus conversiones en móviles.`;\n    } else {\n      auditSummary = `Excelente velocidad técnica (${perfScore}/100). El foco principal debe ser la persuasión y embudos de venta.`;\n    }\n  } else {\n    auditSummary = `El sitio respondió pero tiene bloqueos de rastreo o tiempos de respuesta superiores a 12s.`;\n  }\n} catch (e) {\n  auditSummary = 'El sitio web no respondió a la prueba de velocidad móvil.';\n}\n\nreturn {\n  ...prev,\n  web_audit_realizada: true,\n  web_perf_score: perfScore,\n  web_seo_score: seoScore,\n  web_load_time: loadTime,\n  web_audit_summary: auditSummary\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1060,
+        380
+      ],
+      "id": "code-parse-web-audit",
+      "name": "Formatear Auditoría Web"
+    },
+    {
+      "parameters": {
+        "jsCode": "const prev = $('Calcular Madurez & Normalizar').first().json;\n\nreturn {\n  ...prev,\n  web_audit_realizada: false,\n  web_perf_score: 0,\n  web_seo_score: 0,\n  web_load_time: 'Sin sitio',\n  web_audit_summary: 'Tu empresa actualmente no cuenta con presencia web activa. Esta es tu fuga comercial #1.'\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        840,
+        560
+      ],
+      "id": "code-no-web",
+      "name": "Plantilla Sin Web"
+    },
+    {
+      "parameters": {
+        "jsCode": "// 1. Obtener datos consolidados\nconst data = $input.first().json;\nconst nombre = (data.nombre || 'Emprendedor').trim();\nconst empresa = (data.empresa || 'Empresa').trim();\nconst email = (data.email || '').trim().toLowerCase();\nconst score = data.score_global || 50;\nconst areas = data.areas || { operacion: 50, automatizacion: 50, ventas_web: 50, ux: 50 };\nconst horasMes = data.horas_mes || 20;\nconst costoMes = (data.costo_mes || 2400).toLocaleString('es-MX');\nconst calUrl = 'https://cal.com/idealy-o2fiqr/idealy-auditorias?name=' + encodeURIComponent(nombre) + '&email=' + encodeURIComponent(email);\n\n// 2. Diagnóstico específico de los 4 pilares\nlet descOperacion = '';\nif (data.registro_ventas === 'papel') {\n  descOperacion = 'Tu control comercial se lleva en papel o notas físicas. Esto genera riesgo alto de extravío de pedidos y nula visibilidad para planear compras o ventas.';\n} else if (data.registro_ventas === 'excel') {\n  descOperacion = 'Tu información vive en hojas de cálculo aisladas. Aunque ayuda al registro, requiere recaptura manual continua y no avisa de seguimientos pendientes a prospectos.';\n} else if (data.registro_ventas === 'sistema_basico') {\n  descOperacion = 'Cuentas con un software básico, pero al no comunicarse con tus otros canales se producen islas de datos y procesos desarticulados.';\n} else {\n  descOperacion = 'Cuentas con un CRM o sistema estructurado que centraliza tu operación, ofreciendo una base sólida para crecer.';\n}\n\nlet descAutomatizacion = '';\nif (data.horas_repetitivas === '30+' || data.horas_repetitivas === '15-30') {\n  descAutomatizacion = 'Inviertes más de 15 horas a la semana en tareas repetitivas (cotizaciones, facturas, captura de datos). Esto representa una fuga de aproximadamente $' + costoMes + ' MXN al mes en tiempo de equipo.';\n} else if (data.horas_repetitivas === '5-15') {\n  descAutomatizacion = 'Dedicas entre 5 y 15 horas semanales a tareas que un flujo automático o bot de WhatsApp podría resolver en segundos.';\n} else {\n  descAutomatizacion = 'Tus procesos manuales son relativamente ágiles, lo que te permite concentrarte en el cierre de ventas y la entrega del servicio.';\n}\n\nlet descVentasWeb = '';\nif (data.sitio_web === 'no_tengo') {\n  descVentasWeb = 'Al no contar con página web propia, dependes al 100% del boca a boca o redes sociales. Cada cliente que busca tus servicios en Google termina comprando a tu competencia.';\n} else if (data.sitio_web === 'no_trae') {\n  descVentasWeb = 'Tu sitio web actual no convierte visitas en prospectos. Suele deberse a falta de textos persuasivos orientados a la venta, tiempos de carga lentos o ausencia de botón directo a WhatsApp.';\n} else {\n  descVentasWeb = 'Tu presencia digital atrae prospectos, pero existen oportunidades para optimizar el embudo y aumentar el porcentaje de conversión.';\n}\n\nlet descUx = '';\nif (data.movil === 'no_tengo' || data.movil === 'no_se' || data.movil === 'regular') {\n  descUx = 'El 85%+ de tus clientes potenciales te buscan desde un celular. Si la experiencia en pantalla chica es incómoda, lenta o poco clara, los usuarios abandonan el sitio en menos de 3 segundos.';\n} else if (data.autoservicio === 'no') {\n  descUx = 'Tus clientes no pueden consultar catálogos, agendar ni autogestionar dudas frecuentes, obligando a tu equipo a responder lo mismo una y otra vez.';\n} else {\n  descUx = 'Ofreces una experiencia accesible que facilita que el cliente conozca tu oferta e inicie contacto con rapidez.';\n}\n\nconst badgeColor = (val) => {\n  if (val < 45) return { bg: '#fee2e2', text: '#991b1b', border: '#f87171', label: 'Crítico' };\n  if (val < 70) return { bg: '#fef3c7', text: '#92400e', border: '#fcd34d', label: 'Mejorable' };\n  return { bg: '#dcfce7', text: '#166534', border: '#86efac', label: 'Saludable' };\n};\n\nconst stOp = badgeColor(areas.operacion);\nconst stAut = badgeColor(areas.automatizacion);\nconst stVw = badgeColor(areas.ventas_web);\nconst stUx = badgeColor(areas.ux);\n\n// 3. Bloque dinámico de Presencia Web para Email\nlet seccionWebHTML = '';\nif (data.web_audit_realizada && data.sitio_url) {\n  const perfScore = data.web_perf_score || 0;\n  const perfColor = perfScore >= 80 ? '#10b981' : perfScore >= 50 ? '#f59e0b' : '#ef4444';\n  \n  seccionWebHTML = '<div style=\"background-color: #f0fdfa; border: 1px solid #99f6e4; border-radius: 12px; padding: 22px; margin-bottom: 24px;\">' +\n    '<span style=\"background-color: #00b4a6; color: #ffffff; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 10px; border-radius: 6px;\">Auditoría Técnica en Celular · Google Lighthouse</span>' +\n    '<h3 style=\"margin: 10px 0 6px 0; color: #0f172a; font-size: 17px; font-weight: 800;\">Diagnóstico de tu sitio: <a href=\"' + data.sitio_url + '\" target=\"_blank\" style=\"color: #0069a9; text-decoration: underline;\">' + data.sitio_url + '</a></h3>' +\n    '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"margin: 12px 0;\">' +\n      '<tr>' +\n        '<td width=\"33%\" align=\"center\" style=\"background: #ffffff; border: 1px solid #ccfbf1; border-radius: 8px; padding: 12px;\">' +\n          '<div style=\"font-size: 24px; font-weight: 900; color: ' + perfColor + ';\">' + data.web_perf_score + '/100</div>' +\n          '<div style=\"font-size: 11px; color: #64748b; font-weight: bold; text-transform: uppercase; margin-top: 2px;\">Velocidad Móvil</div>' +\n        '</td>' +\n        '<td width=\"4%\"></td>' +\n        '<td width=\"33%\" align=\"center\" style=\"background: #ffffff; border: 1px solid #ccfbf1; border-radius: 8px; padding: 12px;\">' +\n          '<div style=\"font-size: 24px; font-weight: 900; color: #0069a9;\">' + data.web_load_time + '</div>' +\n          '<div style=\"font-size: 11px; color: #64748b; font-weight: bold; text-transform: uppercase; margin-top: 2px;\">Carga Inicial</div>' +\n        '</td>' +\n        '<td width=\"4%\"></td>' +\n        '<td width=\"33%\" align=\"center\" style=\"background: #ffffff; border: 1px solid #ccfbf1; border-radius: 8px; padding: 12px;\">' +\n          '<div style=\"font-size: 24px; font-weight: 900; color: #0f766e;\">' + data.web_seo_score + '/100</div>' +\n          '<div style=\"font-size: 11px; color: #64748b; font-weight: bold; text-transform: uppercase; margin-top: 2px;\">Salud SEO</div>' +\n        '</td>' +\n      '</tr>' +\n    '</table>' +\n    '<div style=\"background-color: #ffffff; border-left: 4px solid #00b4a6; border-radius: 6px; padding: 12px 14px; margin-top: 10px;\">' +\n      '<p style=\"margin: 0; font-size: 13px; line-height: 19px; color: #334155;\"><strong>Hallazgo clave:</strong> ' + data.web_audit_summary + '</p>' +\n      '<p style=\"margin: 6px 0 0 0; font-size: 12px; line-height: 17px; color: #0f766e;\">💡 <em>Regla de conversión: Cada segundo adicional de carga en celulares reduce la captación de prospectos entre un 7% y un 15%.</em></p>' +\n    '</div>' +\n  '</div>';\n} else {\n  seccionWebHTML = '<div style=\"background-color: #fffbeb; border: 1px solid #fde68a; border-radius: 12px; padding: 22px; margin-bottom: 24px;\">' +\n    '<span style=\"background-color: #d97706; color: #ffffff; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; padding: 4px 10px; border-radius: 6px;\">Fuga Comercial Prioritaria · Ausencia de Sitio Web</span>' +\n    '<h3 style=\"margin: 10px 0 6px 0; color: #78350f; font-size: 17px; font-weight: 800;\">¿Por qué tu negocio necesita una presencia web moderna y bien estructurada?</h3>' +\n    '<p style=\"margin: 0 0 12px 0; font-size: 13px; line-height: 19px; color: #92400e;\">Notamos que actualmente <strong>' + empresa + '</strong> no cuenta con un sitio web activo. En el mercado actual, esto representa la fuga de ventas más silenciosa y costosa:</p>' +\n    '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">' +\n      '<tr>' +\n        '<td width=\"26\" valign=\"top\" style=\"font-size: 15px; padding-bottom: 8px;\">🔍</td>' +\n        '<td style=\"font-size: 13px; line-height: 18px; color: #451a03; padding-bottom: 8px;\"><strong>Captación de clientes en Google:</strong> Más del 81% de los compradores investigan en Google antes de contratar o comprar. Si no tienes web, esos prospectos se van directo con tu competencia.</td>' +\n      '</tr>' +\n      '<tr>' +\n        '<td width=\"26\" valign=\"top\" style=\"font-size: 15px; padding-bottom: 8px;\">💬</td>' +\n        '<td style=\"font-size: 13px; line-height: 18px; color: #451a03; padding-bottom: 8px;\"><strong>Conversión directa a WhatsApp 24/7:</strong> Una web bien diseñada convierte visitas anónimas en chats calificados de WhatsApp incluso fuera de tu horario laboral.</td>' +\n      '</tr>' +\n      '<tr>' +\n        '<td width=\"26\" valign=\"top\" style=\"font-size: 15px; padding-bottom: 8px;\">🛡️</td>' +\n        '<td style=\"font-size: 13px; line-height: 18px; color: #451a03; padding-bottom: 8px;\"><strong>Credibilidad y Autoridad de Marca:</strong> Los clientes desconfían de negocios que solo tienen perfiles informales en redes. Un sitio propio transmite solidez, garantía y respaldo profesional.</td>' +\n      '</tr>' +\n      '<tr>' +\n        '<td width=\"26\" valign=\"top\" style=\"font-size: 15px;\">⚡</td>' +\n        '<td style=\"font-size: 13px; line-height: 18px; color: #451a03;\"><strong>Tu solución express:</strong> Con nuestro servicio de <em>Página Express</em>, tu negocio puede tener su web profesional publicada en 5 días hábiles, con hosting, dominio y textos vendedores incluidos por $6,000 + IVA.</td>' +\n      '</tr>' +\n    '</table>' +\n  '</div>';\n}\n\n// 4. Armar el HTML completo del reporte\nconst htmlReporte = '<!DOCTYPE html>' +\n'<html lang=\"es\">' +\n'<head>' +\n  '<meta charset=\"utf-8\">' +\n  '<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">' +\n  '<title>Reporte de Diagnóstico Digital · ' + empresa + '</title>' +\n'</head>' +\n'<body style=\"margin: 0; padding: 0; background-color: #f1f5f9; font-family: -apple-system, BlinkMacSystemFont, \\'Segoe UI\\', Roboto, Helvetica, Arial, sans-serif;\">' +\n  '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" bgcolor=\"#f1f5f9\" style=\"padding: 24px 12px;\">' +\n    '<tr>' +\n      '<td align=\"center\">' +\n        '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width: 620px; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.06); border: 1px solid #e2e8f0;\">' +\n          '<tr>' +\n            '<td bgcolor=\"#07131e\" style=\"padding: 32px 28px; text-align: center; background: linear-gradient(135deg, #07131e 0%, #0d2235 100%);\">' +\n              '<img src=\"https://idealy.com.mx/img/Logo-Idealy.png\" alt=\"Idealy\" width=\"130\" style=\"display: inline-block; margin-bottom: 16px;\" />' +\n              '<div>' +\n                '<span style=\"display: inline-block; background-color: rgba(0,180,166,0.15); border: 1px solid rgba(0,180,166,0.4); color: #00b4a6; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; padding: 4px 12px; border-radius: 20px; margin-bottom: 12px;\">' +\n                  'DIAGNÓSTICO DIGITAL EXPRESS' +\n                '</span>' +\n              '</div>' +\n              '<h1 style=\"color: #ffffff; font-size: 24px; font-weight: 900; margin: 0 0 8px 0; line-height: 30px;\">' +\n                'Reporte de Madurez Tecnológica' +\n              '</h1>' +\n              '<p style=\"color: #94a3b8; font-size: 14px; margin: 0; line-height: 20px;\">' +\n                'Resultados y plan de optimización comercial para <strong>' + empresa + '</strong>' +\n              '</p>' +\n            '</td>' +\n          '</tr>' +\n          '<tr>' +\n            '<td style=\"padding: 32px 28px 20px 28px;\">' +\n              '<p style=\"font-size: 15px; line-height: 24px; color: #334155; margin: 0 0 20px 0;\">' +\n                'Hola <strong>' + nombre + '</strong>, gracias por completar el diagnóstico digital. Con base en la estructura operativa, herramientas y hábitos comerciales que nos compartiste, hemos generado el siguiente balance analítico:' +\n              '</p>' +\n              '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 14px; padding: 20px; margin-bottom: 24px;\">' +\n                '<tr>' +\n                  '<td align=\"center\">' +\n                    '<div style=\"font-size: 48px; font-weight: 900; color: #00b4a6; line-height: 1;\">' +\n                      score + '<span style=\"font-size: 22px; color: #94a3b8; font-weight: 700;\">/100</span>' +\n                    '</div>' +\n                    '<div style=\"font-size: 12px; font-weight: 800; text-transform: uppercase; color: #475569; letter-spacing: 0.8px; margin-top: 6px;\">' +\n                      'Puntaje Global de Madurez Digital' +\n                    '</div>' +\n                    '<div style=\"font-size: 13px; color: #64748b; margin-top: 4px;\">' +\n                      'Nivel: <strong style=\"color: #0f172a;\">' + (score < 40 ? 'Inicial / Fuga Crítica' : score < 65 ? 'En Desarrollo / Oportunidad Alta' : 'Avanzado / Optimización Fina') + '</strong>' +\n                    '</div>' +\n                  '</td>' +\n                '</tr>' +\n              '</table>' +\n              '<div style=\"background-color: #fef2f2; border: 1px solid #fecaca; border-left: 5px solid #ef4444; border-radius: 8px; padding: 16px 18px; margin-bottom: 26px;\">' +\n                '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">' +\n                  '<tr>' +\n                    '<td width=\"28\" valign=\"top\" style=\"font-size: 20px;\">⏱️</td>' +\n                    '<td>' +\n                      '<div style=\"font-size: 14px; font-weight: 800; color: #991b1b;\">' +\n                        'Fuga estimada en procesos repetitivos:' +\n                      '</div>' +\n                      '<div style=\"font-size: 13px; line-height: 20px; color: #b91c1c; margin-top: 4px;\">' +\n                        'Tu equipo invierte aprox. <strong>~' + horasMes + ' horas al mes</strong> en tareas operativas que podrían sistematizarse, equivalente a una pérdida de <strong>~$' + costoMes + ' MXN mensuales</strong> en costo operativo y prospectos no atendidos a tiempo.' +\n                      '</div>' +\n                    '</td>' +\n                  '</tr>' +\n                '</table>' +\n              '</div>' +\n              '<h2 style=\"font-size: 18px; font-weight: 800; color: #0f172a; margin: 0 0 6px 0;\">' +\n                '¿Por qué obtuviste esta calificación? Desglose por áreas' +\n              '</h2>' +\n              '<p style=\"font-size: 13px; line-height: 19px; color: #64748b; margin: 0 0 18px 0;\">' +\n                'Analizamos cuatro dimensiones clave para entender exactamente dónde están los cuellos de botella de tu negocio:' +\n              '</p>' +\n              '<div style=\"border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; margin-bottom: 12px; background-color: #ffffff;\">' +\n                '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">' +\n                  '<tr>' +\n                    '<td align=\"left\"><strong style=\"font-size: 14px; color: #0f172a;\">1. Operación y Gestión Digital</strong></td>' +\n                    '<td align=\"right\"><span style=\"background-color: ' + stOp.bg + '; color: ' + stOp.text + '; border: 1px solid ' + stOp.border + '; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px;\">' + areas.operacion + '/100 · ' + stOp.label + '</span></td>' +\n                  '</tr>' +\n                  '<tr><td colspan=\"2\" style=\"padding-top: 6px;\"><p style=\"margin: 0; font-size: 13px; line-height: 19px; color: #475569;\">' + descOperacion + '</p></td></tr>' +\n                '</table>' +\n              '</div>' +\n              '<div style=\"border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; margin-bottom: 12px; background-color: #ffffff;\">' +\n                '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">' +\n                  '<tr>' +\n                    '<td align=\"left\"><strong style=\"font-size: 14px; color: #0f172a;\">2. Automatización y Productividad</strong></td>' +\n                    '<td align=\"right\"><span style=\"background-color: ' + stAut.bg + '; color: ' + stAut.text + '; border: 1px solid ' + stAut.border + '; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px;\">' + areas.automatizacion + '/100 · ' + stAut.label + '</span></td>' +\n                  '</tr>' +\n                  '<tr><td colspan=\"2\" style=\"padding-top: 6px;\"><p style=\"margin: 0; font-size: 13px; line-height: 19px; color: #475569;\">' + descAutomatizacion + '</p></td></tr>' +\n                '</table>' +\n              '</div>' +\n              '<div style=\"border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; margin-bottom: 12px; background-color: #ffffff;\">' +\n                '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">' +\n                  '<tr>' +\n                    '<td align=\"left\"><strong style=\"font-size: 14px; color: #0f172a;\">3. Ventas Web y Captación Comercial</strong></td>' +\n                    '<td align=\"right\"><span style=\"background-color: ' + stVw.bg + '; color: ' + stVw.text + '; border: 1px solid ' + stVw.border + '; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px;\">' + areas.ventas_web + '/100 · ' + stVw.label + '</span></td>' +\n                  '</tr>' +\n                  '<tr><td colspan=\"2\" style=\"padding-top: 6px;\"><p style=\"margin: 0; font-size: 13px; line-height: 19px; color: #475569;\">' + descVentasWeb + '</p></td></tr>' +\n                '</table>' +\n              '</div>' +\n              '<div style=\"border: 1px solid #e2e8f0; border-radius: 10px; padding: 15px; margin-bottom: 22px; background-color: #ffffff;\">' +\n                '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\">' +\n                  '<tr>' +\n                    '<td align=\"left\"><strong style=\"font-size: 14px; color: #0f172a;\">4. Experiencia Móvil y Autoservicio</strong></td>' +\n                    '<td align=\"right\"><span style=\"background-color: ' + stUx.bg + '; color: ' + stUx.text + '; border: 1px solid ' + stUx.border + '; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 6px;\">' + areas.ux + '/100 · ' + stUx.label + '</span></td>' +\n                  '</tr>' +\n                  '<tr><td colspan=\"2\" style=\"padding-top: 6px;\"><p style=\"margin: 0; font-size: 13px; line-height: 19px; color: #475569;\">' + descUx + '</p></td></tr>' +\n                '</table>' +\n              '</div>' +\n              seccionWebHTML +\n              '<table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"background: linear-gradient(135deg, #07131e 0%, #003659 100%); border-radius: 14px; padding: 28px 22px; text-align: center; margin-top: 6px;\">' +\n                '<tr>' +\n                  '<td>' +\n                    '<span style=\"display: inline-block; background-color: #00b4a6; color: #ffffff; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; padding: 4px 10px; border-radius: 20px;\">' +\n                      'SESIÓN ESTRATÉGICA SIN COSTO' +\n                    '</span>' +\n                    '<h3 style=\"color: #ffffff; font-size: 19px; font-weight: 900; margin: 12px 0 8px 0; line-height: 25px;\">' +\n                      '¿Cómo corregir estas fugas? Revisemos tu plan en 15 minutos' +\n                    '</h3>' +\n                    '<p style=\"color: #cbd5e1; font-size: 13px; line-height: 19px; margin: 0 auto 18px auto; max-width: 480px;\">' +\n                      'En esta breve sesión te mostraremos exactamente los 2 o 3 cambios con mayor retorno de inversión para <strong>' + empresa + '</strong>. Sin compromiso ni venta forzada.' +\n                    '</p>' +\n                    '<div>' +\n                      '<a href=\"' + calUrl + '\" target=\"_blank\" style=\"display: inline-block; background-color: #00b4a6; color: #ffffff; font-size: 14px; font-weight: 800; text-decoration: none; padding: 13px 26px; border-radius: 10px; box-shadow: 0 4px 14px rgba(0,180,166,0.4);\">' +\n                        'Agendar mi llamada de 15 minutos en Cal.com →' +\n                      '</a>' +\n                    '</div>' +\n                    '<div style=\"color: #94a3b8; font-size: 11px; margin-top: 10px;\">' +\n                      '⚡ Sesión 1 a 1 por Google Meet o Teléfono · 100% Gratuita · Horarios de México (CDMX)' +\n                    '</div>' +\n                  '</td>' +\n                '</tr>' +\n              '</table>' +\n            '</td>' +\n          '</tr>' +\n          '<tr>' +\n            '<td bgcolor=\"#f8fafc\" style=\"padding: 22px 28px; text-align: center; border-top: 1px solid #e2e8f0;\">' +\n              '<p style=\"margin: 0 0 6px 0; font-size: 12px; font-weight: 700; color: #475569;\">' +\n                'Idealy · Tecnología, Páginas Web y Automatizaciones para Negocios' +\n              '</p>' +\n              '<p style=\"margin: 0; font-size: 11px; color: #94a3b8;\">' +\n                'Puebla, México · <a href=\"https://idealy.com.mx\" target=\"_blank\" style=\"color: #0069a9; text-decoration: none;\">idealy.com.mx</a> · <a href=\"https://wa.me/522223253597\" target=\"_blank\" style=\"color: #00b4a6; text-decoration: none;\">WhatsApp Directo</a>' +\n              '</p>' +\n            '</td>' +\n          '</tr>' +\n        '</table>' +\n      '</td>' +\n    '</tr>' +\n  '</table>' +\n'</body>' +\n'</html>';\n\n// 5. WhatsApp copy de alto valor agregado con insight personalizado\nlet cuelloBotella = '';\nlet quickWin = '';\n\nif (areas.automatizacion <= 40) {\n  cuelloBotella = 'La recaptura manual de datos y la falta de flujos automáticos consumen tiempo crítico que tu equipo debería usar en cerrar ventas.';\n  quickWin = 'Crear un flujo automatizado de bienvenida y cotización por WhatsApp ahorraría hasta el 70% de ese tiempo repetitivo.';\n} else if (areas.ventas_web <= 40) {\n  cuelloBotella = 'Tu captación depende de recomendaciones tradicionales; no tienes un canal digital activo trabajando por ti 24/7.';\n  quickWin = 'Una página rápida con botón directo a WhatsApp captaría a clientes que buscan tus servicios en Google fuera de tu horario.';\n} else if (areas.operacion <= 40) {\n  cuelloBotella = 'La dispersión de información en hojas de cálculo o papel genera riesgo de pedidos extraviados y lentitud en presupuestos.';\n  quickWin = 'Centralizar tus prospectos en un CRM ligero te da visibilidad total de cada venta y recordatorios automáticos.';\n} else {\n  cuelloBotella = 'Tu base operativa es buena, pero la velocidad de contacto y el seguimiento continuo pueden estar enfriando prospectos.';\n  quickWin = 'Implementar respuestas instantáneas en menos de 5 minutos eleva la probabilidad de cierre hasta un 300%.';\n}\n\nlet textoWhatsApp = '';\nif (data.web_audit_realizada && data.sitio_url) {\n  // CASO A: CON SITIO WEB\n  textoWhatsApp = 'Hola ' + nombre + ' 👋, soy Mauricio de Idealy.\\n\\n' +\n    'Acabo de revisar tu Diagnóstico Digital para *' + empresa + '* y le corrimos una auditoría técnica en celular a tu sitio (*' + data.sitio_url + '*):\\n\\n' +\n    '📊 *BALANCE DE MADUREZ DIGITAL:*\\n' +\n    '• Calificación Global: *' + score + '/100*\\n' +\n    '• ⚙️ Operación: *' + areas.operacion + '/100*\\n' +\n    '• ⚡ Automatización: *' + areas.automatizacion + '/100*\\n' +\n    '• 🎯 Ventas Web: *' + areas.ventas_web + '/100*\\n' +\n    '• 📱 Experiencia Móvil: *' + areas.ux + '/100*\\n\\n' +\n    '🌐 *AUDITORÍA TÉCNICA WEB (Google Lighthouse en Celular):*\\n' +\n    '• Velocidad móvil: *' + data.web_perf_score + '/100*\\n' +\n    '• Tiempo de carga inicial: *' + data.web_load_time + '*\\n' +\n    '• Salud SEO en buscadores: *' + data.web_seo_score + '/100*\\n' +\n    '• Diagnóstico: _' + data.web_audit_summary + '_\\n\\n' +\n    '⚠️ *TU MAYOR CUELLO DE BOTELLA HOY:*\\n' +\n    cuelloBotella + '\\n' +\n    '⏱️ Pérdida estimada en tareas manuales: *~' + horasMes + ' hrs/mes* (~$' + costoMes + ' MXN mensuales).\\n\\n' +\n    '💡 *OPORTUNIDAD DE MEJORA RÁPIDA:*\\n' +\n    quickWin + ' _(Nota: Cada segundo que tarda en cargar tu web en celular reduce tus conversiones entre 7% y 15%)._\\n\\n' +\n    '📩 Te acabo de enviar a *' + email + '* tu reporte gráfico completo con el desglose a detalle.\\n\\n' +\n    '¿Quieres que revisemos juntos en 15 minutos cómo corregir estas fugas técnicas y operativas?\\n' +\n    '👉 Puedes apartar tu espacio aquí:\\n' + calUrl + '\\n\\n' +\n    '(O si te es más cómodo, respóndeme directo a este mensaje y platicamos por aquí 🙌)';\n} else {\n  // CASO B: SIN SITIO WEB\n  textoWhatsApp = 'Hola ' + nombre + ' 👋, soy Mauricio de Idealy.\\n\\n' +\n    'Acabo de revisar tu Diagnóstico Digital para *' + empresa + '* y detectamos oportunidades comerciales clave para tu sector:\\n\\n' +\n    '📊 *BALANCE DE MADUREZ DIGITAL:*\\n' +\n    '• Calificación Global: *' + score + '/100*\\n' +\n    '• ⚙️ Operación: *' + areas.operacion + '/100*\\n' +\n    '• ⚡ Automatización: *' + areas.automatizacion + '/100*\\n' +\n    '• 🎯 Ventas Web: *' + areas.ventas_web + '/100* (Fuga prioritaria)\\n' +\n    '• 📱 Experiencia Móvil: *' + areas.ux + '/100*\\n\\n' +\n    '🚨 *DIAGNÓSTICO DE PRESENCIA DIGITAL:*\\n' +\n    '• Visibilidad en Google: *0% (Inexistente)*\\n' +\n    '• Dependencia comercial: *100% de recomendaciones boca a boca*\\n' +\n    '• El 81% de los compradores en México investigan en Google antes de contratar. Al no tener sitio propio, hoy esos clientes se van con tu competencia.\\n\\n' +\n    '⚠️ *TU MAYOR CUELLO DE BOTELLA HOY:*\\n' +\n    cuelloBotella + '\\n' +\n    '⏱️ Pérdida estimada en tareas manuales: *~' + horasMes + ' hrs/mes* (~$' + costoMes + ' MXN mensuales).\\n\\n' +\n    '💡 *OPORTUNIDAD DE ALTO IMPACTO:*\\n' +\n    quickWin + ' Con una Página Express lista en 5 días y conectada a WhatsApp, puedes empezar a captar prospectos de Google de inmediato.\\n\\n' +\n    '📩 Te acabo de enviar a *' + email + '* tu reporte completo con la explicación de cada calificación.\\n\\n' +\n    '¿Te gustaría que en 15 minutos te muestre una propuesta de estructura web y automatización para *' + empresa + '*?\\n' +\n    '👉 Puedes apartar tu llamada sin costo aquí:\\n' + calUrl + '\\n\\n' +\n    '(O si prefieres, escríbeme por aquí mismo tu principal duda y te oriento con gusto 🙌)';\n}\n\nconst emailAsunto = nombre + ', aquí tienes tu Reporte de Madurez Digital (' + empresa + ' · Score: ' + score + '/100)';\n\nreturn {\n  ...data,\n  whatsapp_message_body: textoWhatsApp,\n  email_asunto: emailAsunto,\n  html_reporte_email: htmlReporte\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1280,
+        460
+      ],
+      "id": "code-consolidar-mensajes",
+      "name": "Preparar Mensajes de Seguimiento"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://evolution.idealy.com.mx/message/sendText/IdealyExpress",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "apikey",
+              "value": "TU_EVOLUTION_API_KEY"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"number\": \"{{ $json.numberFormatted }}\",\n  \"options\": {\n    \"delay\": 2000,\n    \"presence\": \"composing\"\n  },\n  \"textMessage\": {\n    \"text\": \"{{ $json.whatsapp_message_body }}\"\n  }\n}"
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1520,
+        380
+      ],
+      "id": "http-send-whatsapp-lead",
+      "name": "WhatsApp Automático al Lead (Evolution)",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "fromEmail": "hello@idealy.com.mx",
+        "toEmail": "={{ $json.email }}",
+        "subject": "={{ $json.email_asunto }}",
+        "html": "={{ $json.html_reporte_email }}"
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1520,
+        560
+      ],
+      "id": "email-reporte-lead",
+      "name": "Enviar Reporte al Correo del Lead",
+      "continueOnFail": true
+    },
+    {
+      "parameters": {
+        "fromEmail": "admin@idealy.com.mx",
+        "toEmail": "admin@idealy.com.mx",
+        "subject": "=🔥 [{{ $json.nivel }}] Nuevo Diagnóstico: {{ $json.empresa }} (Score: {{ $json.score_global }})",
+        "html": "=<h2>NUEVO DIAGNÓSTICO DIGITAL CAPTURADO</h2><p><strong>Prospecto:</strong> {{ $json.nombre }}</p><p><strong>Empresa:</strong> {{ $json.empresa }} ({{ $json.giro }})</p><p><strong>WhatsApp:</strong> <a href=\"https://wa.me/{{ $json.numberFormatted }}\">+{{ $json.numberFormatted }}</a></p><p><strong>Email:</strong> {{ $json.email }}</p><p><strong>Score:</strong> <strong>{{ $json.score_global }}/100</strong> ({{ $json.nivel }})</p><p><strong>Fuga estimada:</strong> ~{{ $json.horas_mes }} hrs/mes (${{ $json.costo_mes }} MXN)</p><p><strong>Presupuesto / Urgencia:</strong> {{ $json.presupuesto }} / {{ $json.urgencia }}</p><p><strong>Sitio Web:</strong> {{ $json.sitio_url || 'No proporcionado' }}</p><p><strong>Auditoría Web:</strong> {{ $json.web_audit_summary }}</p>"
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1760,
+        460
+      ],
+      "id": "email-alerta-equipo",
+      "name": "Alerta Interna a Equipo Idealy",
+      "continueOnFail": true
+    }
+  ],
+  "connections": {
+    "Webhook - Entrada Diagnóstico": {
+      "main": [
+        [
+          {
+            "node": "Calcular Madurez & Normalizar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular Madurez & Normalizar": {
+      "main": [
+        [
+          {
+            "node": "Respuesta Inmediata a la App",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "¿Tiene Sitio Web?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Tiene Sitio Web?": {
+      "main": [
+        [
+          {
+            "node": "Google PageSpeed & SEO Audit",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Plantilla Sin Web",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google PageSpeed & SEO Audit": {
+      "main": [
+        [
+          {
+            "node": "Formatear Auditoría Web",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Formatear Auditoría Web": {
+      "main": [
+        [
+          {
+            "node": "Preparar Mensajes de Seguimiento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Plantilla Sin Web": {
+      "main": [
+        [
+          {
+            "node": "Preparar Mensajes de Seguimiento",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Preparar Mensajes de Seguimiento": {
+      "main": [
+        [
+          {
+            "node": "WhatsApp Automático al Lead (Evolution)",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Enviar Reporte al Correo del Lead",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Alerta Interna a Equipo Idealy",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}
