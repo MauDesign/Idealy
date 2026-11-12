@@ -103,6 +103,10 @@ export default async function DescargaPage({
     ? `/api/pagina-express/descargar-pdf?type=guia&leadId=${encodeURIComponent(leadId)}`
     : `/api/pagina-express/descargar-pdf?type=guia&folio=${encodeURIComponent(cert.folioCode)}&nombre=${encodeURIComponent(cert.nombre)}&negocio=${encodeURIComponent(cert.nombreNegocio)}`;
 
+  const whatsappClaimMessage = cert.nombre
+    ? `Hola Mauricio, soy ${cert.nombre}${cert.nombreNegocio ? ` de *${cert.nombreNegocio}*` : ''}. Quiero activar y usar mi certificado ${cert.folioCode} 🚀`
+    : `Hola Mauricio, quiero activar y usar mi certificado ${cert.folioCode} 🚀`;
+
   return (
     <div className="min-h-screen bg-[#07131e] text-gray-100 font-sans selection:bg-[#00b4a6] selection:text-white pb-20">
       {/* Header Minimal */}
@@ -231,7 +235,8 @@ export default async function DescargaPage({
             <WhatsAppButton
               buttonText={`Quiero usar mi certificado ${cert.folioCode} →`}
               locationTag="descarga_card_cta"
-              presetMessage={`Hola, quiero usar mi certificado ${cert.folioCode}`}
+              presetMessage={whatsappClaimMessage}
+              direct={true}
               className="py-3 px-6 rounded-full bg-[#00b4a6] hover:bg-[#009b8e] text-white font-extrabold text-sm shadow-md"
             />
           </div>
@@ -276,7 +281,8 @@ export default async function DescargaPage({
             <WhatsAppButton
               buttonText={`Activar mi Certificado ${cert.folioCode} por WhatsApp →`}
               locationTag="descarga_page_claim"
-              presetMessage={`Hola Mauricio, quiero usar mi certificado ${cert.folioCode}`}
+              presetMessage={whatsappClaimMessage}
+              direct={true}
               className="w-full sm:w-auto py-4 px-10 rounded-2xl bg-[#0069a9] hover:bg-[#00588f] text-white font-extrabold text-lg shadow-2xl text-center inline-flex items-center justify-center"
             />
           </div>

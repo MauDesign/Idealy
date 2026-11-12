@@ -9,6 +9,7 @@ interface WhatsAppModalProps {
   className?: string;
   locationTag?: string;
   presetMessage?: string;
+  direct?: boolean;
 }
 
 const PHONE_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '522227179352';
@@ -18,6 +19,7 @@ export default function WhatsAppButton({
   className = '',
   locationTag = 'general',
   presetMessage = 'Hola, quiero mi Página Express 🚀',
+  direct = false,
 }: WhatsAppModalProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -89,8 +91,25 @@ export default function WhatsAppButton({
       event_category: 'conversion',
       event_label: locationTag,
     });
-    
-    window.open(directUrl, '_blank');
+
+    const isMobile = typeof navigator !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+      navigator.userAgent
+    );
+
+    if (isMobile) {
+      window.location.href = directUrl;
+    } else {
+      window.open(directUrl, '_blank');
+    }
+  };
+
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (direct) {
+      handleDirectWhatsappRedirect();
+    } else {
+      handleOpenModal(e);
+    }
   };
 
   const handleSubmitLead = async (e: React.FormEvent) => {
@@ -184,14 +203,14 @@ export default function WhatsAppButton({
   return (
     <>
       <button
-        onClick={handleOpenModal}
+        onClick={handleButtonClick}
         className={`inline-flex items-center justify-center font-bold transition-[transform,box-shadow] duration-200 transform hover:scale-[1.02] active:scale-[0.98] cursor-pointer shadow-lg hover:shadow-xl ${className}`}
       >
         <span>{buttonText}</span>
       </button>
 
-      {/* Interactive WhatsApp Lead Modal */}
-      {isOpen && mounted && createPortal(
+      {/* Interactive WhatsApp Lead Modal (Only when not in direct mode) */}
+      {!direct && isOpen && mounted && createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-fadeIn">
           <div className="bg-[#0b1c2b] border border-[#00b4a6]/40 rounded-3xl p-6 sm:p-8 max-w-md w-full text-left shadow-2xl relative overflow-hidden">
             {/* Top Glow Accent */}

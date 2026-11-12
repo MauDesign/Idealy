@@ -77,7 +77,8 @@ export default async function GraciasPage({
           <WhatsAppButton
             buttonText="Escríbenos por WhatsApp →"
             locationTag="gracias_page"
-            presetMessage="Hola, quiero usar mi certificado Página Express"
+            presetMessage={`Hola Mauricio, soy ${leadNombre}. Quiero activar mi certificado Página Express 🚀`}
+            direct={true}
             className="w-full py-3.5 px-6 rounded-2xl bg-[#0069a9] hover:bg-[#00588f] text-white font-bold text-base shadow-lg"
           />
 
