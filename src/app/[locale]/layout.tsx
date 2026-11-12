@@ -99,7 +99,7 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
   const messages = await getMessages();
 
-  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+  const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || '2371150456665525';
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
 
   return (

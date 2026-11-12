@@ -176,34 +176,22 @@ export async function generateExpressCertificatePdf(data: CertificateData): Prom
     color: colorTextGray,
   });
 
-  // Negocio Name
-  const displayBusiness = (data.nombreNegocio || 'Tu Negocio').toUpperCase();
-  const negocioFontSize = displayBusiness.length > 25 ? 20 : 26;
-  const negocioX = width / 2 - (displayBusiness.length * (negocioFontSize * 0.28));
-  page1.drawText(displayBusiness, {
-    x: Math.max(50, negocioX),
+  // Registered Person Name (Otorgado al nombre de quien se registró)
+  const displayPerson = (data.nombre || data.nombreNegocio || 'Cliente').toUpperCase();
+  const personFontSize = displayPerson.length > 25 ? 20 : 26;
+  const personX = width / 2 - (displayPerson.length * (personFontSize * 0.28));
+  page1.drawText(displayPerson, {
+    x: Math.max(50, personX),
     y: kickerY - 105,
-    size: negocioFontSize,
+    size: personFontSize,
     font: fontHelveticaBold,
     color: colorTextDark,
   });
 
-  // Owner Name
-  const displayOwner = data.nombre ? `Atn. ${data.nombre}` : '';
-  if (displayOwner) {
-    page1.drawText(displayOwner, {
-      x: width / 2 - (displayOwner.length * 3.5),
-      y: kickerY - 125,
-      size: 13,
-      font: fontHelvetica,
-      color: colorTextGray,
-    });
-  }
-
   // Divider Line
   page1.drawRectangle({
     x: width / 2 - 140,
-    y: kickerY - 142,
+    y: kickerY - 135,
     width: 280,
     height: 1.5,
     color: rgb(0.85, 0.90, 0.94),

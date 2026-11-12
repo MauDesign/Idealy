@@ -182,13 +182,8 @@ export default async function DescargaPage({
               Otorgado a:
             </p>
             <h3 className="text-2xl sm:text-4xl font-extrabold text-[#1f2a30] mt-1">
-              {cert.nombreNegocio}
+              {cert.nombre || cert.nombreNegocio}
             </h3>
-            {cert.nombre && (
-              <p className="text-sm font-medium text-[#4d4b4d] mt-1">
-                Atn. {cert.nombre}
-              </p>
-            )}
           </div>
 
           <div className="w-64 h-[2px] bg-[#dbe8f0] mx-auto mb-6"></div>
