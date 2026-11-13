@@ -10,7 +10,7 @@ import Navbar from "../ui/navbar/navbar";
 import { ThemeProvider } from "../ui/ThemeProvider";
 import StructuredData from "../ui/StructuredData";
 import WhatsAppFab from "../ui/components/WhatsAppFab";
-import DelayedGTM from "../ui/components/DelayedGTM";
+import AnalyticsTracker from "../ui/components/AnalyticsTracker";
 import MotionProvider from "../ui/providers/MotionProvider";
 import { getKeywordsForLocale } from '@/config/keywords';
 import { locales } from '@/i18n/routing';
@@ -99,12 +99,26 @@ export default async function LocaleLayout({ children, params }: Props) {
   setRequestLocale(locale);
   const messages = await getMessages();
 
+  const gtmId = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-WDB3RSDZ';
   const metaPixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID || '2371150456665525';
   const clarityId = process.env.NEXT_PUBLIC_CLARITY_ID;
 
   return (
     <html lang={locale} suppressHydrationWarning>
       <head>
+        {/* Google Tag Manager / Google Analytics (Carga no bloqueante afterInteractive para capturar 100% de campañas) */}
+        {gtmId && (
+          <Script id="google-tag-manager" strategy="afterInteractive">
+            {`
+              (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+              new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+              j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+              'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+              })(window,document,'script','dataLayer','${gtmId}');
+            `}
+          </Script>
+        )}
+
         {/* Microsoft Clarity */}
         {clarityId && (
           <Script id="microsoft-clarity" strategy="afterInteractive">
@@ -140,16 +154,18 @@ export default async function LocaleLayout({ children, params }: Props) {
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} ${sora.variable} bg-background text-foreground transition-colors duration-300`}
       >
-        <DelayedGTM id="GTM-WDB3RSDZ" />
+        <AnalyticsTracker />
         <StructuredData locale={locale} />
-        <noscript>
-          <iframe
-            src="https://www.googletagmanager.com/ns.html?id=GTM-WDB3RSDZ"
-            height="0"
-            width="0"
-            style={{ display: "none", visibility: "hidden" }}
-          />
-        </noscript>
+        {gtmId && (
+          <noscript>
+            <iframe
+              src={`https://www.googletagmanager.com/ns.html?id=${gtmId}`}
+              height="0"
+              width="0"
+              style={{ display: "none", visibility: "hidden" }}
+            />
+          </noscript>
+        )}
         {metaPixelId && (
           <noscript>
             <img

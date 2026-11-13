@@ -1,6 +1,7 @@
 declare global {
   interface Window {
     dataLayer?: Record<string, unknown>[];
+    gtag?: (...args: any[]) => void;
     fbq?: (...args: any[]) => void;
     clarity?: (...args: any[]) => void;
   }
@@ -8,7 +9,7 @@ declare global {
 
 /**
  * Disparador unificado de eventos a través de Google Tag Manager (DataLayer),
- * Meta Pixel y Microsoft Clarity.
+ * Google Analytics (gtag), Meta Pixel y Microsoft Clarity.
  */
 export function trackEvent(eventName: string, params?: Record<string, unknown>) {
   if (typeof window === 'undefined') return;
@@ -20,7 +21,16 @@ export function trackEvent(eventName: string, params?: Record<string, unknown>) 
     ...params,
   });
 
-  // 2. Microsoft Clarity Tags / Events
+  // 2. Google Analytics (gtag directo si existe en window)
+  if (typeof window.gtag === 'function') {
+    try {
+      window.gtag('event', eventName, params);
+    } catch {
+      // Ignorar si gtag aún no está listo
+    }
+  }
+
+  // 3. Microsoft Clarity Tags / Events
   if (typeof window.clarity === 'function') {
     try {
       window.clarity('event', eventName);
@@ -29,7 +39,7 @@ export function trackEvent(eventName: string, params?: Record<string, unknown>) 
     }
   }
 
-  // 3. Meta Pixel (Facebook)
+  // 4. Meta Pixel (Facebook)
   if (typeof window.fbq === 'function') {
     try {
       if (eventName === 'generate_lead') {
