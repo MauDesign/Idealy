@@ -9,12 +9,30 @@ export async function POST(request: Request) {
       nombre = '',
       whatsapp = '',
       nombreNegocio = '',
-      dedicacion = 'No especificado',
-      tienePagina = 'No especificado',
-      urgencia = 'No especificado',
+      dedicacion = '',
+      tienePagina = '',
+      urgencia = '',
       socialLink = '',
       utm = {},
     } = body;
+
+    const cleanNombre = (nombre || '').trim();
+    const cleanNegocio = (nombreNegocio || '').trim();
+    const cleanWhatsapp = (whatsapp || '').replace(/\D/g, '');
+
+    // Format phone: ensure 10-12 digits without symbols
+    let numberFormatted = cleanWhatsapp;
+    if (cleanWhatsapp.length === 10) {
+      numberFormatted = `52${cleanWhatsapp}`;
+    } else if (cleanWhatsapp.length === 13 && cleanWhatsapp.startsWith('521')) {
+      numberFormatted = `52${cleanWhatsapp.substring(3)}`;
+    } else if (cleanWhatsapp.length === 12 && cleanWhatsapp.startsWith('52')) {
+      numberFormatted = cleanWhatsapp;
+    } else if (cleanWhatsapp.length === 11 && cleanWhatsapp.startsWith('1')) {
+      numberFormatted = `52${cleanWhatsapp.substring(1)}`;
+    } else if (!cleanWhatsapp.startsWith('52') && cleanWhatsapp.length > 0) {
+      numberFormatted = `52${cleanWhatsapp}`;
+    }
 
     const now = new Date();
     const validUntil = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
@@ -24,9 +42,9 @@ export async function POST(request: Request) {
     const certRecord = await prisma.expressCertificate.create({
       data: {
         folioCode: tempFolioCode,
-        nombre,
-        nombreNegocio,
-        whatsapp,
+        nombre: cleanNombre,
+        nombreNegocio: cleanNegocio,
+        whatsapp: cleanWhatsapp,
         issuedAt: now,
         validUntil,
       },
@@ -46,14 +64,14 @@ export async function POST(request: Request) {
         folio: updatedCert.folio,
         folioCode: updatedCert.folioCode,
         certificateId: updatedCert.id,
-        nombre,
-        whatsapp,
-        nombreNegocio,
-        dedicacion,
-        tienePagina,
-        urgencia,
+        nombre: cleanNombre,
+        whatsapp: cleanWhatsapp,
+        nombreNegocio: cleanNegocio,
+        dedicacion: dedicacion || null,
+        tienePagina: tienePagina || null,
+        urgencia: urgencia || null,
         prioridad: urgencia.toLowerCase().includes('semana') ? 'ALTA' : 'MEDIA',
-        socialLink,
+        socialLink: socialLink || null,
         utmSource: utm.source || null,
         utmMedium: utm.medium || null,
         utmCampaign: utm.campaign || null,
@@ -70,24 +88,25 @@ export async function POST(request: Request) {
     const personalDownloadUrl = `${baseUrl}/pagina-express/descarga?leadId=${leadId}`;
 
     // 4. Send Email Notification
+    const mailSubject = cleanNegocio
+      ? `🚀 NUEVO LEAD Página Express (${folioCode}): ${cleanNegocio} (${cleanNombre})`
+      : `🚀 NUEVO LEAD Página Express (${folioCode}): ${cleanNombre}`;
+
     const mailOptions = {
       from: `"Página Express Leads" <${process.env.SMTP_USER || 'admin@idealy.com.mx'}>`,
       replyTo: 'hello@idealy.com.mx',
       to: process.env.LEAD_NOTIFICATION_EMAIL || 'admin@idealy.com.mx',
-      subject: `🚀 NUEVO LEAD Página Express (${folioCode}): ${nombreNegocio} (${nombre})`,
+      subject: mailSubject,
       text: `NUEVO LEAD DE PÁGINA EXPRESS
 Folio: ${folioCode}
 Lead ID: ${leadId}
-Nombre: ${nombre}
-WhatsApp: ${whatsapp}
-Negocio: ${nombreNegocio}
-Giro / Dedicación: ${dedicacion}
-Página actual: ${tienePagina}
-Urgencia: ${urgencia}
-Redes: ${socialLink}
+Nombre: ${cleanNombre}
+WhatsApp: +${numberFormatted}
+Negocio: ${cleanNegocio || '(No especificado)'}
 UTM Source: ${utm.source || '-'}
 UTM Campaign: ${utm.campaign || '-'}
 GCLID: ${utm.gclid || '-'}
+Enlace descarga: ${personalDownloadUrl}
 `,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #00b4a6; border-radius: 8px; overflow: hidden;">
@@ -108,34 +127,22 @@ GCLID: ${utm.gclid || '-'}
               </tr>
               <tr>
                 <td style="padding: 8px 0; font-weight: bold;">Nombre:</td>
-                <td style="padding: 8px 0;">${nombre}</td>
+                <td style="padding: 8px 0;">${cleanNombre}</td>
               </tr>
               <tr>
                 <td style="padding: 8px 0; font-weight: bold;">WhatsApp:</td>
-                <td style="padding: 8px 0;"><a href="https://wa.me/52${whatsapp.replace(/\D/g, '')}" style="color: #00b4a6; font-weight: bold; text-decoration: none;">+52 ${whatsapp}</a></td>
+                <td style="padding: 8px 0;"><a href="https://wa.me/${numberFormatted}" style="color: #00b4a6; font-weight: bold; text-decoration: none;">+${numberFormatted}</a></td>
               </tr>
+              ${cleanNegocio ? `
               <tr>
                 <td style="padding: 8px 0; font-weight: bold;">Negocio:</td>
-                <td style="padding: 8px 0;">${nombreNegocio}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold;">Giro:</td>
-                <td style="padding: 8px 0;"><span style="background-color: #e6f7f5; color: #008075; padding: 3px 8px; border-radius: 4px; font-weight: bold;">${dedicacion}</span></td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold;">Página actual:</td>
-                <td style="padding: 8px 0;">${tienePagina}</td>
-              </tr>
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold;">Urgencia:</td>
-                <td style="padding: 8px 0;"><strong style="color: ${urgencia.includes('semana') ? '#d97706' : '#2563eb'};">${urgencia}</strong></td>
-              </tr>
-              ${socialLink ? `
-              <tr>
-                <td style="padding: 8px 0; font-weight: bold;">Redes:</td>
-                <td style="padding: 8px 0;"><a href="${socialLink}" target="_blank">${socialLink}</a></td>
+                <td style="padding: 8px 0;">${cleanNegocio}</td>
               </tr>
               ` : ''}
+              <tr>
+                <td style="padding: 8px 0; font-weight: bold;">Enlace descarga:</td>
+                <td style="padding: 8px 0;"><a href="${personalDownloadUrl}" target="_blank" style="color: #0069a9;">${personalDownloadUrl}</a></td>
+              </tr>
             </table>
 
             <hr style="border: 0; border-top: 1px solid #e5e7eb; margin: 20px 0;" />
@@ -171,13 +178,12 @@ GCLID: ${utm.gclid || '-'}
       }
     }
 
-    // 5. Optional Evolution API direct WhatsApp dispatch
+    // 5. Automated M1 WhatsApp Dispatch via Evolution API
+    // M1: Hola [Nombre] 👋 Te escribimos de Idealy porque pediste la guía "10 mensajes listos para vender por WhatsApp" en nuestra página. Aquí la tienes: [enlace]. Una pregunta rápida para mandarte ejemplos de tu giro: ¿ya tienes página web? Responde 1 (sí tengo) o 2 (sería la primera).
+    const m1Text = `Hola ${cleanNombre} 👋 Te escribimos de Idealy porque pediste la guía "10 mensajes listos para vender por WhatsApp" en nuestra página. Aquí la tienes: ${personalDownloadUrl}\n\nUna pregunta rápida para mandarte ejemplos de tu giro: ¿ya tienes página web? Responde 1 (sí tengo) o 2 (sería la primera).`;
+
     if (process.env.EVOLUTION_API_URL && process.env.EVOLUTION_API_KEY && process.env.EVOLUTION_INSTANCE_NAME) {
       try {
-        const cleanNumber = whatsapp.replace(/\D/g, '');
-        const targetNumber = cleanNumber.startsWith('52') ? cleanNumber : `52${cleanNumber}`;
-        const autoText = `Hola ${nombre}, soy Mauricio de Idealy. Ya recibimos los datos de *${nombreNegocio}*. Aquí tienes tu enlace personal para descargar tus 10 Mensajes y activar tu Certificado de Descuento Especial Página Express (${folioCode}) + 1 mes de mantenimiento gratis:\n\n${personalDownloadUrl}`;
-
         await fetch(
           `${process.env.EVOLUTION_API_URL}/message/sendText/${process.env.EVOLUTION_INSTANCE_NAME}`,
           {
@@ -187,13 +193,13 @@ GCLID: ${utm.gclid || '-'}
               'apikey': process.env.EVOLUTION_API_KEY,
             },
             body: JSON.stringify({
-              number: targetNumber,
+              number: numberFormatted,
               options: {
                 delay: 1200,
                 presence: 'composing',
               },
               textMessage: {
-                text: autoText,
+                text: m1Text,
               },
             }),
           }
@@ -203,27 +209,16 @@ GCLID: ${utm.gclid || '-'}
       }
     }
 
-    // 6. DISPATCH TO WEBHOOK (N8N) WITH SAVED DB VALUES & PRE-FORMATTED PHONE
+    // 6. DISPATCH TO WEBHOOK (N8N) WITH SAVED DB VALUES & M1 MESSAGE
     if (process.env.N8N_LEAD_WEBHOOK_URL) {
       try {
-        const cleanWhatsapp = (whatsapp || '').replace(/\D/g, '');
-        let numberFormatted = cleanWhatsapp;
-
-        if (cleanWhatsapp.length === 10) {
-          numberFormatted = `52${cleanWhatsapp}`;
-        } else if (cleanWhatsapp.length === 13 && cleanWhatsapp.startsWith('521')) {
-          numberFormatted = `52${cleanWhatsapp.substring(3)}`;
-        } else if (cleanWhatsapp.length === 11 && cleanWhatsapp.startsWith('1')) {
-          numberFormatted = `52${cleanWhatsapp.substring(1)}`;
-        } else if (!cleanWhatsapp.startsWith('52') && cleanWhatsapp.length > 0) {
-          numberFormatted = `52${cleanWhatsapp}`;
-        }
-
         await fetch(process.env.N8N_LEAD_WEBHOOK_URL, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             ...body,
+            nombre: cleanNombre,
+            nombreNegocio: cleanNegocio,
             leadId,
             lead_id: leadId,
             id: leadId,
@@ -234,6 +229,7 @@ GCLID: ${utm.gclid || '-'}
             personalDownloadUrl,
             whatsappClean: cleanWhatsapp,
             numberFormatted,
+            m1Message: m1Text,
           }),
         });
       } catch (webhookErr) {
@@ -241,7 +237,7 @@ GCLID: ${utm.gclid || '-'}
       }
     }
 
-    const redirectUrl = `/pagina-express/gracias?nombre=${encodeURIComponent(nombre)}&leadId=${encodeURIComponent(leadId)}`;
+    const redirectUrl = `/pagina-express/gracias?nombre=${encodeURIComponent(cleanNombre)}&leadId=${encodeURIComponent(leadId)}`;
 
     return NextResponse.json(
       {

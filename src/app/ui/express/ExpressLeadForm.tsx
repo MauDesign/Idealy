@@ -5,9 +5,33 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { trackEvent } from '@/lib/gtag';
 
-export default function ExpressLeadForm() {
+export function normalizeMexicanPhone(raw: string): string | null {
+  if (!raw) return null;
+  const digits = raw.replace(/\D/g, '');
+  if (digits.length === 10) {
+    return digits;
+  }
+  // 521XXXXXXXXXX -> XXXXXXXXXX (13 digits mobile prefix)
+  if (digits.length === 13 && digits.startsWith('521')) {
+    return digits.slice(3);
+  }
+  // 52XXXXXXXXXX -> XXXXXXXXXX (12 digits with country code)
+  if (digits.length === 12 && digits.startsWith('52')) {
+    return digits.slice(2);
+  }
+  // 1XXXXXXXXXX -> XXXXXXXXXX (11 digits with 1)
+  if (digits.length === 11 && digits.startsWith('1')) {
+    return digits.slice(1);
+  }
+  return null;
+}
+
+interface ExpressLeadFormProps {
+  id?: string;
+}
+
+export default function ExpressLeadForm({ id = 'formulario-mensajes' }: ExpressLeadFormProps) {
   const router = useRouter();
-  const [step, setStep] = useState<1 | 2>(1);
   const [submitting, setSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -15,11 +39,6 @@ export default function ExpressLeadForm() {
   const [nombre, setNombre] = useState('');
   const [whatsapp, setWhatsapp] = useState('');
   const [nombreNegocio, setNombreNegocio] = useState('');
-
-  const [dedicacion, setDedicacion] = useState('Comercio');
-  const [tienePagina, setTienePagina] = useState('No');
-  const [urgencia, setUrgencia] = useState('Esta semana');
-  const [socialLink, setSocialLink] = useState('');
 
   // UTM tracking params state
   const [utmParams, setUtmParams] = useState({
@@ -47,7 +66,7 @@ export default function ExpressLeadForm() {
     }
   }, []);
 
-  const handleNextStep = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage('');
 
@@ -56,39 +75,22 @@ export default function ExpressLeadForm() {
       return;
     }
 
-    const cleanNumber = whatsapp.replace(/\D/g, '');
-    if (cleanNumber.length !== 10) {
-      setErrorMessage('Por favor ingresa un número de WhatsApp válido a 10 dígitos.');
+    const cleanNumber = normalizeMexicanPhone(whatsapp);
+    if (!cleanNumber) {
+      setErrorMessage('Por favor ingresa un número de teléfono a 10 dígitos (acepta con o sin +52 y con espacios).');
       return;
     }
 
-    if (!nombreNegocio.trim()) {
-      setErrorMessage('Por favor escribe el nombre de tu negocio.');
-      return;
-    }
-
-    // Analytics conversion event step 1
-    trackEvent('lead_step_1', {
-      event_category: 'engagement',
-      event_label: 'Express Form Step 1',
-    });
-
-    setStep(2);
-  };
-
-  const handleSubmitFinal = async (e: React.FormEvent) => {
-    e.preventDefault();
     setSubmitting(true);
-    setErrorMessage('');
 
     const payload = {
-      nombre,
-      whatsapp: whatsapp.replace(/\D/g, ''),
-      nombreNegocio,
-      dedicacion,
-      tienePagina,
-      urgencia,
-      socialLink,
+      nombre: nombre.trim(),
+      whatsapp: cleanNumber,
+      nombreNegocio: nombreNegocio.trim(),
+      dedicacion: '',
+      tienePagina: '',
+      urgencia: '',
+      socialLink: '',
       utm: utmParams,
     };
 
@@ -108,7 +110,7 @@ export default function ExpressLeadForm() {
           value: 6000.0,
           currency: 'MXN',
         });
-        router.push(data.redirectUrl || `/pagina-express/gracias?nombre=${encodeURIComponent(nombre)}`);
+        router.push(data.redirectUrl || `/pagina-express/gracias?nombre=${encodeURIComponent(nombre.trim())}`);
       } else {
         setErrorMessage(data.error || 'Ocurrió un error al enviar tus datos. Inténtalo de nuevo.');
         setSubmitting(false);
@@ -121,227 +123,123 @@ export default function ExpressLeadForm() {
   };
 
   return (
-    <div id="formulario-mensajes" className="w-full bg-[#0b1c2b]/95 border border-[#00b4a6]/40 rounded-3xl p-5 sm:p-7 shadow-[0_0_50px_rgba(0,180,166,0.2)] backdrop-blur-xl">
-      <div id="formulario-vista-previa"></div>
-
-      <div className="mb-5 pb-3 border-b border-white/10">
+    <div id={id} className="w-full bg-[#0b1c2b]/95 border border-[#00b4a6]/40 rounded-3xl p-5 sm:p-7 shadow-[0_0_50px_rgba(0,180,166,0.2)] backdrop-blur-xl">
+      <div className="mb-4 pb-3 border-b border-white/10">
         <div className="flex items-center justify-between mb-2">
           <span className="text-xs font-bold text-[#00b4a6] uppercase tracking-wider bg-[#00b4a6]/15 px-3 py-1 rounded-full border border-[#00b4a6]/30">
-            🎁 Obsequio de regalo incluido
+            🎁 GUÍA GRATUITA
           </span>
-          {step === 2 && (
-            <button
-              type="button"
-              onClick={() => setStep(1)}
-              className="text-xs text-gray-400 hover:text-white underline cursor-pointer"
-            >
-              ← Paso 1
-            </button>
-          )}
+          <span className="text-xs text-amber-300 font-semibold">
+            + Certificado $5,000 + IVA
+          </span>
         </div>
-        <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-1">
-          {step === 1 ? 'Solicita tu página y recibe tu regalo' : 'Personaliza tu propuesta'}
+        <h3 className="text-xl sm:text-2xl font-extrabold text-white mb-2 leading-snug">
+          Recibe gratis la guía: 10 mensajes listos para vender por WhatsApp
         </h3>
-        <p className="text-xs sm:text-sm text-gray-300">
-          {step === 1
-            ? 'Ingresa tus 3 datos para enviarte la Guía PDF + tu Certificado de Descuento por WhatsApp.'
-            : 'Cuéntanos un poco más sobre tu negocio.'}
+        <p className="text-xs sm:text-sm text-gray-300 leading-relaxed">
+          10 mensajes ya escritos para WhatsApp: acercamiento, venta en frío y recuperación de clientes.
         </p>
       </div>
 
+      {/* 3 Pasos Visibles */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 p-3 rounded-2xl bg-base-200/60 border border-white/10 text-xs text-gray-300 mb-5">
+        <div className="flex items-start gap-2">
+          <span className="w-5 h-5 rounded-full bg-[#00b4a6]/20 text-[#00b4a6] font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
+            1
+          </span>
+          <span className="leading-tight">Dejas tu nombre y WhatsApp</span>
+        </div>
+        <div className="flex items-start gap-2">
+          <span className="w-5 h-5 rounded-full bg-[#00b4a6]/20 text-[#00b4a6] font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
+            2
+          </span>
+          <span className="leading-tight">Te llega la guía en 1 minuto</span>
+        </div>
+        <div className="flex items-start gap-2">
+          <span className="w-5 h-5 rounded-full bg-[#00b4a6]/20 text-[#00b4a6] font-extrabold text-xs flex items-center justify-center shrink-0 mt-0.5">
+            3
+          </span>
+          <span className="leading-tight">Si quieres tu página, usas tu certificado</span>
+        </div>
+      </div>
+
       {errorMessage && (
-        <div className="mb-6 p-4 rounded-xl bg-red-500/20 border border-red-500/50 text-red-200 text-sm">
+        <div className="mb-4 p-3.5 rounded-xl bg-red-500/20 border border-red-500/50 text-red-200 text-xs sm:text-sm">
           ⚠️ {errorMessage}
         </div>
       )}
 
-      {step === 1 ? (
-        <form onSubmit={handleNextStep} className="flex flex-col gap-5">
-          <div>
-            <label className="block text-sm font-bold text-gray-200 mb-1">
-              Nombre
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="¿Cómo te llamas?"
-              value={nombre}
-              onChange={(e) => setNombre(e.target.value)}
-              className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors"
-            />
-          </div>
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <div>
+          <label className="block text-xs sm:text-sm font-bold text-gray-200 mb-1">
+            Nombre <span className="text-[#00b4a6]">*</span>
+          </label>
+          <input
+            type="text"
+            required
+            placeholder="¿Cómo te llamas?"
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
+            className="w-full min-h-[46px] px-4 py-2.5 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
+          />
+        </div>
 
-          <div>
-            <label className="block text-sm font-bold text-gray-200 mb-1">
-              WhatsApp / Teléfono
-            </label>
-            <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 font-semibold text-sm">
-                +52
-              </span>
-              <input
-                type="tel"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                maxLength={10}
-                required
-                placeholder="Teléfono (10 dígitos)"
-                value={whatsapp}
-                onChange={(e) => setWhatsapp(e.target.value.replace(/\D/g, ''))}
-                className="w-full min-h-[48px] pl-14 pr-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors font-mono"
-              />
-            </div>
-            <p className="text-xs text-gray-400 mt-1">Te enviaremos tu obsequio e información directo a tu WhatsApp</p>
-          </div>
+        <div>
+          <label className="block text-xs sm:text-sm font-bold text-gray-200 mb-1">
+            WhatsApp / Teléfono <span className="text-[#00b4a6]">*</span>
+          </label>
+          <input
+            type="tel"
+            required
+            placeholder="Ej. 222 123 4567 o +52 222 123 4567"
+            value={whatsapp}
+            onChange={(e) => setWhatsapp(e.target.value)}
+            className="w-full min-h-[46px] px-4 py-2.5 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm font-mono"
+          />
+          <p className="text-[11px] text-gray-400 mt-1">
+            Acepta 10 dígitos con o sin +52 y con espacios.
+          </p>
+        </div>
 
-          <div>
-            <label className="block text-sm font-bold text-gray-200 mb-1">
-              Nombre de tu negocio o empresa
-            </label>
-            <input
-              type="text"
-              required
-              placeholder="Ej. Panadería La Esperanza"
-              value={nombreNegocio}
-              onChange={(e) => setNombreNegocio(e.target.value)}
-              className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors"
-            />
-          </div>
+        <div>
+          <label className="block text-xs sm:text-sm font-bold text-gray-200 mb-1">
+            Nombre de tu negocio o empresa <span className="text-gray-400 font-normal text-xs">(opcional)</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Si aún estás emprendiendo puedes dejarlo vacío"
+            value={nombreNegocio}
+            onChange={(e) => setNombreNegocio(e.target.value)}
+            className="w-full min-h-[46px] px-4 py-2.5 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
+          />
+        </div>
 
-          <button
-            type="submit"
-            className="w-full min-h-[52px] mt-2 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-bold text-lg flex items-center justify-center gap-2 transition-transform transform active:scale-98 shadow-lg cursor-pointer"
-          >
-            Solicitar mi página + Mi obsequio 🎁 →
-          </button>
-        </form>
-      ) : (
-        <form onSubmit={handleSubmitFinal} className="flex flex-col gap-6">
-          {/* Deduccion / giro */}
-          <div>
-            <label className="block text-sm font-bold text-gray-200 mb-2">
-              ¿A qué se dedica tu negocio?
-            </label>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-              {[
-                'Comercio',
-                'Restaurante / comida',
-                'Salud / consultorio',
-                'Taller / servicio técnico',
-                'Profesionista',
-                'Otro',
-              ].map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setDedicacion(item)}
-                  className={`min-h-[48px] px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold border transition-colors duration-150 text-center flex items-center justify-center cursor-pointer ${
-                    dedicacion === item
-                      ? 'bg-[#00b4a6] border-[#00b4a6] text-white shadow-md'
-                      : 'bg-base-200 border-white/10 text-gray-300 hover:border-white/30'
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full min-h-[50px] mt-2 rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] active:scale-98 text-white font-extrabold text-base flex items-center justify-center gap-2 transition-all shadow-[0_0_25px_rgba(0,180,166,0.35)] cursor-pointer disabled:opacity-50"
+        >
+          {submitting ? 'Enviando...' : 'Enviarme la guía por WhatsApp →'}
+        </button>
 
-          {/* Tiene pagina */}
-          <div>
-            <label className="block text-sm font-bold text-gray-200 mb-2">
-              ¿Ya tienes página web?
-            </label>
-            <div className="flex flex-col gap-2">
-              {[
-                'No',
-                'Sí, pero no me sirve',
-                'Solo tengo Facebook / Instagram',
-              ].map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setTienePagina(item)}
-                  className={`w-full min-h-[48px] px-4 py-3 rounded-xl text-sm font-semibold border text-left flex items-center justify-between transition-colors duration-150 cursor-pointer ${
-                    tienePagina === item
-                      ? 'bg-[#0069a9] border-[#0069a9] text-white shadow-md'
-                      : 'bg-base-200 border-white/10 text-gray-300 hover:border-white/30'
-                  }`}
-                >
-                  <span>{item}</span>
-                  {tienePagina === item && <span>✓</span>}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Urgencia */}
-          <div>
-            <label className="block text-sm font-bold text-gray-200 mb-2">
-              ¿Cuándo te gustaría tenerla?
-            </label>
-            <div className="grid grid-cols-3 gap-2">
-              {['Esta semana', 'Este mes', 'Solo estoy viendo'].map((item) => (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setUrgencia(item)}
-                  className={`min-h-[48px] px-2 py-2 rounded-xl text-xs sm:text-sm font-semibold border text-center transition-colors duration-150 flex items-center justify-center cursor-pointer ${
-                    urgencia === item
-                      ? 'bg-[#00b4a6] border-[#00b4a6] text-white shadow-md'
-                      : 'bg-base-200 border-white/10 text-gray-300 hover:border-white/30'
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Social link */}
-          <div>
-            <label className="block text-sm font-bold text-gray-200 mb-1">
-              Link de tu Facebook o Instagram <span className="text-gray-400 text-xs font-normal">(opcional)</span>
-            </label>
-            <input
-              type="text"
-              placeholder="facebook.com/tunegocio"
-              value={socialLink}
-              onChange={(e) => setSocialLink(e.target.value)}
-              className="w-full min-h-[48px] px-4 py-3 rounded-xl bg-base-200 border border-white/10 text-white placeholder-gray-500 focus:outline-none focus:border-[#00b4a6] transition-colors text-sm"
-            />
-          </div>
-
-          <div className="flex gap-3">
-            <button
-              type="button"
-              onClick={() => setStep(1)}
-              className="w-1/3 min-h-[52px] rounded-xl bg-base-200 hover:bg-base-300 text-gray-300 font-semibold text-sm transition-colors cursor-pointer"
-            >
-              ← Regresar
-            </button>
-            <button
-              type="submit"
-              disabled={submitting}
-              className="w-2/3 min-h-[52px] rounded-xl bg-[#00b4a6] hover:bg-[#009b8e] text-white font-bold text-base flex items-center justify-center gap-2 transition-transform transform active:scale-98 shadow-lg cursor-pointer disabled:opacity-50"
-            >
-              {submitting ? 'Enviando...' : '¡Recibir mi página y kit de obsequio! 🎁'}
-            </button>
-          </div>
-
-          <div className="text-center pt-2">
-            <p className="text-xs text-gray-400">
-              🔒 No compartimos tus datos. Te escribimos solo por WhatsApp.
-            </p>
+        <div className="text-center pt-2 space-y-1">
+          <p className="text-xs text-gray-300 font-medium">
+            Te llega en 1 minuto por WhatsApp. No te llamamos.
+          </p>
+          <p className="text-[11px] text-gray-400">
+            Enviar el formulario no genera compromiso de compra. Revisa nuestro{' '}
             <Link
               href="/privacy-policy"
-              className="text-xs text-[#00b4a6] hover:underline mt-1 inline-block"
+              className="text-[#00b4a6] hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
             >
               Aviso de Privacidad
             </Link>
-          </div>
-        </form>
-      )}
+            .
+          </p>
+        </div>
+      </form>
     </div>
   );
 }

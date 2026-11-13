@@ -54,7 +54,7 @@ export default async function GraciasPage({
         </h1>
 
         <p className="text-lg sm:text-xl text-gray-200 mb-6 leading-relaxed">
-          Tus 10 mensajes ya van en camino a tu WhatsApp, y te agregamos un regalo sorpresa 🎁.
+          Tu guía con los 10 mensajes listos para vender por WhatsApp ya va en camino.
         </p>
 
         <div className="bg-[#0069a9]/20 border border-[#0069a9]/40 rounded-2xl p-6 mb-8 text-left">
@@ -62,7 +62,7 @@ export default async function GraciasPage({
             Revisa tu chat de WhatsApp
           </p>
           <p className="text-xs text-gray-300">
-            Te enviamos tu enlace personal para abrir la guía PDF y activar tu Certificado Página Express con precio congelado y 1 mes de mantenimiento gratis.
+            Te enviamos tu enlace personal para ver la guía y tu Certificado Página Express con precio de $5,000 + IVA por 7 días.
           </p>
         </div>
 

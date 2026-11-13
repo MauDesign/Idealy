@@ -257,26 +257,26 @@ export async function generateExpressCertificatePdf(data: CertificateData): Prom
     color: colorBorderTeal,
   });
 
-  page1.drawText('+', {
-    x: width / 2 + 34,
+  page1.drawText('5', {
+    x: width / 2 + 35,
     y: benY + 23,
-    size: 18,
+    size: 16,
     font: fontHelveticaBold,
     color: colorWhite,
   });
 
-  page1.drawText('1 mes de mantenimiento gratis', {
+  page1.drawText('Garantia de 5 dias habiles', {
     x: width / 2 + 64,
     y: benY + 36,
-    size: 13,
+    size: 12,
     font: fontHelveticaBold,
     color: colorBrandBlue,
   });
 
-  page1.drawText('Valor $499 · cambios y soporte técnico', {
+  page1.drawText('Desde entrega de info o devolucion de anticipo', {
     x: width / 2 + 64,
     y: benY + 18,
-    size: 10,
+    size: 9,
     font: fontHelvetica,
     color: colorTextGray,
   });
