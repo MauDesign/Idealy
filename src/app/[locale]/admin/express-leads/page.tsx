@@ -338,10 +338,22 @@ export default async function ExpressLeadsAdminPage({
                             </div>
                           </div>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-base-200 text-base-content/50">
-                            <Clock className="w-3 h-3" />
-                            Pendiente
-                          </span>
+                          <div className="space-y-0.5">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-base-200 text-base-content/50">
+                              <Clock className="w-3 h-3" />
+                              Pendiente
+                            </span>
+                            {lead.reminder2SentAt && (
+                              <div className="text-[10px] text-warning font-medium">
+                                Rec. Día 2: {formatDate(lead.reminder2SentAt)}
+                              </div>
+                            )}
+                            {lead.reminder5SentAt && (
+                              <div className="text-[10px] text-orange-400 font-medium">
+                                Rec. Día 5: {formatDate(lead.reminder5SentAt)}
+                              </div>
+                            )}
+                          </div>
                         )}
                       </td>
 
@@ -358,10 +370,22 @@ export default async function ExpressLeadsAdminPage({
                             </div>
                           </div>
                         ) : (
-                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-base-200 text-base-content/50">
-                            <Clock className="w-3 h-3" />
-                            Pendiente
-                          </span>
+                          <div className="space-y-0.5">
+                            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-semibold bg-base-200 text-base-content/50">
+                              <Clock className="w-3 h-3" />
+                              Pendiente
+                            </span>
+                            {lead.reminder2SentAt && (
+                              <div className="text-[10px] text-warning font-medium">
+                                Rec. Día 2: {formatDate(lead.reminder2SentAt)}
+                              </div>
+                            )}
+                            {lead.reminder5SentAt && (
+                              <div className="text-[10px] text-orange-400 font-medium">
+                                Rec. Día 5: {formatDate(lead.reminder5SentAt)}
+                              </div>
+                            )}
+                          </div>
                         )}
                       </td>
 

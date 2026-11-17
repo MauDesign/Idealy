@@ -89,6 +89,8 @@ model ExpressLead {
   certDownloadedAt      DateTime?
   isRedeemed            Boolean             @default(false)
   redeemedAt            DateTime?
+  reminder2SentAt       DateTime?
+  reminder5SentAt       DateTime?
   certificateId         String?             @unique
   certificate           ExpressCertificate? @relation(fields: [certificateId], references: [id])
   createdAt             DateTime            @default(now())
