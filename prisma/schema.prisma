@@ -63,34 +63,41 @@ model Media {
 }
 
 model ExpressLead {
-  id                String              @id @default(cuid())
-  folio             Int?
-  folioCode         String?
-  nombre            String
-  whatsapp          String
-  nombreNegocio     String
-  dedicacion        String?
-  tienePagina       String?
-  urgencia          String?
-  prioridad         String?
-  socialLink        String?
-  utmSource         String?
-  utmMedium         String?
-  utmCampaign       String?
-  gclid             String?
-  hasDownloadedPdf  Boolean             @default(false)
-  downloadedAt      DateTime?
-  hasDownloadedCert Boolean             @default(false)
-  certDownloadedAt  DateTime?
-  isRedeemed        Boolean             @default(false)
-  redeemedAt        DateTime?
-  certificateId     String?             @unique
-  certificate       ExpressCertificate? @relation(fields: [certificateId], references: [id])
-  createdAt         DateTime            @default(now())
+  id                    String              @id @default(cuid())
+  folio                 Int?
+  folioCode             String?
+  token                 String?             @unique
+  status                String              @default("cupon_enviado")
+  brief                 Json?
+  cita                  Json?
+  cupon_congelado_hasta DateTime?
+  nombre                String
+  whatsapp              String
+  nombreNegocio         String
+  dedicacion            String?
+  tienePagina           String?
+  urgencia              String?
+  prioridad             String?
+  socialLink            String?
+  utmSource             String?
+  utmMedium             String?
+  utmCampaign           String?
+  gclid                 String?
+  hasDownloadedPdf      Boolean             @default(false)
+  downloadedAt          DateTime?
+  hasDownloadedCert     Boolean             @default(false)
+  certDownloadedAt      DateTime?
+  isRedeemed            Boolean             @default(false)
+  redeemedAt            DateTime?
+  certificateId         String?             @unique
+  certificate           ExpressCertificate? @relation(fields: [certificateId], references: [id])
+  createdAt             DateTime            @default(now())
 
   @@index([createdAt])
   @@index([urgencia])
   @@index([isRedeemed])
+  @@index([token])
+  @@index([status])
 }
 
 model ExpressCertificate {

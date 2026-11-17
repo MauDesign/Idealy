@@ -149,13 +149,14 @@ export default async function LocaleLayout({ children, params }: Props) {
             `}
           </Script>
         )}
+        {/* Structured Data (JSON-LD) */}
+        <StructuredData locale={locale} />
       </head>
       <body
         suppressHydrationWarning
         className={`${geistSans.variable} ${geistMono.variable} ${sora.variable} bg-background text-foreground transition-colors duration-300`}
       >
         <AnalyticsTracker />
-        <StructuredData locale={locale} />
         {gtmId && (
           <noscript>
             <iframe

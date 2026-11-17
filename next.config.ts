@@ -68,8 +68,21 @@ const nextConfig: NextConfig = {
   poweredByHeader: false,
 
   // ─── HTTP Cache-Control headers para activos estáticos ───────────────────
-  // Elimina solicitudes de bloqueo en visitas repetidas (Lighthouse repeat-view)
+  // En desarrollo: forzar no-store para evitar que el navegador guarde chunks viejos en disco.
   async headers() {
+    if (process.env.NODE_ENV !== 'production') {
+      return [
+        {
+          source: '/:path*',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+            },
+          ],
+        },
+      ];
+    }
     return [
       {
         // JS/CSS compilados por Next.js — inmutables con hash en el nombre
