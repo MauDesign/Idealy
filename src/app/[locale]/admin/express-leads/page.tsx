@@ -18,6 +18,7 @@ import {
 import RedeemStatusToggle from '@/app/ui/admin/RedeemStatusToggle';
 import ActivationLinkActions from '@/app/ui/admin/ActivationLinkActions';
 import LeadDetailModal from '@/app/ui/admin/LeadDetailModal';
+import ManualReminderModal from '@/app/ui/admin/ManualReminderModal';
 
 export const metadata = {
   title: 'Leads Página Express | Admin Idealy',
@@ -271,7 +272,7 @@ export default async function ExpressLeadsAdminPage({
                 <th className="py-4 px-5">Link Activación</th>
                 <th className="py-4 px-5">Estado / Brief</th>
                 <th className="py-4 px-5">Uso / Redención</th>
-                <th className="py-4 px-5">Fecha</th>
+                <th className="py-4 px-5">Antigüedad / Fecha</th>
                 <th className="py-4 px-5 text-right">Acciones</th>
               </tr>
             </thead>
@@ -289,6 +290,12 @@ export default async function ExpressLeadsAdminPage({
                   const waClean = getCleanWhatsapp(lead.whatsapp);
                   const waUrl = `https://wa.me/${waClean}`;
                   const downloadPageUrl = `/pagina-express/descarga?leadId=${lead.id}`;
+
+                  // Cálculo de antigüedad y días transcurridos
+                  const diffMs = Date.now() - new Date(lead.createdAt).getTime();
+                  const diffHours = Math.max(0, Math.floor(diffMs / 3600000));
+                  const diffDays = Math.floor(diffHours / 24);
+                  const dayBadge = diffDays === 0 ? `Hoy (${diffHours}h)` : `Día ${diffDays + 1} (${diffHours}h)`;
 
                   return (
                     <tr key={lead.id} className="hover:bg-base-200/30 transition-colors">
@@ -427,22 +434,56 @@ export default async function ExpressLeadsAdminPage({
                         />
                       </td>
 
-                      {/* 9. Fecha Registro */}
-                      <td className="py-4 px-5 text-xs text-base-content/60 font-medium">
-                        {formatDate(lead.createdAt)}
+                      {/* 9. Fecha Registro y Antigüedad */}
+                      <td className="py-4 px-5">
+                        <div className="flex items-center gap-1.5 mb-1">
+                          <span
+                            className={`inline-flex items-center px-2 py-0.5 rounded-md text-[10px] font-extrabold ${
+                              diffDays >= 5
+                                ? 'bg-error/15 text-error border border-error/30'
+                                : diffDays >= 2
+                                ? 'bg-warning/15 text-warning-content border border-warning/30'
+                                : 'bg-base-200 text-base-content/70'
+                            }`}
+                          >
+                            {dayBadge}
+                          </span>
+                        </div>
+                        <div className="text-xs text-base-content/60 font-medium">
+                          {formatDate(lead.createdAt)}
+                        </div>
                       </td>
 
                       {/* 10. Acciones Adicionales */}
-                      <td className="py-4 px-5 text-right space-x-2">
-                        <Link
-                          href={downloadPageUrl}
-                          target="_blank"
-                          className="btn btn-ghost btn-xs text-primary font-bold gap-1 rounded-lg"
-                          title="Ver enlace personal de descarga"
-                        >
-                          <ExternalLink className="w-3.5 h-3.5" />
-                          Descarga
-                        </Link>
+                      <td className="py-4 px-5 text-right">
+                        <div className="flex items-center justify-end gap-1.5">
+                          <ManualReminderModal
+                            lead={{
+                              id: lead.id,
+                              folioCode: folioDisplay,
+                              nombre: lead.nombre,
+                              nombreNegocio: lead.nombreNegocio,
+                              whatsapp: lead.whatsapp,
+                              token: lead.token,
+                              createdAt: lead.createdAt,
+                              hasDownloadedPdf: lead.hasDownloadedPdf,
+                              hasDownloadedCert: lead.hasDownloadedCert,
+                              isRedeemed: lead.isRedeemed,
+                              status: lead.status || 'cupon_enviado',
+                              reminder2SentAt: lead.reminder2SentAt,
+                              reminder5SentAt: lead.reminder5SentAt,
+                            }}
+                          />
+                          <Link
+                            href={downloadPageUrl}
+                            target="_blank"
+                            className="btn btn-ghost btn-xs text-primary font-bold gap-1 rounded-lg"
+                            title="Ver enlace personal de descarga"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            Descarga
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   );

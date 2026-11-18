@@ -1,0 +1,141 @@
+{
+  "name": "Idealy · Página Express · Recordatorio Manual (Webhook)",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "pagina-express-recordatorio-manual",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "e1a90c12-78d1-412e-9d8a-7b3f9b2c8a11",
+      "name": "Webhook Recordatorio Manual",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "pagina-express-recordatorio-manual"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Normalizar datos recibidos por el webhook de Next.js\nconst raw = $json.body || $json;\n\nlet numberFormatted = String(raw.numberFormatted || raw.whatsapp || '').replace(/\\D/g, '');\nif (numberFormatted.length === 10) {\n  numberFormatted = '52' + numberFormatted;\n} else if (numberFormatted.length === 13 && numberFormatted.startsWith('521')) {\n  numberFormatted = '52' + numberFormatted.substring(3);\n}\n\nreturn [{\n  json: {\n    leadId: raw.leadId || '',\n    folioCode: raw.folioCode || '',\n    nombre: raw.nombre || '',\n    nombreNegocio: raw.nombreNegocio || '',\n    whatsapp: raw.whatsapp || '',\n    numberFormatted,\n    tipo: raw.tipo || 'descarga',\n    texto: raw.texto || '',\n    link: raw.link || '',\n    dias: raw.dias || 1,\n    horas: raw.horas || 0,\n    recibidoEn: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "a2b3c4d5-e6f7-4890-1234-56789abcdef0",
+      "name": "Normalizar datos",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "messages-api",
+        "instanceName": "Idealy",
+        "remoteJid": "={{ $json.numberFormatted }}",
+        "messageText": "={{ $json.texto }}",
+        "options_message": {
+          "delay": 2000
+        }
+      },
+      "id": "b3c4d5e6-f7a8-4901-2345-6789abcdef01",
+      "name": "Enviar WhatsApp (Evolution API)",
+      "type": "n8n-nodes-evolution-api.evolutionApi",
+      "typeVersion": 1,
+      "position": [
+        740,
+        300
+      ],
+      "credentials": {
+        "evolutionApi": {
+          "id": "7yAAfkzWapNpxNIz",
+          "name": "Evolution account"
+        }
+      },
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"success\": true,\n  \"message\": \"Recordatorio WhatsApp enviado exitosamente vía Evolution API\",\n  \"folioCode\": \"{{ $('Normalizar datos').first().json.folioCode }}\",\n  \"number\": \"{{ $('Normalizar datos').first().json.numberFormatted }}\",\n  \"tipo\": \"{{ $('Normalizar datos').first().json.tipo }}\",\n  \"timestamp\": \"{{ new Date().toISOString() }}\"\n}",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "c4d5e6f7-a8b9-4012-3456-789abcdef012",
+      "name": "Responder a Next.js",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        1000,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Flujo de Recordatorios Manuales - Página Express\n\n1. **Webhook URL**:\n   `POST https://n8n.idealy.com.mx/webhook/pagina-express-recordatorio-manual`\n\n2. **Payload recibido**:\n   - `leadId`, `folioCode`, `nombre`, `whatsapp`, `numberFormatted`\n   - `tipo`: `'descarga'` | `'agenda'` | `'vence'`\n   - `texto`: Mensaje personalizado o predeterminado\n   - `link`: Enlace único de descarga o activación\n   - `dias`: Días transcurridos desde el registro\n\n3. **Instancia Evolution API**:\n   - Instancia: `Idealy` (o la configurada en tu servidor)\n   - Credencial: `Evolution account`",
+        "height": 320,
+        "width": 520,
+        "color": 6
+      },
+      "id": "d5e6f7a8-b9c0-4123-4567-89abcdef0123",
+      "name": "Guía de Uso",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        240,
+        -60
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook Recordatorio Manual": {
+      "main": [
+        [
+          {
+            "node": "Normalizar datos",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Normalizar datos": {
+      "main": [
+        [
+          {
+            "node": "Enviar WhatsApp (Evolution API)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Enviar WhatsApp (Evolution API)": {
+      "main": [
+        [
+          {
+            "node": "Responder a Next.js",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "manual-reminder-v1",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "idealy-n8n-manual-reminders"
+  },
+  "id": "pagina-express-recordatorio-manual",
+  "tags": []
+}
